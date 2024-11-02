@@ -1,0 +1,58 @@
+@use "@/styles/globals.scss" as *;
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  .headerContainer {
+    width: 100%;
+    background-color: var(--primary-light);
+    color: var(--primary);
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: row;
+    gap: 20px;
+    border-radius: 5px;
+    padding: 20px;
+
+    h1 {
+      font-size: 50px;
+      font-weight: 900;
+    }
+    .icon {
+      font-size: 30px;
+    }
+  }
+  .recentSubscribersContainer {
+    margin-top: 20px;
+    width: 100%;
+    overflow: auto;
+    h1 {
+      text-align: left;
+      font-size: 13px;
+      color: rgb(126, 126, 126);
+      font-weight: 400;
+      margin-bottom: 10px;
+    }
+    .table {
+      @include mobile {
+        width: 65vw;
+      }
+      overflow: auto;
+      .amount {
+        font-size: 20px;
+        color: var(--primary);
+      }
+      .date {
+        font-size: 14px;
+        color: var(--primary-dark);
+      }
+    }
+  }
+  h1 {
+    font-size: 30px;
+    color: var(--primary);
+  }
+}

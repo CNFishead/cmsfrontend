@@ -1,0 +1,56 @@
+@use "@/styles/globals.scss" as *;
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.1);
+  @include tablet {
+    flex-direction: row;
+  }
+  .contentContainer {
+    .nameContainer {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      @include tablet {
+        flex-direction: column;
+      }
+      .inputParent {
+        width: 48%;
+        @include tablet {
+          width: 100%;
+        }
+      }
+    }
+    .input {
+      width: 100%;
+      input {
+        &:hover {
+          border: 1px solid var(--primary);
+        }
+        &:focus {
+          border: 1px solid var(--primary);
+        }
+      }
+    }
+    .buttonContainer {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      .button {
+        width: 100%;
+        margin-left: 1rem;
+        background-color: var(--primary);
+        &:hover {
+          background-color: var(--primary-light);
+          transition: 1 all ease-in-out;
+          // make the button grow slightly
+          transform: scale(1.15);
+        }
+        svg {
+          margin-right: 5px;
+        }
+      }
+    }
+  }
+}

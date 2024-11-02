@@ -1,0 +1,17 @@
+.container {
+  .contentContainer {
+    .table {
+      .leader {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+      }
+
+      .actions {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+      }
+    }
+  }
+}

@@ -1,0 +1,15 @@
+.animate {
+  animation: animate 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+//make a fade in slide up keyframe animation
+@keyframes animate {
+  0% {
+    opacity: 0;
+    padding-top: 20px;
+  }
+  100% {
+    opacity: 1;
+    padding-top: 0px;
+  }
+}

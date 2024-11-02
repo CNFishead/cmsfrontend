@@ -1,0 +1,116 @@
+@import '../../../../globals.scss';
+
+.container {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: 1fr 250px;
+  @include mobile {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+  }
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background-color: var(--primary-light);;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
+  transition: $animation;
+
+  .header {
+    .title {
+      font-size: 25px;
+      font-weight: 900;
+      color: var(--primary);;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      span {
+        font-size: 12px;
+        font-weight: 400;
+        background-color: var(--primary-light);;
+        padding: 5px 10px;
+        border-radius: 10px;
+      }
+      @include mobile {
+        font-size: 20px;
+        span {
+          font-size: 12px;
+        }
+      }
+    }
+    .description {
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--primary-dark);
+      @include mobile {
+        font-size: 12px;
+      }
+    }
+    transition: $animation;
+  }
+
+  .options {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    .price {
+      font-size: 20px;
+      font-weight: 500;
+      color: var(--primary);;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  &.available {
+    background-color: var(--quarternary);
+  }
+
+  &.selected {
+    background-color: var(--primary) !important;
+    .header {
+      display: flex;
+      align-items: center;
+      .icon {
+        font-size: 30px;
+        color: var(--quarternary);
+        min-width: 30px;
+        min-height: 30px;
+      }
+      .details {
+        margin-left: 20px;
+      }
+    }
+    .title {
+      color: white;
+      span {
+        background-color: var(--primary-dark-blue);
+        color: white;
+      }
+    }
+    .description {
+      color: white;
+    }
+    .price {
+      color: white;
+    }
+  }
+
+  &.discount {
+    background-color: var(--primary);
+    grid-template-columns: 1fr 1fr;
+    box-shadow: none;
+
+    .title {
+      font-size: 20px;
+    }
+    .options {
+      justify-content: flex-end;
+    }
+    .description {
+      font-size: 12px;
+    }
+  }
+}

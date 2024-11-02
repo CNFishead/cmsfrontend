@@ -1,0 +1,96 @@
+@use "./globals.scss" as *;
+
+.editContainer {
+  background-color: white;
+  border-radius: 10px;
+  padding: 50px;
+  margin: 20px 0;
+  position: relative;
+  border-width: 2px;
+  border-style: inset inset outset outset;
+  border-color: var(--secondary-light) var(--quaternary-dark);
+}
+.form {
+  label {
+    font-size: 15px;
+    font-weight: 400;
+    color: var(--primary);
+    @include mobile {
+      font-size: 13px;
+    }
+  }
+
+  .input {
+    margin-bottom: 20px;
+    border-radius: 10px;
+    margin: 0;
+    background-color: rgb(255, 255, 255);
+    // padding: 10px;
+    font-size: 15px;
+    font-weight: 400;
+    color: var(--primary-dark);
+    width: 100%;
+    // border: none;
+    input {
+      background-color: white;
+    }
+
+    &:focus {
+      outline: none;
+      background-color: var(--quaternary-light);
+    }
+    &:disabled {
+      background-color: var(--quaternary-dark);
+    }
+    @include mobile {
+      font-size: 13px;
+    }
+  }
+
+  .group {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    justify-content: center;
+    // align-items: center;
+    gap: 10px;
+  }
+
+  .header {
+    color: var(--primary) !important;
+    font-size: 18px !important;
+    font-weight: 700;
+    margin-bottom: 20px;
+
+    @include mobile {
+      font-size: 17px !important;
+    }
+  }
+}
+.buttonContainer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 20px;
+  @include mobile {
+  }
+}
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  background-color: var(--primary);
+  color: white;
+  padding: 0 50px;
+  font-weight: 600;
+  width: 50%;
+
+  @include mobile {
+    width: 100%;
+  }
+
+  &:hover {
+    background-color: var(--primary-light) !important;
+    color: white !important;
+  }
+}

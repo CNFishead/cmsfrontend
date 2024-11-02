@@ -1,0 +1,40 @@
+@import "../../globals.scss";
+.container {
+  .features {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .price {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+    padding-top: 20px;
+
+    border-top: 4px solid var(--primary-light);
+
+    @include mobile {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .total {
+      font-weight: 600;
+      font-size: 20px;
+
+      color: var(--primary-dark);
+    }
+    .totalPrice {
+      font-weight: 900;
+      font-size: 20px;
+
+      color: var(--primary);
+    }
+    .checkoutBtn {
+      // width: 100%;
+      margin: 30px 0;
+    }
+  }
+}

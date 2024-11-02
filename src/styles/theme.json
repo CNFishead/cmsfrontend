@@ -1,0 +1,17 @@
+{
+  "token": {
+    "colorPrimary": "rgb(60, 98, 85)",
+    "colorText": "rgb(92, 138, 122)",
+    "borderRadius": 5,
+    "colorSuccess": "#00b894",
+    "colorError": "#d63031",
+    "colorWarning": "#f39c12",
+    "colorTextSecondary": "#6c757d",
+    "labelColor": "#007bcd"
+  },
+  "components": {
+    "Button": {
+      "colorPrimary": "rgb(60, 98, 85)"
+    }
+  }
+}

@@ -1,0 +1,37 @@
+@use "@/styles/globals.scss" as *;
+
+.container {
+  .contentContainer {
+    .formContainer {
+      .formInputContainer {
+        .inputLabelText {
+          margin-right: 5px;
+        }
+        .tooltipIcon {
+          color: var(--primary);
+        }
+      }
+    }
+  }
+}
+
+.footer {
+  .buttonContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    .button {
+      width: auto;
+      margin-left: 1rem;
+      background-color: var(--primary);
+      &:hover {
+        background-color: var(--primary-light);
+        transition: 1 all ease-in-out;
+        // make the button grow slightly
+      }
+      svg {
+        margin-right: 5px;
+      }
+    }
+  }
+}

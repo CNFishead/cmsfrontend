@@ -1,0 +1,11 @@
+@import '../../../../globals.scss';
+.container {
+  margin: 15px;
+  .desc {
+    margin: 20px 0 40px;
+  }
+  .total {
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+}

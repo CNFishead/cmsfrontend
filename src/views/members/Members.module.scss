@@ -1,0 +1,19 @@
+.container {
+  .table {
+    tr {
+      &:hover {
+        cursor: pointer !important;
+      }
+    }
+  }
+  .actions{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    button {
+      margin: 0 .5rem;
+    }
+  }
+}

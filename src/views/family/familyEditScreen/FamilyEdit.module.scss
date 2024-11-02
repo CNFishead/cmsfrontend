@@ -1,0 +1,57 @@
+.container {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  .formContainer {
+    padding: 2%;
+    height: 100%;
+    background-color: antiquewhite;
+    .familyNameInput {
+      background-color: transparent;
+      border: none;
+    }
+  }
+  .familyMemberContainer {
+    background-color: aliceblue;
+    height: 100%;
+    overflow-y: scroll;
+    // hide scrollbar
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+    &::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, Opera*/
+    }
+    .familyMember {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      margin: 1%;
+      padding: 1%;
+
+      .familyMemberDetailsContainer {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        .familyMemberName {
+          display: inline;
+          margin-left: 2%;
+          flex: 1;
+        }
+        .actionContainer {
+          display: flex;
+          justify-content: flex-end;
+          .actionButton {
+            margin-left: 1%;
+            .deleteIcon {
+              color: red;
+
+              &:hover {
+                color: darkred;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

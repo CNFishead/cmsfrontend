@@ -1,0 +1,48 @@
+@use "@/styles/globals.scss" as *;
+.container {
+  h1 {
+    font-size: 30px;
+    color: var(--primary);
+  }
+  .chooseStat {
+    margin-bottom: 20px;
+  }
+  .table {
+    @include mobile {
+      width: 65vw;
+    }
+
+    overflow-x: auto;
+    .tableRow {
+      color: black !important;
+    }
+  }
+  .button {
+    margin-top: 20px;
+    width: 100%;
+  }
+  .videoThumbnail {
+    overflow: hidden;
+    // background-color: black;
+    width: fit-content;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    .thumbnail {
+      object-fit: cover;
+      border-radius: 5px;
+      @include mobile {
+        width: 50px;
+        height: 25px;
+      }
+    }
+  }
+  .title {
+    @include mobile {
+      font-size: 12px;
+    }
+    width: fit-content;
+  }
+}
