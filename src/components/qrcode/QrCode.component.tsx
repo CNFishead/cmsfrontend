@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./QrCode.module.scss";
-import { useQRCode } from "next-qrcode";
+// import { useQRCode } from "next-qrcode";
 
 interface QrCodeProps {
   url: string;
@@ -21,24 +21,25 @@ interface QrCodeProps {
 }
 
 const QrCode = ({ url, type, colors, options, qrOptions }: QrCodeProps) => {
-  const { SVG, Canvas, Image } = useQRCode();
+  // const { SVG, Canvas, Image } = useQRCode();
 
-  let Component =
-    {
-      svg: SVG,
-      canvas: Canvas,
-      image: Image,
-    }[type] ?? SVG;
+  // const Component =
+  //   {
+  //     svg: SVG,
+  //     canvas: Canvas,
+  //     image: Image,
+  //   }[type] ?? SVG;
 
   return (
-    <Component
-      text={url}
-      options={{
-        ...options,
-        color: colors,
-        ...qrOptions,
-      }}
-    />
+    <></>
+    // <Component
+    //   text={url}
+    //   options={{
+    //     ...options,
+    //     color: colors,
+    //     ...qrOptions,
+    //   }}
+    // />
   );
 };
 

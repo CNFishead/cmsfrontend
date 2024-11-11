@@ -16,9 +16,7 @@ import useFetchData from "@/state/useFetchData";
  * @lastModifiedOn 06/23/2023
  */
 
-type Props = {};
-
-const PaymentInformationCard = (props: Props) => {
+const PaymentInformationCard = () => {
   const router = useRouter();
 
   const { data: userDetails } = useUser();
@@ -32,7 +30,7 @@ const PaymentInformationCard = (props: Props) => {
     key: "billingData",
     enabled: !!userDetails?.user?._id,
   });
-  const [editPaymentModalOpen, setEditPaymentModalOpen] = useState(router.query.paymentInfoOpen === "true" || false);
+  const [editPaymentModalOpen, setEditPaymentModalOpen] = useState(false);
 
   if (isLoading) return <Skeleton active />;
   if (isError) return <Error error={error} />;

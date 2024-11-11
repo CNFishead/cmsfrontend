@@ -14,9 +14,7 @@ import styles from "./Features.module.scss";
 // import { useBillingData } from "@/state/billing/billing";
 import FeatureType from "@/types/FeatureType";
 
-type Props = {};
-
-const FeaturesView = (props: Props) => {
+const FeaturesView = () => {
   // const { data: featuresData, isLoading } = useAllFeatures();
   const { data: loggedInData } = useUser();
   // const { data: billingData } = useBillingData();
@@ -27,9 +25,9 @@ const FeaturesView = (props: Props) => {
   const router = useRouter();
 
   const addDiscounts = () => {
-    var discountFeatures: any[] = [];
+    const discountFeatures: any[] = [];
     console.log("selectedFeatures", selectedFeatures);
-    var currentFeatures = [...selectedFeatures.map((f) => f._id), ...loggedInData.user.features];
+    const currentFeatures = [...selectedFeatures.map((f) => f._id), ...loggedInData.user.features];
 
     //Add on core feature discount
     if (

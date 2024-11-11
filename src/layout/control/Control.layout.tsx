@@ -1,18 +1,14 @@
-import styles from './Control.module.scss';
-import { ReactNode, useState } from 'react';
-import { useLayoutStore } from '@/state/ui/layout';
-import { useUser } from '@/state/auth';
-import { ControlNavItem } from '@/types/navigation';
-import { Tooltip } from 'antd';
+import styles from "./Control.module.scss";
+import { useState } from "react";
+import { ControlNavItem } from "@/types/navigation";
+import { Tooltip } from "antd";
 
 type Props = {
   navigation: Array<ControlNavItem>;
 };
 
 const Control = (props: Props) => {
-  const [currentControlPage, setCurrentControlPage] = useState<ControlNavItem>(
-    props.navigation[0]
-  );
+  const [currentControlPage, setCurrentControlPage] = useState<ControlNavItem>(props.navigation[0]);
 
   return (
     <div className={styles.wrapper}>
@@ -30,12 +26,10 @@ const Control = (props: Props) => {
           .filter((i) => !i.hideIf)
           .map((item, index) => {
             return (
-              <Tooltip title={item.title} placement="right">
+              <Tooltip title={item.title} placement="right" key={index + item.title}>
                 <div
                   key={index}
-                  className={`${styles.navigationItem} ${
-                    currentControlPage.title === item.title && styles.active
-                  }`}
+                  className={`${styles.navigationItem} ${currentControlPage.title === item.title && styles.active}`}
                   onClick={() => setCurrentControlPage(item)}
                 >
                   <div className={styles.icon}>{item.icon}</div>

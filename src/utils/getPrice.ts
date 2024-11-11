@@ -5,7 +5,7 @@ export const getPrice = (
     noCredits?: boolean;
   }
 ) => {
-  var price = features.reduce((acc, feature) => {
+  let price = features.reduce((acc, feature) => {
     return acc + feature.price;
   }, 0);
 

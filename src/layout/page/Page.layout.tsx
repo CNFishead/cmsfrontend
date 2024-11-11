@@ -39,7 +39,7 @@ const PageLayout = (props: Props) => {
   const toggleControlLayout = useLayoutStore((state) => state.toggleControlLayout);
 
   const { data: loggedInData } = useUser();
-  const getPageBlockData: () => Boolean | "blacklist" | "feature" | "verification" = () => {
+  const getPageBlockData: () => boolean | "blacklist" | "feature" | "verification" = () => {
     if (!props.enableBlockCheck) return false;
     if (loggedInData.user.isBlacklisted) {
       return "blacklist";
@@ -55,7 +55,7 @@ const PageLayout = (props: Props) => {
       }
     }
 
-    return false as Boolean;
+    return false as boolean;
   };
 
   return (

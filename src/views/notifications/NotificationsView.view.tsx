@@ -13,9 +13,7 @@ import NotificationType from "@/types/NotificationType";
 import useFetchData from "@/state/useFetchData";
 import useUpdateData from "@/state/useUpdateData";
 
-type Props = {};
-
-const NotificationsView = (props: Props) => {
+const NotificationsView = () => {
   const { data } = useFetchData({
     url: `/notification`,
     key: "notifications",

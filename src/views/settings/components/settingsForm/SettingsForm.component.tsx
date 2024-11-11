@@ -1,45 +1,29 @@
-import phoneNumber from '@/utils/phoneNumber';
-import {
-  Button,
-  Form,
-  Input,
-  InputNumber,
-  message,
-  Modal,
-  Radio,
-  Switch,
-} from 'antd';
+import phoneNumber from "@/utils/phoneNumber";
+import { Button, Form, Input, InputNumber, message, Modal, Radio, Switch } from "antd";
 
-import styles from './SettingsForm.module.scss';
+import styles from "./SettingsForm.module.scss";
 
-type Props = {};
-
-const SettingsForm = (props: Props) => {
+const SettingsForm = () => {
   const [passwordForm] = Form.useForm();
 
   // const { mutate: updateUser } = useUpdateUser();
   const onFinishChangePassword = (values: any) => {
     console.log(values);
 
-    if (values.password != values.confirmNewPassword)
-      return message.error('Passwords do not match');
+    if (values.password != values.confirmNewPassword) return message.error("Passwords do not match");
 
     // updateUser(values);
   };
   const openChangePasswordModal = () => {
     Modal.info({
-      title: 'Change Password',
-      okText: 'Change Password',
-      okType: 'primary',
-      cancelText: 'Cancel',
+      title: "Change Password",
+      okText: "Change Password",
+      okType: "primary",
+      cancelText: "Cancel",
       okCancel: true,
 
       content: (
-        <Form
-          layout="vertical"
-          form={passwordForm}
-          onFinish={onFinishChangePassword}
-        >
+        <Form layout="vertical" form={passwordForm} onFinish={onFinishChangePassword}>
           <Form.Item label="New Password" name="password">
             <Input type="password" />
           </Form.Item>
@@ -74,10 +58,10 @@ const SettingsForm = (props: Props) => {
         <div className={styles.side}>
           <Form.Item label="Personal Phone Number" name="phoneNumber">
             <InputNumber
-              style={{ width: '100%' }}
+              style={{ width: "100%" }}
               controls={false}
               formatter={(value: any) => phoneNumber(value)}
-              parser={(value: any) => value.replace(/[^\d]/g, '')}
+              parser={(value: any) => value.replace(/[^\d]/g, "")}
             />
           </Form.Item>
           <Form.Item label="Gender" name="sex">
@@ -120,7 +104,7 @@ const SettingsForm = (props: Props) => {
           <Form.Item
             tooltip="If this is enabled, your profile will not be visible to other users."
             label="Hide my profile"
-            name={'hiddenChannel'}
+            name={"hiddenChannel"}
             className={styles.switch}
             valuePropName="checked"
           >

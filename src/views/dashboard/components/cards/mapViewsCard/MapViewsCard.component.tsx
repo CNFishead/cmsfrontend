@@ -1,8 +1,6 @@
-import MapAnalytics from '@/components/mapAnalytics/MapAnalytics.component';
+import MapAnalytics from "@/components/mapAnalytics/MapAnalytics.component";
 
-type Props = {};
-
-const MapViewsCard = (props: Props) => {
+const MapViewsCard = () => {
   return <MapAnalytics />;
 };
 

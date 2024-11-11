@@ -15,8 +15,7 @@ import styles from "./PaymentHistoryCard.module.scss";
  * @lastModifiedOn 06/01/2023
  */
 
-type Props = {};
-const PaymentHistoryCard = (props: Props) => {
+const PaymentHistoryCard = () => {
   // const { data: paymentData, error, isLoading, isError } = useNextPaymentDate();
   const { data: loggedInData } = useUser();
   // const { data: receipts } = useReceiptData(loggedInData?.user?._id, "");

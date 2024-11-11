@@ -2,7 +2,7 @@ import { Button, ModalProps } from "antd";
 import { FaTrash } from "react-icons/fa";
 interface IForm {
   form: any;
-  Modal: ModalProps;
+  Modal: any;
   createEvent: (values: any) => void;
   updateEvent: (values: any) => void;
   deleteEvent: (values: any) => void;
@@ -30,14 +30,19 @@ export default ({ form, Modal, createEvent, updateEvent, deleteEvent }: IForm) =
               url: `/event/${form.getFieldValue("_id")}`,
               formData: form.getFieldsValue(),
             });
-            setModalVisible(false);
+            // setModalVisible(false);
           }}
         >
           Update
         </Button>,
       ]
     : [
-        <Button key="cancel" onClick={() => setModalVisible(false)}>
+        <Button
+          key="cancel"
+          onClick={() => {
+            // setModalVisible(false)
+          }}
+        >
           Cancel
         </Button>,
         <Button
@@ -45,7 +50,7 @@ export default ({ form, Modal, createEvent, updateEvent, deleteEvent }: IForm) =
           type="primary"
           onClick={() => {
             createEvent(form.getFieldsValue());
-            setModalVisible(false);
+            // setModalVisible(false);
           }}
         >
           Create

@@ -16,8 +16,7 @@ import styles from "./CurrentFeaturesBillingCard.module.scss";
  * @lastModifiedOn 05/25/2023
  */
 
-type Props = {};
-const CurrentFeaturesBillingCard = (props: Props) => {
+const CurrentFeaturesBillingCard = () => {
   // const { data: paymentData, error, isLoading, isError } = useNextPaymentDate();
   const { data: loggedInData } = useUser();
   // const { data: featuresData } = useAllFeatures();

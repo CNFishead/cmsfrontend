@@ -23,10 +23,10 @@ export const FEATURES = {
 };
 
 export const hasFeature = (user: User, ...features: any) => {
-  var yesFeature = false;
+  let yesFeature = false;
   if (!features) return true;
   try {
-    user &&
+    if (user) {
       user.features.forEach((feature) => {
         // set yesFeature to true if the feature is found in the user.features array
         features.map((f: any) =>
@@ -38,6 +38,7 @@ export const hasFeature = (user: User, ...features: any) => {
           })
         );
       });
+    }
 
     return yesFeature;
   } catch {

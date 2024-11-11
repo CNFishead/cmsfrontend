@@ -4,7 +4,6 @@ import styles from "./Dashboard.module.scss";
 import Card from "./layout/card/Card.component";
 import DashboardHeader from "./layout/header/Header.layout";
 import { useUser } from "@/state/auth";
-type Props = {};
 
 type Card = {
   title: string;
@@ -13,7 +12,7 @@ type Card = {
   hideIf?: boolean;
 };
 
-const Dashboard = (props: Props) => {
+const Dashboard = () => {
   const { data: loggedInData } = useUser();
   const dashboardCards = [] as Card[];
 

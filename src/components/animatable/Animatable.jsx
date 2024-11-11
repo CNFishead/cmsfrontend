@@ -6,7 +6,7 @@ const Animatable = ({ children, shouldNotReflow }) => {
   const location = useLocation();
   useEffect(() => {
     if (!shouldNotReflow) {
-      var el = document.getElementById('animated');
+      let el = document.getElementById('animated');
       el.style.animation = 'none';
       console.log(el.offsetHeight);
 

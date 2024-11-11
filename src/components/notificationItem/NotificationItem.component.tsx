@@ -9,7 +9,7 @@ import useUpdateData from "@/state/useUpdateData";
 
 interface Props {
   notification: NotificationType;
-  small: Boolean;
+  small: boolean;
 }
 const NotificationItem = (props: Props) => {
   const { mutate: updateNotification } = useUpdateData({

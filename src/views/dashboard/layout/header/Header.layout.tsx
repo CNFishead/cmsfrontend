@@ -1,9 +1,7 @@
-import { useUser } from '@/state/auth';
-import styles from './Header.module.scss';
+import { useUser } from "@/state/auth";
+import styles from "./Header.module.scss";
 
-type Props = {};
-
-const Header = (props: Props) => {
+const Header = () => {
   const { data: loggedInData } = useUser();
   return (
     <div className={styles.container}>

@@ -8,9 +8,7 @@ import NotificationItem from "@/components/notificationItem/NotificationItem.com
 import NotificationType from "@/types/NotificationType";
 import useFetchData from "@/state/useFetchData";
 
-type Props = {};
-
-const Notifications = (props: Props) => {
+const Notifications = () => {
   const [isOpen, setIsOpen] = useState<any>();
   const { data } = useFetchData({
     url: `/notification`,
