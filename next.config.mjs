@@ -3,8 +3,8 @@ const nextConfig = {
   /* config options here */
   env: {
     API_URL: `http://localhost:5000/api/v1`,
-    // ENV: "production",
-    ENV: "development",
+    ENV: "production",
+    // ENV: "development",
   },
   //Redirect / to /dash
   redirects: async () => {
