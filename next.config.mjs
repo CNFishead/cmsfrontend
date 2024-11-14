@@ -2,8 +2,8 @@
 const nextConfig = {
   /* config options here */
   env: {
-    API_URL: `http://localhost:5000/api/v1`,
-    ENV: "production",
+    API_URL: process.env.API_URL,
+    ENV: process.env.NODE_ENV,
     // ENV: "development",
   },
   //Redirect / to /dash
