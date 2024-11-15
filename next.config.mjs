@@ -3,6 +3,7 @@ const nextConfig = {
   /* config options here */
   env: {
     API_URL: process.env.API_URL,
+    ENCRYPTION_KEY: process.env.ENCRYPTION_KEY,
     ENV: process.env.NODE_ENV,
     // ENV: "development",
   },
