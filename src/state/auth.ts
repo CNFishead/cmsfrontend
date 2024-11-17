@@ -103,6 +103,6 @@ export const logout = () => {
   localStorage.removeItem("token");
   window.location.href =
     process.env.ENV !== "development"
-      ? `https://auth.shepherdcms.com?logout=true&redirect=https://portal.shepherdcms.com`
+      ? `https://auth.shepherdcms.org?logout=true&redirect=https://portal.shepherdcms.org`
       : `http://localhost:3003?logout=true&redirect=http://${window.location.hostname}:${window.location.port}`;
 };
