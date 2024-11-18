@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "@/styles/globals.css";
+import "@/styles/nprogress.css";
 import ReactQueryProvider from "@/providers/ReactQueryProvider";
 import DynamicTitleUpdater from "@/layout/dynamicTitleUpdater/DynamicTitleUpdater.layout";
 import AppWrapper from "@/layout/appWrapper/AppWrapper";
 import Errors from "@/layout/errors/Errors.layout";
 import { Suspense } from "react";
+import NextTopLoader from "nextjs-toploader";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",

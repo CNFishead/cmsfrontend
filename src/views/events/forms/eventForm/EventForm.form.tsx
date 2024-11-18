@@ -13,6 +13,7 @@ import usePostData from "@/state/usePostData";
 import useUpdateData from "@/state/useUpdateData";
 import useRemoveData from "@/state/useRemoveData";
 import { FaTrash } from "react-icons/fa";
+import dayjs from "dayjs";
 const { RangePicker } = DatePicker;
 
 interface EventFormProps {
@@ -83,7 +84,7 @@ const EventForm = ({ setModalVisible }: EventFormProps) => {
         name: "A new event",
         location: "Church",
         description: "A new event",
-        dates: [moment().startOf("day"), moment().endOf("day")],
+        dates: [dayjs().startOf("day"), dayjs().add(1, "day")],
       }}
     >
       <Form.Item name="name" label="Title" rules={[{ required: true }]}>

@@ -32,7 +32,7 @@ const Ministry = () => {
     key: "ministryList",
     enabled: !!selectedProfile?.ministry?._id,
     method: "GET",
-    filter: `user;${loggedInData?.user._id}`,
+    filter: `user;${loggedInData?.user?._id}`,
   }) as any;
 
   const { mutate: deleteMinistry } = useApiHook({
@@ -102,7 +102,7 @@ const Ministry = () => {
                 key: "leader",
                 render: (text: string, record: MinistryType) => {
                   return (
-                    <Link href={`/members/edit/${record.leader?._id}`}>
+                    <Link href={`/members/${record.leader?._id}`}>
                       <div className={styles.leader}>
                         <Avatar src={record.leader?.profileImageUrl} />
                         <span>{record.leader?.fullName}</span>
@@ -147,7 +147,7 @@ const Ministry = () => {
                               title: "Ministry QR Code",
                               content: (
                                 <QRCode
-                                  value={`https://check.shepherdscms.org/${record._id}`}
+                                  value={`${process.env.NEXT_PUBLIC_CHECKINAPP_URL}/${record._id}`}
                                   type="svg"
                                   id="myqrcode"
                                 />

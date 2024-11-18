@@ -5,8 +5,10 @@ import useFetchData from "@/state/useFetchData";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter, useSearchParams } from "next/navigation";
 import Script from "next/script";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import io from "socket.io-client";
+// import { Router } from "next/router";
+// import NProgress from "nprogress"; //nprogress module
 
 type Props = {
   children: React.ReactNode;
@@ -57,8 +59,7 @@ const AppWrapper = (props: Props) => {
         socket.close();
       }
     };
-  }, [socket]);
-
+  }, [socket]); 
   return <>{props.children}</>;
 };
 
