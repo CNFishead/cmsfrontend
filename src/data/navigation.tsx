@@ -7,7 +7,7 @@ import { BiDonateHeart } from "react-icons/bi";
 
 import { BsFillPeopleFill } from "react-icons/bs";
 
-import { IoAnalyticsSharp } from "react-icons/io5";
+import { IoAnalyticsSharp, IoCodeSlashOutline } from "react-icons/io5";
 import { SiGoogleanalytics } from "react-icons/si";
 import { AiOutlinePlus } from "react-icons/ai";
 
@@ -36,7 +36,7 @@ export const navigation = (options?: any) => {
           title: "Ministries",
           link: "/ministries",
           icon: <BsBox />,
-        }, 
+        },
         events: {
           title: "Events",
           link: "/events",
@@ -68,6 +68,11 @@ export const navigation = (options?: any) => {
           title: "Edit Account Settings",
           link: "/account_details",
           icon: <CgProfile />,
+        },
+        keys: {
+          title: "API Keys",
+          link: "/account_details/keys",
+          icon: <IoCodeSlashOutline />,
         },
       },
       hidden: options?.user ? false : true,
