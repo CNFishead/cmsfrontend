@@ -1,11 +1,11 @@
 import PageLayout from "@/layout/page/Page.layout";
 import { navigation } from "@/data/navigation";
-import ApiKeys from "@/views/account_details/apikeys/ApiKeys.view";
+import Support from "@/views/account_details/support/Support.view";
 
 export default function Component() {
   return (
-    <PageLayout pages={[navigation().account_details.links.keys]}>
-      <ApiKeys />
+    <PageLayout pages={[navigation().account_details.links.support]} largeSideBar>
+      <Support />
     </PageLayout>
   );
 }

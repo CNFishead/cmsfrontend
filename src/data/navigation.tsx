@@ -1,15 +1,10 @@
 import { RiHome2Fill } from "react-icons/ri";
-import { MdVideoLibrary, MdPlaylistPlay, MdSettings, MdLiveTv, MdLiveHelp, MdAttachMoney } from "react-icons/md";
-import { FaRegBell, FaMoneyCheckAlt } from "react-icons/fa";
+import { MdSupportAgent } from "react-icons/md";
+import { FaRegBell } from "react-icons/fa";
 import { CgProfile } from "react-icons/cg";
 import { BsBox, BsBroadcastPin } from "react-icons/bs";
-import { BiDonateHeart } from "react-icons/bi";
-
 import { BsFillPeopleFill } from "react-icons/bs";
-
-import { IoAnalyticsSharp, IoCodeSlashOutline } from "react-icons/io5";
-import { SiGoogleanalytics } from "react-icons/si";
-import { AiOutlinePlus } from "react-icons/ai";
+import { IoCodeSlashOutline } from "react-icons/io5";
 
 export const navigation = (options?: any) => {
   return {
@@ -73,6 +68,11 @@ export const navigation = (options?: any) => {
           title: "API Keys",
           link: "/account_details/keys",
           icon: <IoCodeSlashOutline />,
+        },
+        support: {
+          title: "Support",
+          link: "/account_details/support",
+          icon: <MdSupportAgent />,
         },
       },
       hidden: options?.user ? false : true,

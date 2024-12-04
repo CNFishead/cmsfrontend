@@ -148,9 +148,10 @@
       overflow-y: auto;
       padding-bottom: $header-height;
       overflow-y: auto;
-
+      
       .childrenContainer {
         position: relative;
+        height: 100%;
         padding: 20px;
         max-width: 1500px;
         width: 100%;
