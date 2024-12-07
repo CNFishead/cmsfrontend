@@ -10,13 +10,19 @@ import { useUser } from "@/state/auth";
 import TinyEditor from "@/components/tinyEditor/TinyEditor.component";
 import parse from "html-react-parser";
 import { timeDifference } from "@/utils/timeDifference";
-import InfiniteScrollContainer from "@/components/infiniteScrollContainer/InfiniteScrollContainer.component";
+import { useMessages } from "@/state/useInfiniteMessages";
+import { useSocketStore } from "@/state/socket";
+import { useQueryClient } from "@tanstack/react-query";
 
 const SupportDetails = () => {
   const [form] = Form.useForm();
   // pull the id from the url
   const { id } = useParams();
   const { data: loggedInData } = useUser();
+  const containerRef = React.useRef<HTMLDivElement>(null);
+  const queryClient = useQueryClient();
+  // socket events
+  const { socket } = useSocketStore((state) => state);
 
   const { data, isLoading, isError, error } = useApiHook({
     url: `/support/ticket/${id}`,
@@ -25,24 +31,35 @@ const SupportDetails = () => {
     method: "GET",
   }) as any;
 
-  const {
-    data: messages,
-    isLoading: messagesLoading,
-    isError: messagesError,
-  } = useApiHook({
-    url: `/support/ticket/${id}/message`,
-    key: "messages",
-    filter: `ticket;${id}`,
-    enabled: !!id,
-    method: "GET",
-  }) as any;
-
+  const { data: messagesData, fetchNextPage, hasNextPage, isFetchingNextPage } = useMessages(id as any);
   const { mutate: sendMessage } = useApiHook({
     url: `/support/ticket/${id}/message`,
     key: "message",
     method: "POST",
-    queriesToInvalidate: ["messages"],
+    // queriesToInvalidate: ["messages"],
   }) as any;
+
+  const handleScroll = () => {
+    if (!containerRef.current || !hasNextPage || isFetchingNextPage) return;
+
+    const { scrollTop } = containerRef.current;
+    if (scrollTop === 0) {
+      // Fetch older messages when scrolled to the top
+      fetchNextPage();
+    }
+  };
+
+  React.useEffect(() => {
+    const container = containerRef.current;
+    if (container) {
+      container.addEventListener("scroll", handleScroll);
+    }
+    return () => {
+      if (container) {
+        container.removeEventListener("scroll", handleScroll);
+      }
+    };
+  }, [hasNextPage, isFetchingNextPage]);
 
   const handleMessage = () => {
     sendMessage({
@@ -50,14 +67,48 @@ const SupportDetails = () => {
     });
     // clear the form after sending the message
     form.resetFields();
-
+    // emit socket event to notify the support team of a new message
+    socket.emit("sendNewMessage", {
+      roomId: `support-${id}`,
+      user: loggedInData?.user,
+      message: form.getFieldValue("message"),
+    });
     // navigate to the bottom of the chat window
     const chatContainer = document.querySelector(`.${styles.chatContainer}`);
     chatContainer?.scrollTo(0, chatContainer.scrollHeight);
   };
 
+  React.useEffect(() => {
+    if (socket) {
+      // join the room of the support ticket
+      socket.emit("join", {
+        roomId: `support-${id}`,
+        user: loggedInData?.user,
+      });
+      socket.on("newMessage", () => {
+        queryClient.invalidateQueries({ queryKey: ["messages", `${id}`] });
+        // scroll to bottom of chat window
+        const chatContainer = document.querySelector(`.${styles.chatContainer}`);
+        setTimeout(() => chatContainer?.scrollTo(0, chatContainer.scrollHeight), 1000);
+      });
+    }
+  }, [socket]);
+
+  // when page is finished loading and messages are fetched, push the user to the bottom of the chat window
+  React.useEffect(() => {
+    if (messagesData?.pages.length) {
+      //use the container ref to scroll to the bottom of the chat window
+      const chatContainer = containerRef.current;
+      // smooth scroll after 1 second
+      setTimeout(() => chatContainer?.scrollTo(0, chatContainer.scrollHeight), 1000);
+    }
+  }, [messagesData]);
+
   if (isLoading) return <Loader />;
   if (isError) return <Error error={error.message} />;
+
+  // Flatten all messages into a single array
+  const messages = messagesData?.pages.flatMap((page) => page.data) || [];
   return (
     <div className={styles.container}>
       <div className={styles.infoContainer}>
@@ -69,44 +120,43 @@ const SupportDetails = () => {
             {{
               Open: (
                 <>
-                  is <Tag color="red">Open</Tag>
+                  Is <Tag color="red">Open</Tag>
                 </>
               ),
               New: (
                 <>
-                  is <Tag color="gold">New</Tag>
+                  Is <Tag color="gold">New</Tag>
                 </>
               ),
               Solved: (
                 <>
-                  has been <Tag color="grey">Solved</Tag>
+                  Has been <Tag color="grey">Solved</Tag>
                 </>
               ),
               Pending: (
                 <>
-                  is await response from user <Tag color="blue">Pending</Tag>
+                  Is awaiting response from user <Tag color="blue">Pending</Tag>
                 </>
               ),
             }[data?.payload?.data?.status] ?? <Tag color="blue">{data?.payload?.data?.status}</Tag>}
           </span>
         </Divider>
       </div>
-      <div className={styles.chatWindow}>
-        <InfiniteScrollContainer
-          dataKey="messages"
-          hook={useApiHook}
-          render={(message: any, i: number) => (
+      <div className={styles.chatWindow} ref={containerRef} id="chatWindow">
+        {isFetchingNextPage && <p>Loading older messages...</p>}
+        <div className={styles.chatContainer}>
+          {messages.map((message, index) => (
             <div
               key={message._id}
               className={`${styles.chat} ${
                 // if the message is from the user, align it to the right
-                message.user.toString() === loggedInData?.user._id.toString() ? styles.rightChat : null
+                message?.user?.toString() === loggedInData?.user?._id.toString() ? styles.rightChat : null
               }`}
             >
               <div
                 className={`${styles.chatBubble} ${
                   // if the message is from the user, align it to the right
-                  message.user.toString() === loggedInData?.user._id.toString()
+                  message?.user?.toString() === loggedInData?.user?._id.toString()
                     ? styles.chatBubbleRight
                     : styles.leftBubble
                 }`}
@@ -120,7 +170,7 @@ const SupportDetails = () => {
               <div
                 className={`${styles.chatTime} ${
                   // if the message is from the user, align it to the right
-                  message.user.toString() === loggedInData?.user._id.toString()
+                  message?.user?.toString() === loggedInData?.user?._id.toString()
                     ? styles.chatTimeRight
                     : styles.chatTimeLeft
                 }`}
@@ -128,50 +178,8 @@ const SupportDetails = () => {
                 {timeDifference(new Date().getTime(), new Date(message.createdAt).getTime())}
               </div>
             </div>
-          )}
-        >
-          {/* here the user will see the conversation between them and the support team */}
-          {messagesLoading ? (
-            <Loader />
-          ) : messagesError ? (
-            <Error error={messagesError.message} />
-          ) : (
-            messages?.payload?.data?.map((message: any) => (
-              <div
-                key={message._id}
-                className={`${styles.chat} ${
-                  // if the message is from the user, align it to the right
-                  message.user.toString() === loggedInData?.user._id.toString() ? styles.rightChat : null
-                }`}
-              >
-                <div
-                  className={`${styles.chatBubble} ${
-                    // if the message is from the user, align it to the right
-                    message.user.toString() === loggedInData?.user._id.toString()
-                      ? styles.chatBubbleRight
-                      : styles.leftBubble
-                  }`}
-                >
-                  <div className={styles.message}>
-                    <div className={`${styles.sender}`}>{message?.sender?.fullName}</div>
-                    <div className={styles.chatText}>{parse(`${parse(message.message)}`)}</div>
-                  </div>
-                </div>
-                {/* timestamp */}
-                <div
-                  className={`${styles.chatTime} ${
-                    // if the message is from the user, align it to the right
-                    message.user.toString() === loggedInData?.user._id.toString()
-                      ? styles.chatTimeRight
-                      : styles.chatTimeLeft
-                  }`}
-                >
-                  {timeDifference(new Date().getTime(), new Date(message.createdAt).getTime())}
-                </div>
-              </div>
-            ))
-          )}
-        </InfiniteScrollContainer>
+          ))}
+        </div>
       </div>
       <div className={styles.responseContainer}>
         {/* here the user will use a WYSIWYG editor to add to the conversation */}

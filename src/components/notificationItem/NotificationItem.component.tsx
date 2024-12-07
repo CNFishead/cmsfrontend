@@ -6,15 +6,19 @@ import React from "react";
 import getNotificationLink from "@/utils/getNotificationLink";
 import { Avatar } from "antd";
 import useUpdateData from "@/state/useUpdateData";
+import useApiHook from "@/state/useApi";
 
 interface Props {
   notification: NotificationType;
   small: boolean;
 }
 const NotificationItem = (props: Props) => {
-  const { mutate: updateNotification } = useUpdateData({
+  const { mutate: updateNotification } = useApiHook({
     queriesToInvalidate: ["notifications"],
-  });
+    method: "PUT",
+    key: "notification",
+    url: props.notification._id !== "" ? `/notification/${props.notification._id}` : `/notification/all`,
+  }) as any;
   return (
     <>
       <Link
@@ -23,7 +27,6 @@ const NotificationItem = (props: Props) => {
         key={props.notification.entityId}
         onClick={() => {
           updateNotification({
-            url: props.notification._id !== "" ? `/notification/${props.notification._id}` : `/notification/all`,
             formData: { opened: true },
           });
         }}

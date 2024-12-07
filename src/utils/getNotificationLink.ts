@@ -2,18 +2,8 @@ import NotificationType from '@/types/NotificationType';
 
 export default (notification: NotificationType) => {
   switch (notification.notificationType) {
-    case 'comment':
-      return `/video/${notification.entityId}`;
-    case 'video':
-      return `/video/${notification.entityId}`;
-    case 'channel':
-      return `/channel/${notification.entityId}`;
-    case 'playlist':
-      return `/playlist/${notification.entityId}`;
-    case 'info':
-      return '#';
-    case 'ministry-profile':
-      return `/ministry-profile`;
+    case 'support':
+      return `/account_details/support/${notification.entityId}`;
     default:
       return '/';
   }

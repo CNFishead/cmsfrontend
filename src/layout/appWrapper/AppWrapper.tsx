@@ -29,37 +29,39 @@ const AppWrapper = (props: Props) => {
   //Set up socket connection
   const { socket, isConnecting, setSocket, setIsConnecting } = useSocketStore((state) => state);
 
-  // useEffect(() => {
-  //   if (process.env.API_URL) {
-  //     setIsConnecting(true);
-  //     const socket = io(process.env.API_URL.replace("/api/v1", ""));
-  //     socket.on("connect", () => {
-  //       setIsConnecting(false);
-  //       setSocket(socket);
-  //     });
-  //     return () => {
-  //       socket.disconnect();
-  //     };
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (process.env.API_URL) {
+      setIsConnecting(true);
+      const socket = io(
+        process.env.NODE_ENV === "development" ? "http://localhost:5000" : process.env.API_URL.replace("/api/v1", "")
+      );
+      socket.on("connect", () => {
+        setIsConnecting(false);
+        setSocket(socket);
+      });
+      return () => {
+        socket.disconnect();
+      };
+    }
+  }, []);
 
-  // useEffect(() => {
-  //   //If there is a user and a socket connection, setup a setup event with the user data
+  useEffect(() => {
+    //If there is a user and a socket connection, setup a setup event with the user data
 
-  //   if (socket && isConnecting) {
-  //     // Listen for user updates
-  //     socket.emit("setup", loggedInData?.user);
-  //     socket.on("updateUser", () => {
-  //       queryClient.invalidateQueries(["user"] as any);
-  //     });
-  //   }
+    if (socket && isConnecting) {
+      // Listen for user updates
+      socket.emit("setup", loggedInData?.user);
+      socket.on("updateUser", () => {
+        queryClient.invalidateQueries(["user"] as any);
+      });
+    }
 
-  //   return () => {
-  //     if (socket) {
-  //       socket.close();
-  //     }
-  //   };
-  // }, [socket]); 
+    return () => {
+      if (socket) {
+        socket.close();
+      }
+    };
+  }, [socket]);
   return <>{props.children}</>;
 };
 
