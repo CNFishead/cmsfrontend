@@ -4,8 +4,8 @@ import axios from "@/utils/axios";
 const fetchMessages = async ({ pageParam = 1, queryKey }) => {
   const ticketId = queryKey[1]; // Pass ticket ID dynamically
   const { data } = await axios.get(`/support/ticket/${ticketId}/message`, {
-    params: { pageNumber: pageParam, limit: 10 },
-  }); 
+    params: { pageNumber: pageParam, limit: 10, filterOptions: `ticket;${ticketId}` },
+  });
   /**
    *  Api has a structured respoonse like this:
    *  {

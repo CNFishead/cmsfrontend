@@ -69,7 +69,7 @@ const SupportTable = () => {
       <div className={styles.contentContainer}>
         <Table
           className={styles.table}
-          dataSource={data?.payload?.data}
+          dataSource={data?.payload}
           loading={loading}
           size="small"
           rowKey={(record: any) => record._id}

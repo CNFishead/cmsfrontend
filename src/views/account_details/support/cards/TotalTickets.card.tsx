@@ -25,7 +25,7 @@ const TotalTickets = () => {
       {/* if no data show 0 */}
       {data?.payload?.data?.length === 0 && 0}
       {/* if data show data */}
-      {data?.payload?.data?.length > 0 && <p>{data?.payload?.data?.length}</p>}
+      {data?.payload?.length > 0 && <p>{data?.payload?.length}</p>}
     </Card>
   );
 };
