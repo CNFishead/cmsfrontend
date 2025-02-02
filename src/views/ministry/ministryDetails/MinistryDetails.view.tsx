@@ -1,45 +1,25 @@
-"use client";
 import React from "react";
-import styles from "./MinistryDetails.module.scss"; 
-import { Tabs } from "antd"; 
+import styles from "./MinistryDetails.module.scss";
+import { Tabs, TabsProps } from "antd";
 import Members from "./subviews/Members.component";
 import MinistryInfo from "./subviews/MinistryInfo.component";
-import AnimatedDiv from "@/components/animatedDiv/AnimatedDiv.UI";
-import { AnimatePresence } from "framer-motion";
-
 const MinistryDetails = () => {
-  const tabs = [
+  const tabs: TabsProps["items"] = [
     {
-      key: "Ministry Info",
-      title: "Info",
-      content: <MinistryInfo />,
+      label: "Info",
+      key: "1",
+      children: <MinistryInfo />,
     },
     {
-      key: "members",
-      title: "Members",
-      content: <Members />,
+      key: "2",
+      children: <Members />,
+      label: "Members",
     },
   ];
 
   return (
     <div className={styles.container}>
-      <Tabs defaultActiveKey="1" type="card">
-        {tabs.map((tab) => (
-          <Tabs.TabPane tab={tab.title} key={tab.key}>
-            <AnimatePresence mode="wait">
-              <AnimatedDiv
-                transitionType="fade"
-                duration={0.5}
-                key={`switchableView-${tab.key}`}
-                type="whileInView"
-                className={styles.tabsContainer}
-              >
-                {tab.content}
-              </AnimatedDiv>
-            </AnimatePresence>
-          </Tabs.TabPane>
-        ))}
-      </Tabs>
+      <Tabs defaultActiveKey="1" type="card" items={tabs} animated />
     </div>
   );
 };

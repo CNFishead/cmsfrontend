@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import styles from "../MinistryDetails.module.scss";
 import UserItem from "@/components/userItem/UserItem.component";

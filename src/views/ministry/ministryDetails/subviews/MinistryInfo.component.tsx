@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import formStyles from "@/styles/Form.module.scss";
 import styles from "../MinistryDetails.module.scss";

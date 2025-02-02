@@ -32,17 +32,17 @@ export const useUser = (token?: string, onSuccess?: () => void, onError?: () => 
     },
     // cacheTime: Infinity,
     enabled: !!token,
-    // onSuccess: () => {
-    //   if (onSuccess) onSuccess();
-    // },
-    // onError: (error: Error) => {
+    // onError:(error: Error) => {
     //   console.log(error);
     //   localStorage.removeItem('token');
     //   errorHandler(error);
     //   if (onError) onError();
     // },
   });
-
+  if(query.isError) {
+    localStorage.removeItem('token');
+    if (onError) onError();
+  }
   // save user and token in local storage
   if (query.data && token) {
     localStorage.setItem("token", token);

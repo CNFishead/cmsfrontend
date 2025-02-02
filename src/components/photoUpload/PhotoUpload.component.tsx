@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useRef, useState } from "react";
 import { Avatar, Form, Upload, message, FormInstance } from "antd";
 import type { RcFile, UploadProps, UploadChangeParam, UploadFile } from "antd/lib/upload";
@@ -59,6 +60,7 @@ const PhotoUpload = (props: Props) => {
       message.success("Image Uploaded");
     }
     if (info.file.status === "error") {
+      console.log(info.file.response);
       setLoading(false);
       errorHandler(info.file.response);
     }
@@ -82,7 +84,7 @@ const PhotoUpload = (props: Props) => {
             showUploadList={false}
             type={"drag"}
             onChange={handleChange}
-            action={props.action ? props.action : "https://api.shepherdcms.com/api/v1/upload/cloudinary"}
+            action={props.action ? props.action : "https://api.shepherdcms.org/api/v1/upload/cloudinary"}
             headers={{
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             }}

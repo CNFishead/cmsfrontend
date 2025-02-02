@@ -12,19 +12,19 @@ interface Props {
   notification: NotificationType;
   small: boolean;
 }
-const NotificationItem = (props: Props) => {
+const NotificationItem = ({ notification, small = false }: Props) => {
   const { mutate: updateNotification } = useApiHook({
     queriesToInvalidate: ["notifications"],
     method: "PUT",
     key: "notification",
-    url: props.notification._id !== "" ? `/notification/${props.notification._id}` : `/notification/all`,
+    url: notification._id !== "" ? `/notification/${notification._id}` : `/notification/all`,
   }) as any;
   return (
     <>
       <Link
-        className={`${styles.container} ${!props.notification?.opened ? styles.unread : ""}`}
-        href={getNotificationLink(props.notification)}
-        key={props.notification.entityId}
+        className={`${styles.container} ${!notification?.opened ? styles.unread : ""}`}
+        href={getNotificationLink(notification)}
+        key={notification.entityId}
         onClick={() => {
           updateNotification({
             formData: { opened: true },
@@ -33,22 +33,17 @@ const NotificationItem = (props: Props) => {
       >
         <div className={styles.content}>
           <div className={styles.titleContainer}>
-            <Avatar size="small" src={props.notification?.userFrom?.profileImageUrl} />
+            <Avatar size="small" src={notification?.userFrom?.profileImageUrl} />
 
-            <h1 className={`${styles.title}  ${props.small ? styles.small : ""}`}>{props.notification.message}</h1>
+            <h1 className={`${styles.title}  ${small ? styles.small : ""}`}>{notification.message}</h1>
           </div>
 
-          <p className={`${styles.description} ${props.small ? styles.small : ""}`}>{props.notification.description}</p>
+          <p className={`${styles.description} ${small ? styles.small : ""}`}>{notification.description}</p>
         </div>
-        <div className={styles.date}>{moment(props.notification?.createdAt).format("MM/DD/YYYY").toString()}</div>
+        <div className={styles.date}>{moment(notification?.createdAt).format("MM/DD/YYYY").toString()}</div>
       </Link>
     </>
   );
-};
-
-// default props
-NotificationItem.defaultProps = {
-  small: false,
 };
 
 export default NotificationItem;
