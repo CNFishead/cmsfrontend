@@ -10,7 +10,7 @@ import useApiHook from "@/state/useApi";
 
 interface Props {
   notification: NotificationType;
-  small: boolean;
+  small?: boolean;
 }
 const NotificationItem = ({ notification, small = false }: Props) => {
   const { mutate: updateNotification } = useApiHook({
