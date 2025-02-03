@@ -109,7 +109,7 @@ const MinistryInfo = () => {
             <div className={styles.imageUploadContainer}>
               <div className={styles.imageContainer}>
                 <PhotoUpload
-                  listType="picture-card"
+                  listType="picture-circle"
                   isAvatar={false}
                   imgStyle={{}}
                   label=""
@@ -121,6 +121,7 @@ const MinistryInfo = () => {
                     username: loggedInUser.user?.username,
                     folder: slugify(`${selectedProfile?.ministry?.name}`),
                   }}
+                  aspectRatio={14/10}
                 />
               </div>
             </div>

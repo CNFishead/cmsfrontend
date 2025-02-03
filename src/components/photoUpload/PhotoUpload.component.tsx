@@ -90,6 +90,7 @@ const PhotoUpload = (props: Props) => {
             }}
             // add body data to the request
             data={props.bodyData}
+            
           >
             {loading ? (
               <Loader />
