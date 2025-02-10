@@ -157,11 +157,16 @@ const CreateNewMember = () => {
                 <PhotoUpload
                   name="profileImageUrl"
                   listType="picture-card"
+                  tooltip="Upload a photo of yourself! this is completely optional but it helps church staff identify you in our system!"
                   isAvatar={true}
+                  aspectRatio={1 / 1}
                   form={form}
-                  action={`${process.env.API_URL}/upload`}
+                  action={`${process.env.API_URL}/upload/cloudinary`}
                   default={image}
-                  placeholder="Upload a profile photo"
+                  placeholder="Upload a photo of the member!"
+                  bodyData={{
+                    ministryName: selectedProfile?.name,
+                  }}
                 />
               </div>
             </div>

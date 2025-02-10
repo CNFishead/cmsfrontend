@@ -7,7 +7,7 @@ import useFetchData from "@/state/useFetchData";
 import { Avatar, Button, Table, Modal, Tooltip, QRCode } from "antd";
 import { default as MinistryType } from "@/types/Ministry";
 import Link from "next/link";
-import { FaEdit, FaTrash } from "react-icons/fa";
+import { FaCopy, FaEdit, FaTrash } from "react-icons/fa";
 import useRemoveData from "@/state/useRemoveData";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/state/auth";
@@ -71,14 +71,14 @@ const Ministry = () => {
           },
         ]}
         placeholder="Search for ministries"
-        total={ministryData?.totalCount}
+        total={ministryData?.pagination?.totalCount}
         queryKey={"ministryList"}
         isFetching={isFetching}
       >
         <div className={styles.contentContainer}>
           <Table
             className={styles.table}
-            dataSource={ministryData?.ministries}
+            dataSource={ministryData?.payload}
             loading={loading}
             size="small"
             rowKey={(record: MinistryType) => record._id}
@@ -123,6 +123,16 @@ const Ministry = () => {
                           <FaEdit />
                         </Button>
                       </Link>
+                      <Tooltip title="Copy Check-in URL">
+                        <Button
+                          // copy the ministry the check-in app url to clipboard
+                          onClick={() => {
+                            navigator.clipboard.writeText(`${process.env.NEXT_PUBLIC_CHECKINAPP_URL}/${record._id}`);
+                          }}
+                        >
+                          <FaCopy />
+                        </Button>
+                      </Tooltip>
                       <Button
                         onClick={() =>
                           Modal.confirm({
