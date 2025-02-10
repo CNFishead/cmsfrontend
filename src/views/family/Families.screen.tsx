@@ -110,7 +110,7 @@ const Families = () => {
               key: "actions",
               render: (text, record) => (
                 <div style={{ display: "flex", gap: "10px" }}>
-                  <Button onClick={() => router.push(`/families/${record._id}`)}>
+                  <Button onClick={() => router.push(`/families/${record._id}`)} disabled>
                     <FaEdit />
                   </Button>
                   <Button onClick={() => handleDelete(record._id)}>

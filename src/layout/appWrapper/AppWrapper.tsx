@@ -3,12 +3,10 @@ import { useUser } from "@/state/auth";
 import { useSocketStore } from "@/state/socket";
 import useFetchData from "@/state/useFetchData";
 import { useQueryClient } from "@tanstack/react-query";
-import { useRouter, useSearchParams } from "next/navigation";
-import Script from "next/script";
+import { useSearchParams } from "next/navigation";
 import React, { useEffect } from "react";
 import io from "socket.io-client";
-// import { Router } from "next/router";
-// import NProgress from "nprogress"; //nprogress module
+import "nprogress/nprogress.css";
 
 type Props = {
   children: React.ReactNode;
@@ -16,8 +14,6 @@ type Props = {
 const AppWrapper = (props: Props) => {
   const queryClient = useQueryClient();
   //Set up state
-  const router = useRouter();
-
   const searchParams = useSearchParams();
   const token = searchParams.get("token") as string;
   const { data: loggedInData, isLoading: userIsLoading } = useUser(token);

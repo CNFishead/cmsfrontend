@@ -7,7 +7,6 @@ import DynamicTitleUpdater from "@/layout/dynamicTitleUpdater/DynamicTitleUpdate
 import AppWrapper from "@/layout/appWrapper/AppWrapper";
 import Errors from "@/layout/errors/Errors.layout";
 import { Suspense } from "react";
-import NextTopLoader from "nextjs-toploader";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -30,7 +29,6 @@ export const metadata: Metadata = {
     shortcut: "/favicon-32x32.png",
   },
 };
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -43,7 +41,10 @@ export default function RootLayout({
           <Errors />
           <DynamicTitleUpdater baseTitle="Shepherds CMS" />
           <ReactQueryProvider>
-            <AppWrapper>{children}</AppWrapper>
+            <AppWrapper>
+              {/* <NextTopLoader /> */}
+              {children}
+            </AppWrapper>
           </ReactQueryProvider>
         </Suspense>
       </body>

@@ -6,10 +6,10 @@ import { Button, Col, DatePicker, Divider, Form, Input, InputNumber, Radio, Row,
 import PhotoUpload from "@/components/photoUpload/PhotoUpload.component";
 import { states } from "@/data/states";
 import { countries } from "@/data/countries";
-import { useParams, useRouter } from "next/navigation"; 
+import { useParams, useRouter } from "next/navigation";
 import moment from "moment";
 import FamilyType from "@/types/FamilyType";
-import MinistryType from "@/types/Ministry"; 
+import MinistryType from "@/types/Ministry";
 import { useUser } from "@/state/auth";
 import useApiHook from "@/state/useApi";
 
@@ -375,14 +375,12 @@ const CreateNewMember = () => {
             </Form.Item>
           </div>
         </div>
-        <div
-          style={{
-            width: "100%",
-          }}
-        >
-          <Button type="primary" htmlType="submit" className={formStyles.button} style={{ margin: "auto" }}>
-            {id ? "Update Member" : "Create Member"}
-          </Button>
+        <div className={styles.footer}>
+          <div className={styles.buttonContainer}>
+            <Button type="primary" htmlType="submit" className={formStyles.button} style={{ margin: "auto" }}>
+              {id ? "Update Member" : "Create Member"}
+            </Button>
+          </div>
         </div>
       </Form>
     </div>

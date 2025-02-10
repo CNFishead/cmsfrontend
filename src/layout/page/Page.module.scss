@@ -148,13 +148,16 @@
       overflow-y: auto;
       padding-bottom: $header-height;
       overflow-y: auto;
-      
+      position: relative;
+
       .childrenContainer {
         position: relative;
         height: 100%;
         padding: 20px;
-        max-width: 1500px;
+        // max-width: 1500px;
         width: 100%;
+        overflow: hidden;
+        overflow-y: auto;
       }
     }
   }

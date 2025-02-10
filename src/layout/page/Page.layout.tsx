@@ -14,6 +14,7 @@ import Header from "../header/Header.layout";
 import SideBar from "../sideBar/SideBar.layout";
 import styles from "./Page.module.scss";
 import Meta from "@/components/meta/Meta.component";
+import NextTopLoader from "nextjs-toploader";
 
 //make a type with children as a prop
 type Props = {
@@ -96,7 +97,20 @@ const PageLayout = (props: Props) => {
                   {getPageBlockData() ? (
                     <BlockedMessage neededFeature={props.neededFeature} type={getPageBlockData() as any} />
                   ) : (
-                    <>{props.children}</>
+                    <>
+                      <NextTopLoader
+                        color="var(--primary-light)"
+                        initialPosition={0.08}
+                        crawlSpeed={200}
+                        height={3}
+                        crawl={true}
+                        showSpinner={false}
+                        easing="ease"
+                        speed={200}
+                        shadow="0 0 10px var(--primary-dark),0 0 5px var(--primary-light)"
+                      />
+                      <div style={{ position: "relative" }}>{props.children}</div>
+                    </>
                   )}
                 </div>
               </div>
