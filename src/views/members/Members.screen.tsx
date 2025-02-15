@@ -4,7 +4,7 @@ import styles from "./Members.module.scss";
 import React from "react";
 import { AiOutlinePlus, AiOutlineUser } from "react-icons/ai";
 import MemberType from "@/types/MemberType";
-import { Avatar, Button, Skeleton, Table } from "antd";
+import { Avatar, Button, Modal, Skeleton, Table } from "antd";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -97,16 +97,11 @@ const Members = () => {
                   );
                 },
               },
-              // {
-              //   title: "Family",
-              //   // we want the family name, family is an object containing the family id and name
-              //   dataIndex: ["family", "name"],
-              //   key: "family",
-              // },
               {
                 title: "Email",
                 dataIndex: "email",
                 key: "email",
+                responsive: ["lg"],
               },
               {
                 title: "Phone",
@@ -122,6 +117,7 @@ const Members = () => {
                   // otherwise, it is a US number
                   return text.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3");
                 },
+                responsive: ["lg"],
               },
               {
                 title: "Address",
@@ -142,16 +138,13 @@ const Members = () => {
                     text?.state ?? ""
                   } ${text?.zipCode ?? ""}`.trim();
                 },
+                responsive: ["lg"],
               },
               {
                 title: "Sex",
                 dataIndex: "sex",
                 key: "sex",
-              },
-              {
-                title: "Marital Status",
-                dataIndex: "maritalStatus",
-                key: "maritalStatus",
+                responsive: ["lg"],
               },
               {
                 title: "# Ministries part of",
@@ -160,6 +153,7 @@ const Members = () => {
                 render: (text: any) => {
                   return text?.length;
                 },
+                responsive: ["lg"],
               },
               {
                 title: "Leader of Ministries",
@@ -168,11 +162,13 @@ const Members = () => {
                 render: (text: any) => {
                   return text?.length;
                 },
+                responsive: ["lg"],
               },
               {
                 title: "Role",
                 dataIndex: "role",
                 key: "role",
+                responsive: ["sm"],
               },
               {
                 title: "Birthday",
@@ -183,6 +179,7 @@ const Members = () => {
                   if (!text) return "N/A";
                   return new Date(text).toLocaleDateString();
                 },
+                responsive: ["lg"],
               },
               {
                 title: "Child",
@@ -191,6 +188,7 @@ const Members = () => {
                 render: (text: boolean) => {
                   return text ? "Yes" : "No";
                 },
+                responsive: ["lg"],
               },
               {
                 title: "Actions",
@@ -204,7 +202,20 @@ const Members = () => {
                           <FaEdit />
                         </Button>
                       </Link>
-                      <Button onClick={() => deleteMember({ url: `/member/${record._id}` })}>
+                      <Button
+                        onClick={() =>
+                          Modal.confirm({
+                            title: "Are you sure you want to delete this member?",
+                            content: `This action cannot be undone. This member will be deleted from the church and all their data will be deleted. including attendance records, and they'll be removed from any ministry that
+                          they've participated in.`,
+                            onOk: () => {
+                              deleteMember({ url: `/member/${record._id}` });
+                            },
+                            okType: "danger",
+                            okText: "Delete",
+                          })
+                        }
+                      >
                         <FaTrash />
                       </Button>
                     </div>

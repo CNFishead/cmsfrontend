@@ -75,7 +75,7 @@ const Families = () => {
           }}
         />
         <Table
-          dataSource={familyList?.data}
+          dataSource={familyList?.payload}
           pagination={false}
           rowKey={(record: FamilyType) => record._id}
           columns={[
@@ -110,7 +110,10 @@ const Families = () => {
               key: "actions",
               render: (text, record) => (
                 <div style={{ display: "flex", gap: "10px" }}>
-                  <Button onClick={() => router.push(`/families/${record._id}`)} disabled>
+                  <Button
+                    onClick={() => router.push(`/families/${record._id}`)}
+                    //  disabled
+                  >
                     <FaEdit />
                   </Button>
                   <Button onClick={() => handleDelete(record._id)}>

@@ -29,7 +29,7 @@ const Control = (props: Props) => {
               <Tooltip title={item.title} placement="right" key={index + item.title}>
                 <div
                   key={index}
-                  className={`${styles.navigationItem} ${currentControlPage.title === item.title && styles.active}`}
+                  className={`${styles.navigationItem} ${currentControlPage.title === item.title && styles.active} ${item.disabled && styles.disabled}`}
                   onClick={() => setCurrentControlPage(item)}
                 >
                   <div className={styles.icon}>{item.icon}</div>

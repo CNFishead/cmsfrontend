@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <PageLayout pages={[navigation().home.links.home]} largeSideBar={true}>
+    <PageLayout pages={[navigation().home.links.home]}>
       <DynamicTitleUpdater baseTitle="Shepherds CMS | Dashboard" />
       <Dashboard />
     </PageLayout>

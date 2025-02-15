@@ -1,32 +1,25 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import axios from '@/utils/axios';
-import { message } from 'antd';
-import { useRouter } from 'next/navigation';
-import errorHandler from '@/utils/errorHandler';
-import decryptData from '@/utils/decryptData';
-import { useSearchStore as store } from '@/state/search/search';
-import { use } from 'react';
-import { useInterfaceStore } from './interface';
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import axios from "@/utils/axios";
+import { message } from "antd";
+import { useRouter } from "next/navigation";
+import errorHandler from "@/utils/errorHandler";
+import decryptData from "@/utils/decryptData";
+import { useSearchStore as store } from "@/state/search/search";
+import { use } from "react";
+import { useInterfaceStore } from "./interface";
 // uuid for generating unique ids
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
-const fetchData = async (
-  url: string,
-  method: 'GET' | 'POST' | 'PUT' | 'DELETE',
-  data?: any,
-  options?: any
-) => {
+const fetchData = async (url: string, method: "GET" | "POST" | "PUT" | "DELETE", data?: any, options?: any) => {
   let response;
   switch (method) {
-    case 'GET':
+    case "GET":
       const {
         defaultKeyword = options?.defaultKeyword || store.getState().search,
-        defaultPageNumber = options?.defaultPageNumber ||
-          store.getState().pageNumber,
-        defaultPageLimit = options?.defaultPageLimit ||
-          store.getState().pageLimit,
-        defaultFilter = `${options?.defaultFilter ?? ''}${
-          store.getState().filter ? `|${store.getState().filter}` : ''
+        defaultPageNumber = options?.defaultPageNumber || store.getState().pageNumber,
+        defaultPageLimit = options?.defaultPageLimit || store.getState().pageLimit,
+        defaultFilter = `${options?.defaultFilter ?? ""}${
+          store.getState().filter ? `|${store.getState().filter}` : ""
         }`,
         defaultSort = options?.defaultSort || store.getState().sort,
         defaultInclude = options?.defaultInclude || store.getState().include,
@@ -44,26 +37,26 @@ const fetchData = async (
       });
 
       break;
-    case 'POST':
+    case "POST":
       response = await axios.post(url, data);
       break;
-    case 'PUT':
+    case "PUT":
       response = await axios.put(url, data);
       break;
-    case 'DELETE':
+    case "DELETE":
       response = await axios.delete(url, { data });
       break;
     default:
       throw new Error(`Unsupported method: ${method}`);
   }
-  if (method === 'GET' && typeof response.data.payload === 'string') {
+  if (method === "GET" && typeof response.data.payload === "string") {
     response.data.payload = JSON.parse(decryptData(response.data.payload));
   }
   return response.data;
 };
 // Reusable Hook
 const useApiHook = (options: {
-  method: 'GET' | 'POST' | 'PUT' | 'DELETE';
+  method: "GET" | "POST" | "PUT" | "DELETE";
   url?: string;
   key: string | string[];
   filter?: any;
@@ -99,22 +92,22 @@ const useApiHook = (options: {
     onErrorCallback,
   } = options;
 
-  const queryKey = typeof key === 'string' ? [key] : key;
+  const queryKey = typeof key === "string" ? [key] : key;
 
   const query = useQuery({
     queryKey,
     queryFn: () =>
-      fetchData(url!, 'GET', undefined, {
+      fetchData(url!, "GET", undefined, {
         defaultKeyword: keyword,
         defaultFilter: filter,
         defaultSort: sort,
         defaultInclude: include,
       }),
-    enabled: enabled && method === 'GET',
+    enabled: enabled && method === "GET",
     refetchOnWindowFocus,
     retry: 1,
     meta: {
-      errorMessage: 'An error occurred while fetching data',
+      errorMessage: "An error occurred while fetching data",
     },
   });
 
@@ -123,7 +116,7 @@ const useApiHook = (options: {
       fetchData(url ? url : (data.url as any), method, data.formData),
     onSuccess: (data: any) => {
       if (successMessage) {
-        addError({ id: uuidv4(), message: successMessage, type: 'success' });
+        addError({ id: uuidv4(), message: successMessage, type: "success" });
       }
 
       queriesToInvalidate?.forEach((query: string) => {
@@ -139,7 +132,8 @@ const useApiHook = (options: {
       }
     },
     onError: (error: any) => {
-      addError({ id: uuidv4(), message: error.message, type: 'error' });
+      console.log(error);
+      addError({ id: uuidv4(), message: error.message, type: "error" });
       if (onErrorCallback) {
         onErrorCallback(error);
       }
@@ -147,7 +141,7 @@ const useApiHook = (options: {
   });
 
   // Return based on method
-  return method === 'GET' ? query : mutation;
+  return method === "GET" ? query : mutation;
 };
 
 export default useApiHook;

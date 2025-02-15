@@ -4,6 +4,7 @@ import { Button, Form, Input, Modal, Tooltip } from "antd";
 import { FaQuestionCircle } from "react-icons/fa";
 import { BiUserPlus } from "react-icons/bi";
 import usePostData from "@/state/usePostData";
+import useApiHook from "@/state/useApi";
 
 interface CreateFamilyModalProps {
   open: boolean;
@@ -13,7 +14,11 @@ interface CreateFamilyModalProps {
 const CreateFamilyModal = (props: CreateFamilyModalProps) => {
   const [form] = Form.useForm();
 
-  const { mutate: createNewFamily } = usePostData({ queriesToInvalidate: ["families"], key: "", url: "" });
+  const { mutate: createNewFamily } = useApiHook({
+    queriesToInvalidate: ["families"],
+    key: "createFamily",
+    method: "POST",
+  }) as any;
   const onFinish = (values: any) => {
     createNewFamily({ url: "/family", formData: values });
     form.resetFields();

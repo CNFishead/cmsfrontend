@@ -1,19 +1,17 @@
 "use client";
+import React from "react";
 import BlockedMessage from "@/components/blockedMessage/BlockedMessage.component";
 import { useUser } from "@/state/auth";
 import { useLayoutStore } from "@/state/ui/layout";
 import { ControlNavItem } from "@/types/navigation";
 import { FEATURES, hasFeature } from "@/utils/hasFeature";
 import Auth from "@/views/auth/Auth.view";
-import Head from "next/head";
 import { ReactNode } from "react";
 import { AiFillControl } from "react-icons/ai";
-
 import Control from "../control/Control.layout";
 import Header from "../header/Header.layout";
 import SideBar from "../sideBar/SideBar.layout";
 import styles from "./Page.module.scss";
-import Meta from "@/components/meta/Meta.component";
 import NextTopLoader from "nextjs-toploader";
 
 //make a type with children as a prop
@@ -46,7 +44,7 @@ const PageLayout = (props: Props) => {
       return "blacklist";
     }
 
-    if (!loggedInData.user.isTruthcastingVerified) {
+    if (!loggedInData.user.isEmailVerified) {
       return "verification";
     }
 
@@ -57,7 +55,7 @@ const PageLayout = (props: Props) => {
     }
 
     return false as boolean;
-  };
+  }; 
 
   return (
     <>

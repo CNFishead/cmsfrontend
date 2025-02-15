@@ -12,6 +12,7 @@ import useUpdateData from "@/state/useUpdateData";
 import { useUser } from "@/state/auth";
 import Error from "@/components/error/Error.component";
 import { useParams } from "next/navigation";
+import useApiHook from "@/state/useApi";
 
 /**
  * @description - FamilyEditScreen component, renders the family edit screen, this is the screen that is shown when a user clicks on a family item
@@ -47,6 +48,11 @@ const FamilyEdit = () => {
     key: "selectedFamily",
     enabled: !!id,
   });
+  const { mutate: removeMember } = useApiHook({
+    method: "PUT",
+    key: "removeMember",
+    queriesToInvalidate: ["selectedFamily"],
+  }) as any;
   const { mutate: updateFamily } = useUpdateData({ queriesToInvalidate: ["selectedFamily"] });
   const { data: selectedProfile, isLoading: profileIsLoading } = useFetchData({
     url: `/ministry/${loggedInData.user?.ministry?._id}`,
@@ -117,8 +123,7 @@ const FamilyEdit = () => {
                         title: "Remove Member",
                         content: `Are you sure you want to remove ${member.fullName} from the family?`,
                         onOk: () => {
-                          // dispatch(removeFamilyMember(family?._id, member._id) as any);
-                          // dispatch(getFamilyAction(family?._id) as any);
+                          removeMember({ url: `/family/${id}/removeMember/${member._id}` });
                         },
                       })
                     }

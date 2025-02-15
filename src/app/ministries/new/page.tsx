@@ -4,7 +4,7 @@ import { navigation } from "@/data/navigation";
 
 export default function Home() {
   return (
-    <PageLayout pages={[navigation().ministries.links.ministries]} largeSideBar>
+    <PageLayout pages={[navigation().ministries.links.ministries]}>
       <MinistryDetails />
     </PageLayout>
   );

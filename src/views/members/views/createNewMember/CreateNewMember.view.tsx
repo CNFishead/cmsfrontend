@@ -12,6 +12,7 @@ import FamilyType from "@/types/FamilyType";
 import MinistryType from "@/types/Ministry";
 import { useUser } from "@/state/auth";
 import useApiHook from "@/state/useApi";
+import CreateFamilyModal from "@/views/family/modal/CreateFamilyModal.modal";
 
 const CreateNewMember = () => {
   const [form] = Form.useForm();
@@ -38,7 +39,7 @@ const CreateNewMember = () => {
   }) as any;
   const { data: familiesList, isFetching: familiesFetching } = useApiHook({
     url: `/family`,
-    key: "familyList",
+    key: ["familyList", familyKeyword],
     keyword: familyKeyword,
     filter: `user;${loggedInData?.user?._id}`,
     method: "GET",
@@ -81,7 +82,15 @@ const CreateNewMember = () => {
     } else {
       // ministry, if their isnt a selectedMinistry, then use the mainMinistry
       // const ministryId = ministry ? ministry._id : mainMinistry._id;
-      createMember({ url: `/member`, formData: { ...values } });
+      createMember(
+        { url: `/member`, formData: { ...values } },
+        {
+          onSuccess: (data) => {
+            console.log(data);
+            router.push(`/members/${data.data._id}`); // redirect to the member page after creating the member
+          },
+        }
+      );
     }
   };
 
@@ -126,7 +135,7 @@ const CreateNewMember = () => {
   }, []);
   return (
     <div className={styles.container}>
-      {/* <CreateFamilyModal dispatch={dispatch} open={createFamilyModal} onClose={() => setCreateFamilyModal(false)} /> */}
+      <CreateFamilyModal open={createFamilyModal} onClose={() => setCreateFamilyModal(false)} />
       <Form
         form={form}
         layout="vertical"
@@ -191,7 +200,7 @@ const CreateNewMember = () => {
                     className={formStyles.input}
                     loading={familiesFetching}
                   >
-                    {familiesList?.families?.map((family: FamilyType) => (
+                    {familiesList?.payload?.map((family: FamilyType) => (
                       <Select.Option key={family._id} value={family._id} data={family}>
                         {family.name}
                       </Select.Option>
@@ -220,7 +229,7 @@ const CreateNewMember = () => {
                   mode={"multiple"}
                   loading={ministriesLoading}
                 >
-                  {ministriesList?.ministries?.map((ministry: MinistryType) => (
+                  {ministriesList?.payload?.map((ministry: MinistryType) => (
                     <Select.Option key={ministry._id} value={ministry._id} name={ministry.name}>
                       {ministry.name}
                     </Select.Option>

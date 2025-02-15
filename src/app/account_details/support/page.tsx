@@ -4,7 +4,7 @@ import Support from "@/views/account_details/support/Support.view";
 
 export default function Component() {
   return (
-    <PageLayout pages={[navigation().account_details.links.support]} largeSideBar>
+    <PageLayout pages={[navigation().account_details.links.support]}>
       <Support />
     </PageLayout>
   );

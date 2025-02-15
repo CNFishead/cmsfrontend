@@ -4,7 +4,7 @@ import Families from "@/views/family/Families.screen";
 
 export default function Home() {
   return (
-    <PageLayout pages={[navigation().members.links.families]} largeSideBar>
+    <PageLayout pages={[navigation().members.links.families]}>
       <Families />
     </PageLayout>
   );

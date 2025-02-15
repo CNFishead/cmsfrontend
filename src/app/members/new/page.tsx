@@ -4,7 +4,7 @@ import CreateNewMember from "@/views/members/views/createNewMember/CreateNewMemb
 
 export default function Home() {
   return (
-    <PageLayout pages={[navigation().members.links.members]} largeSideBar>
+    <PageLayout pages={[navigation().members.links.members]}>
       <CreateNewMember />
     </PageLayout>
   );

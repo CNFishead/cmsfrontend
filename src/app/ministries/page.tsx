@@ -4,7 +4,7 @@ import Ministry from "@/views/ministry/Ministry.Screen";
 
 export default function Home() {
   return (
-    <PageLayout pages={[navigation().ministries.links.ministries]} largeSideBar>
+    <PageLayout pages={[navigation().ministries.links.ministries]}>
       <Ministry />
     </PageLayout>
   );

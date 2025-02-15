@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <PageLayout pages={[navigation().home.links.notifications]} largeSideBar>
+    <PageLayout pages={[navigation().home.links.notifications]}>
       <NotificationsView />
     </PageLayout>
   );

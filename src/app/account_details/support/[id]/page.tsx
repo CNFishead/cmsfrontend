@@ -4,7 +4,7 @@ import SupportDetails from "@/views/account_details/support/supportDetails/Suppo
 
 export default function Component() {
   return (
-    <PageLayout pages={[navigation().account_details.links.support]} largeSideBar>
+    <PageLayout pages={[navigation().account_details.links.support]}>
       <SupportDetails />
     </PageLayout>
   );

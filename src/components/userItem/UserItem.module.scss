@@ -126,32 +126,8 @@
       }
     }
   }
-  .actions {
-    .subscribe {
-      background-color: var(--bs-gray-100);
-      color: black;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 10px;
-      font-weight: 600;
-      &:hover {
-        cursor: pointer;
-        background-color: var(--primary-light);
-        color: white;
-      }
-    }
-    .unsubscribe {
-      background-color: var(--bs-gray-100);
-      color: darkred;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 5px;
-      font-weight: 600;
-      &:hover {
-        cursor: pointer;
-        background-color: var(--primary-light);
-        color: white;
-      }
-    }
+  .actionsContainer {
+    display: flex;
+    flex: .3;
   }
 }

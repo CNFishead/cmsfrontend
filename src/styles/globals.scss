@@ -45,8 +45,9 @@ $accent-color-rgb: (196 39 39);
 $accent-color-lighter-rgb: (196 79 79);
 $accent-color-darker-rgb: (146 30 30);
 $accent-color-dark-rgb: (35 38 42);
-$mobile-width: 768px;
-$tablet-width: 1250px;
+$mobile-width: 680px;
+$tablet-width: 768px;
+$desktop-width: 1280px;
 
 $header-height: 4.4rem;
 
@@ -64,7 +65,7 @@ $simple-animation: all 0.2s ease-in-out;
   }
 }
 @mixin desktop {
-  @media (min-width:#{$mobile-width}) {
+  @media (min-width:#{$desktop-width}) {
     @content;
   }
 }
