@@ -1,5 +1,6 @@
 import { TabsProps } from "antd";
 import MemberInfo from "./subviews/memberInfo/MemberInfo.component";
+import Attendance from "./subviews/attendance/Attendance.component";
 
 // exportable apps array constant
 export default [
@@ -15,5 +16,6 @@ export default [
   {
     label: "Attendance",
     key: "3",
+    children: <Attendance />,
   },
 ] as TabsProps["items"];
