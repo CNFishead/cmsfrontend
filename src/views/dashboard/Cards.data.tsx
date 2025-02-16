@@ -1,3 +1,4 @@
+import AbsenteeMembers from "./components/cards/absenteeMembers/AbsenteeMembers.component";
 import MinistryAttendance from "./components/cards/ministryAttendance/MinistryAttendance.component";
 
 export interface Card {
@@ -12,6 +13,12 @@ export default [
     title: "Ministry Attendance",
     component: <MinistryAttendance />,
     gridKey: "ministry-attendance",
+    hideIf: false,
+  },
+  {
+    title: "Absentee Members",
+    component: <AbsenteeMembers />,
+    gridKey: "absentee-members",
     hideIf: false,
   },
 ] as Card[];

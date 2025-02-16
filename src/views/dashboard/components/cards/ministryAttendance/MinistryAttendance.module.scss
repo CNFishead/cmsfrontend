@@ -5,6 +5,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 20px;
 
     p{
       strong{
@@ -15,7 +16,7 @@
     .dropdownContainer{
       display: flex;
       align-items: center;
-      flex: .25;
+      flex: 1;
       .dropdown{
         width: 100%;
       }

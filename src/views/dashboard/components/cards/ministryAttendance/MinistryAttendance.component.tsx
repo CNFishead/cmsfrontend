@@ -20,6 +20,7 @@ const MinistryAttendance = () => {
     method: "GET",
   }) as any;
   const [ministryId, setMinistryId] = React.useState(selectedProfile?.ministry?._id);
+  const [selectedMinistry, setSelectedMinistry] = React.useState(selectedProfile?.ministry);
   const { data: attendanceData } = useApiHook({
     url: `/ministry/attendance/data`,
     key: ["attendanceData", `${ministryId}`],
@@ -55,12 +56,12 @@ const MinistryAttendance = () => {
         <div className={styles.dropdownContainer}>
           <Select
             className={styles.dropdown}
-            defaultValue={selectedProfile?.ministry?.name}
             onChange={(value) => setMinistryId(value)}
             options={ministries?.payload?.map((ministry: MinistryType) => ({
               label: ministry.name,
               value: ministry._id,
             }))}
+            defaultValue={ministryId}
           />
         </div>
       </div>
