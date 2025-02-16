@@ -4,17 +4,10 @@ import styles from "./Dashboard.module.scss";
 import Card from "./layout/card/Card.component";
 import DashboardHeader from "./layout/header/Header.layout";
 import { useUser } from "@/state/auth";
-
-type Card = {
-  title: string;
-  component: React.ReactNode;
-  gridKey: string;
-  hideIf?: boolean;
-};
+import dashboardCards, { Card as CardType } from "./Cards.data";
 
 const Dashboard = () => {
   const { data: loggedInData } = useUser();
-  const dashboardCards = [] as Card[];
 
   const [cards, setCards] = useState(dashboardCards);
 
@@ -37,7 +30,7 @@ const Dashboard = () => {
       <div className={styles.container}>
         {cards
           .filter((c) => !c.hideIf)
-          .map((card: Card, index: number) => {
+          .map((card: CardType, index: number) => {
             return (
               <Card key={index} title={card.title} gridKey={card.gridKey}>
                 {card.component}

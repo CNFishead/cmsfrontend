@@ -7,6 +7,7 @@ import { useSearchParams } from "next/navigation";
 import React, { useEffect } from "react";
 import io from "socket.io-client";
 import "nprogress/nprogress.css";
+import useApiHook from "@/state/useApi";
 
 type Props = {
   children: React.ReactNode;
@@ -17,11 +18,14 @@ const AppWrapper = (props: Props) => {
   const searchParams = useSearchParams();
   const token = searchParams.get("token") as string;
   const { data: loggedInData, isLoading: userIsLoading } = useUser(token);
-  const { data: selectedProfile, isLoading: profileIsLoading } = useFetchData({
+  const { data: selectedProfile, isLoading: profileIsLoading } = useApiHook({
     url: `/ministry/${loggedInData?.user?.ministry?._id}`,
     key: "selectedProfile",
     enabled: !!loggedInData?.user?.ministry?._id,
-  });
+    // set to 1 minute cache time and 1 minute stale time
+    staleTime: 1000 * 60,
+    method: "GET",
+  }) as any;
   //Set up socket connection
   const { socket, isConnecting, setSocket, setIsConnecting } = useSocketStore((state) => state);
 

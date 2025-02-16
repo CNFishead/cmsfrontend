@@ -1,0 +1,24 @@
+.container{
+  min-height: 400px;
+
+  .topContainer{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    p{
+      strong{
+        color: var(--primary);
+      }
+    }
+
+    .dropdownContainer{
+      display: flex;
+      align-items: center;
+      flex: .25;
+      .dropdown{
+        width: 100%;
+      }
+    }
+  }
+}
