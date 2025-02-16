@@ -48,7 +48,7 @@ const MinistryAttendance = () => {
     <div className={styles.container}>
       <div className={styles.topContainer}>
         <p>
-          <strong>{selectedProfile?.ministry?.name}'s</strong> attendance records between{" "}
+          <strong>{selectedProfile?.ministry?.name}&apos;s</strong> attendance records between{" "}
           {new Date(endDate).toLocaleDateString()} - {new Date(startDate).toLocaleDateString()}
         </p>
 
