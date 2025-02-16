@@ -80,7 +80,7 @@ const Members = () => {
         <div className={styles.contentContainer}>
           <Table
             className={styles.table}
-            dataSource={membersListData?.members}
+            dataSource={membersListData?.payload}
             loading={loading}
             size="small"
             rowKey={(record: MemberType) => record._id}
