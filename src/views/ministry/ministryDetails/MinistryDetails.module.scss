@@ -11,9 +11,14 @@
 }
 .imageUploadContainer {
   position: relative;
+  max-width: 1024px;
+  width: 100%;
+  margin: 0 auto;
   .imageContainer {
     img {
       max-height: 500px;
+      width: 100%;
+      // object-fit: cover;
     }
   }
 }

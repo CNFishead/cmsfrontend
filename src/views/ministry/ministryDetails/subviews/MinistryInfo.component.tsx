@@ -173,7 +173,7 @@ const MinistryInfo = () => {
                 value={form.getFieldsValue().leader?.fullName}
                 loading={loading}
               >
-                {membersListData?.members.map((member: MemberType) => (
+                {membersListData?.members?.map((member: MemberType) => (
                   <Select.Option key={member._id} value={member._id}>
                     {member.firstName} {member.lastName}
                   </Select.Option>
