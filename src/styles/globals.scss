@@ -65,7 +65,7 @@ $simple-animation: all 0.2s ease-in-out;
   }
 }
 @mixin desktop {
-  @media (min-width:#{$desktop-width}) {
+  @media (max-width:#{$desktop-width}) {
     @content;
   }
 }
