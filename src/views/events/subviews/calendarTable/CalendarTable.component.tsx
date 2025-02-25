@@ -7,27 +7,32 @@ import SearchWrapper from "@/layout/searchWrapper/SearchWrapper.layout";
 import { useUser } from "@/state/auth";
 import useApiHook from "@/state/useApi";
 
-
 const CalendarTable = () => {
   const { data: loggedInUser } = useUser();
   const { data, isLoading: loading } = useApiHook({
     url: "/event",
     key: ["events"],
     enabled: !!loggedInUser?.user?._id,
-    filter: `user;${loggedInUser?.user?._id}`, 
+    filter: `user;${loggedInUser?.user?._id}`,
     method: "GET",
+  }) as any;
+
+  const { mutate: deleteEvent } = useApiHook({
+    key: "eventDelete",
+    queriesToInvalidate: ["events"],
+    method: "DELETE",
+    successMessage: "Event deleted successfully",
   }) as any;
 
   return (
     <div className={styles.container}>
       <SearchWrapper
-        buttons={[ 
-        ]}
+        buttons={[]}
         filters={[
           {
             label: "All",
             key: "",
-          }, 
+          },
         ]}
         sort={[
           {
@@ -63,16 +68,16 @@ const CalendarTable = () => {
                 key: "ministry.name",
                 render: (text: string, record: any) => {
                   return record?.ministry?.name;
-                }
+                },
               },
               {
-                title: 'Past event',
-                dataIndex: 'isPastEvent',
-                key: 'isPastEvent',
+                title: "Past event",
+                dataIndex: "isPastEvent",
+                key: "isPastEvent",
                 render: (text: string, record: any) => {
                   const currentDate = new Date();
                   const isPastEvent = new Date(record.endDate) < currentDate;
-                  return isPastEvent ? 'Yes' : 'No';
+                  return isPastEvent ? "Yes" : "No";
                 },
               },
               {
@@ -81,7 +86,7 @@ const CalendarTable = () => {
                 key: "startDate",
                 render: (text: string, record: any) => {
                   return new Date(record.startDate).toLocaleDateString();
-                }
+                },
               },
               {
                 title: "End Date",
@@ -89,7 +94,7 @@ const CalendarTable = () => {
                 key: "endDate",
                 render: (text: string, record: any) => {
                   return new Date(record.endDate).toLocaleDateString();
-                }
+                },
               },
               {
                 title: "Actions",
@@ -106,10 +111,12 @@ const CalendarTable = () => {
                       <Button
                         onClick={() =>
                           Modal.confirm({
-                            title: "Are you sure you want to delete this member?",
-                            content: `This action cannot be undone. This member will be deleted from the church and all their data will be deleted. including attendance records, and they'll be removed from any ministry that
-                      they've participated in.`,
-                            onOk: () => {},
+                            title: "Are you sure you want to delete this event?",
+                            content: `Deleting the event ${record.name} will remove it from the database. Anyone who has already registered for this event will *not* be notified. And will no longer
+                            receive reminders for this event.`,
+                            onOk: () => {
+                              deleteEvent({ url: `/event/${record._id}` });
+                            },
                             okType: "danger",
                             okText: "Delete",
                           })

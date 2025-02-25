@@ -52,7 +52,7 @@ const SideBar = (props: Props) => {
           }}
           alt="logo"
         />
-        {props.large && <p>Shepherds CMS</p>}
+        <p className={styles.productName}>Shepherds CMS</p>
       </div>
 
       {Object.values(

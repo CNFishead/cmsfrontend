@@ -3,27 +3,28 @@ import React from "react";
 import styles from "./EventInfo.module.scss";
 import formStyles from "@/styles/Form.module.scss";
 import { Button, DatePicker, Form, Input, Select } from "antd";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import useApiHook from "@/state/useApi";
 import { useUser } from "@/state/auth";
 import TinyEditor from "@/components/tinyEditor/TinyEditor.component";
 import parser from "html-react-parser";
-import { label, p } from "framer-motion/client";
 import MinistryType from "@/types/Ministry";
 import dayjs from "dayjs";
-import moment from "moment";
+import Loader from "@/components/loader/Loader.component";
+import { useQueryClient } from "@tanstack/react-query";
 
 const EventInfo = () => {
   const [form] = Form.useForm();
   const { id } = useParams();
-
+  const router = useRouter();
   const [keyword, setKeyword] = React.useState("");
   const [timer, setTimer] = React.useState<any>(null);
   const { data: userData } = useUser();
+  const queryClient = useQueryClient();
 
   const { data } = useApiHook({
     url: `/event`,
-    key: "eventInfo",
+    key: ["eventInfo", `${id}`],
     method: "GET",
     enabled: !!id && !!userData?.user?._id,
     filter: `user;${userData?.user?._id}|_id;${id}`,
@@ -37,11 +38,11 @@ const EventInfo = () => {
     method: "GET",
   }) as any;
 
-  const { mutate: createEvent } = useApiHook({
-    url: `/event`,
+  const { mutate: createEvent, isLoading: createLoading } = useApiHook({
     key: "eventCreate",
     queriesToInvalidate: ["eventInfo", "events"],
     method: "POST",
+    successMessage: "Event created successfully",
   }) as any;
 
   const { mutate: updateEvent } = useApiHook({
@@ -67,10 +68,17 @@ const EventInfo = () => {
         const payload = {
           ...values,
         };
-        if (data?.payload) {
-          updateEvent({ url: `/event/${data?.payload?._id}`, formData: payload });
+        if (data?.payload[0]?._id) {
+          updateEvent({ url: `/event/${data?.payload[0]?._id}`, formData: payload });
         } else {
-          createEvent({ formData: payload });
+          createEvent(
+            { url: `/event`, formData: payload },
+            {
+              onSuccess: (data) => {
+                router.push(`/events/${data?.data?._id}`);
+              },
+            }
+          );
         }
       })
       .catch((err) => {
@@ -79,32 +87,33 @@ const EventInfo = () => {
   };
 
   React.useEffect(() => {
-    if (data?.payload) {
+    if (data?.payload[0]) {
       form.setFieldsValue({
-        ...data.payload,
-        ministry: data?.payload?.ministry?._id,
-        description: parser(`${parser(data.payload.description)}`),
+        ...data.payload[0],
+        ministry: data?.payload[0]?.ministry?._id,
         // set the dates splitting the date and time strings
-        startDate: dayjs(new Date(`${data.payload.startDate}`)),
-        endDate: dayjs(new Date(`${data.payload.endDate}`)),
+        startDate: dayjs(new Date(`${data.payload[0].startDate}`)),
+        endDate: dayjs(new Date(`${data.payload[0].endDate}`)),
       });
     }
-  }, [data?.payload, form]);
+    return () => {
+      form.resetFields();
+      queryClient.invalidateQueries({ queryKey: ["eventInfo"] });
+    };
+  }, [data?.payload[0], form]);
 
   return (
     <Form
       form={form}
       className={`${formStyles.form} ${styles.container}`}
       layout="vertical"
-      onFinish={(values) => {
-        console.log(values);
-      }}
       initialValues={{
         // set start date to today
         startDate: dayjs().startOf("hour"),
         // set end date to today
         endDate: dayjs().startOf("hour").add(1, "hour"),
       }}
+      disabled={createLoading}
     >
       <div className={formStyles.editContainer}>
         <div className={formStyles.group}>
@@ -175,6 +184,14 @@ const EventInfo = () => {
           >
             <Input type="text" className={formStyles.input} />
           </Form.Item>
+          <Form.Item
+            label="Location"
+            name="location"
+            tooltip="Provide the location of the event, e.g. Church Hall, 123 main st, etc."
+            rules={[{ required: true, message: "Please input the event location!" }]}
+          >
+            <Input type="text" className={formStyles.input} />
+          </Form.Item>
         </div>
         <div className={formStyles.group}>
           <Form.Item
@@ -183,9 +200,9 @@ const EventInfo = () => {
             rules={[{ required: true, message: "Please input the event name!" }]}
           >
             <TinyEditor
-              initialContent={`${parser(`${data?.payload?.description || ""}`)}`}
+              initialContent={`${form.getFieldsValue().description}`}
               handleChange={(value) => {
-                form.setFieldsValue({ decription: value });
+                form.setFieldsValue({ description: value });
               }}
             />
           </Form.Item>
@@ -193,7 +210,7 @@ const EventInfo = () => {
       </div>
       <div className={formStyles.buttonContainer}>
         <Button className={formStyles.button} type="primary" onClick={onFinish}>
-          {data?.payload ? "Update Event" : "Create Event"}
+          {data?.payload[0] ? "Update Event" : "Create Event"}
         </Button>
       </div>
     </Form>
