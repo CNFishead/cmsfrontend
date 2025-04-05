@@ -34,6 +34,7 @@ const Members = () => {
   const { mutate: deleteMember } = useRemoveData({
     queriesToInvalidate: ["members"],
   });
+
   return (
     <div className={styles.container}>
       <SearchWrapper
@@ -74,7 +75,7 @@ const Members = () => {
         ]}
         placeholder="Search Members"
         queryKey="members"
-        total={membersListData?.totalCount}
+        total={membersListData?.pagination?.totalCount}
         isFetching={loading}
       >
         <div className={styles.contentContainer}>

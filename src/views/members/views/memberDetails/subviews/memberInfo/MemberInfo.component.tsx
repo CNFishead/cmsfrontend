@@ -250,6 +250,29 @@ const MemberInfo = () => {
                 ></Select>
               </Form.Item>
             </div>
+          </div>{" "}
+          <div className={formStyles.editContainer}>
+            {/* membership information */}
+            <Divider orientation="center">Membership Information</Divider>
+            <div className={formStyles.group}>
+              <div className={formStyles.group}>
+                <Form.Item name="role" label="Role in The Church">
+                  <Select placeholder="Role" className={styles.input}>
+                    <Select.Option value="member">Member</Select.Option>
+                    <Select.Option value="leader">Leader</Select.Option>
+                    <Select.Option value="staff">Staff</Select.Option>
+                    <Select.Option value="deacon">Deacon</Select.Option>
+                    <Select.Option value="admin">Admin</Select.Option>
+                  </Select>
+                </Form.Item>
+              </div>
+              <Form.Item name="isActive" className={styles.radioContainer} label="Active Member">
+                <Radio.Group className={styles.radioGroup}>
+                  <Radio value={true}>Active</Radio>
+                  <Radio value={false}>Inactive</Radio>
+                </Radio.Group>
+              </Form.Item>
+            </div>
           </div>
           <div className={styles.footer}>
             <div className={styles.buttonContainer}>

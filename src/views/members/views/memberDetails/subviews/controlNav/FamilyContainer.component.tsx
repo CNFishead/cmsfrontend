@@ -12,7 +12,7 @@ const FamilyContainer = () => {
   const { data: selectedFamily } = useApiHook({
     url: `/family`,
     method: "GET",
-    key: "memberFamily",
+    key: ["memberFamily", `${id}`],
     enabled: !!id,
     filter: `members;{"$eq":"${id}"}`,
   }) as any;

@@ -44,6 +44,17 @@ const MinistryAttendance = () => {
       setMinistryId(selectedProfile?.ministry?._id);
     }
   }, [selectedProfile]);
+  console.log("attendanceData", attendanceData);
+  const transformedData =
+    attendanceData?.payload?.map((entry: any) => ({
+      date: entry.date,
+      ...entry.checkIns,
+    })) || [];
+
+  const allLocationTypes: string[] = Array.from(
+    new Set(attendanceData?.payload?.flatMap((entry: any) => Object.keys(entry.checkIns || {})))
+  );
+
   return (
     <div className={styles.container}>
       <div className={styles.topContainer}>
@@ -54,23 +65,35 @@ const MinistryAttendance = () => {
 
         {/* dropdown container that will hold all of the ministries belonging to the user */}
         <div className={styles.dropdownContainer}>
-          <Select
-            className={styles.dropdown}
-            onChange={(value) => setMinistryId(value)}
-            options={ministries?.payload?.map((ministry: MinistryType) => ({
-              label: ministry.name,
-              value: ministry._id,
-            }))}
-            defaultValue={ministryId}
-          />
+          {ministryId && ministries?.payload && (
+            <Select
+              className={styles.dropdown}
+              onChange={(value) => setMinistryId(value)}
+              options={ministries.payload.map((ministry: MinistryType) => ({
+                label: ministry.name,
+                value: ministry._id,
+              }))}
+              value={ministryId}
+            />
+          )}
         </div>
       </div>
       <ResponsiveContainer width="100%" height={400}>
-        <LineChart data={attendanceData?.payload} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+        <LineChart data={transformedData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
           <XAxis dataKey="date" />
           <YAxis allowDecimals={false} />
           <Tooltip />
-          <Line type="monotone" dataKey="count" stroke="#8884d8" strokeWidth={2} />
+          <Legend />
+          {allLocationTypes.map((location, index) => (
+            <Line
+              key={index}
+              type="monotone"
+              dataKey={location}
+              stroke={`#${Math.floor(Math.random() * 16777215).toString(16)}`}
+              strokeWidth={2}
+              dot={{ r: 3 }}
+            />
+          ))}
         </LineChart>
       </ResponsiveContainer>
     </div>
