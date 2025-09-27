@@ -1,11 +1,17 @@
 import styles from "./Control.module.scss";
-import { useState } from "react";
-import { ControlNavItem } from "@/types/navigation";
+import { ReactNode, useState } from "react";
 import { Tooltip } from "antd";
 
 type Props = {
   navigation: Array<ControlNavItem>;
 };
+export interface ControlNavItem {
+  title: string;
+  icon: ReactNode;
+  children: ReactNode;
+  hideIf?: boolean;
+  disabled?: boolean;
+}
 
 const Control = (props: Props) => {
   const [currentControlPage, setCurrentControlPage] = useState<ControlNavItem>(props.navigation[0]);
@@ -29,7 +35,9 @@ const Control = (props: Props) => {
               <Tooltip title={item.title} placement="right" key={index + item.title}>
                 <div
                   key={index}
-                  className={`${styles.navigationItem} ${currentControlPage.title === item.title && styles.active} ${item.disabled && styles.disabled}`}
+                  className={`${styles.navigationItem} ${currentControlPage.title === item.title && styles.active} ${
+                    item.disabled && styles.disabled
+                  }`}
                   onClick={() => setCurrentControlPage(item)}
                 >
                   <div className={styles.icon}>{item.icon}</div>

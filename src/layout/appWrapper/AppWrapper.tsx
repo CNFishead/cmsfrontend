@@ -8,6 +8,10 @@ import React, { useEffect } from "react";
 import io from "socket.io-client";
 import "nprogress/nprogress.css";
 import useApiHook from "@/state/useApi";
+import PageLayout from "../page/Page.layout";
+import { navigation } from "@/data/navigation";
+import BillingSetup from "../billingSetup/BillingSetup.layout";
+import PolicyCheckWrapper from "../policyCheckWrapper/PolicyCheckWrapper.layout";
 
 type Props = {
   children: React.ReactNode;
@@ -62,7 +66,23 @@ const AppWrapper = (props: Props) => {
       }
     };
   }, [socket]);
-  return <>{props.children}</>;
+  return (
+    <>
+      {selectedProfile?.payload?.needsBillingSetup ? (
+        <PageLayout
+          pages={[navigation().billing.links.account_center]}
+          loading={userIsLoading || !selectedProfile}
+          largeSideBar
+        >
+          <BillingSetup billingValidation={selectedProfile?.payload?.billingValidation} />
+        </PageLayout>
+      ) : (
+        <>
+          <PolicyCheckWrapper>{props.children}</PolicyCheckWrapper>
+        </>
+      )}
+    </>
+  );
 };
 
 export default AppWrapper;

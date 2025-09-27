@@ -56,6 +56,17 @@ export const navigation = (options?: any) => {
       },
       hidden: options?.user ? false : true,
     },
+    billing: {
+      title: "Billing",
+      links: {
+        account_center: {
+          title: "Billing Account Center",
+          link: "/billing",
+          icon: <BsBox />,
+        },
+      },
+      hidden: options?.user ? false : true,
+    },
     account_details: {
       title: "Account Details",
       links: {

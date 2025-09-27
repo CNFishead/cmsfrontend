@@ -1,11 +1,13 @@
-import Error from "@/components/error/Error.component";
+import Error from '@/components/error/Error.component';
 // state
-import { useUser } from "@/state/auth";
-import { Button, Col, Descriptions, Row, Skeleton } from "antd";
-import Link from "next/link";
-import { useState } from "react";
+import { useUser } from '@/state/auth';
+import { Button, Col, Descriptions, Row, Skeleton } from 'antd';
+import Link from 'next/link';
+import { useState } from 'react';
 
-import styles from "./CurrentFeaturesBillingCard.module.scss";
+import styles from './CurrentFeaturesBillingCard.module.scss';
+import useApiHook from '@/hooks/useApi';
+import moment from 'moment';
 
 /**
  * @description - This component displays the user's current features. It is a card component that is used in the billing page.
@@ -17,62 +19,62 @@ import styles from "./CurrentFeaturesBillingCard.module.scss";
  */
 
 const CurrentFeaturesBillingCard = () => {
-  // const { data: paymentData, error, isLoading, isError } = useNextPaymentDate();
+  const { data: selectedProfile } = useApiHook({
+    method: 'GET',
+    key: ['profile', 'athlete'],
+  }) as any;
+  const {
+    data: billingData,
+    error,
+    isLoading,
+    isError,
+  } = useApiHook({
+    key: ['billing-data', `${selectedProfile?.payload?._id}`],
+    enabled: !!selectedProfile?.payload?._id,
+    method: 'GET',
+  }) as any;
   const { data: loggedInData } = useUser();
-  // const { data: featuresData } = useAllFeatures();
 
-  // if (isLoading) return <Skeleton active />;
+  if (isLoading) return <Skeleton active />;
   // if (isError) return <Error error={error} />;
-  const DateTimeFormat = new Intl.DateTimeFormat("en", {
-    year: "numeric",
-    month: "long",
-    day: "2-digit",
+  const DateTimeFormat = new Intl.DateTimeFormat('en', {
+    year: 'numeric',
+    month: 'long',
+    day: '2-digit',
   });
 
   return (
     <div className={styles.container}>
       <Descriptions
-        title="Current Features"
+        title="Current Plan"
         className={styles.desc}
         bordered
         extra={
           <Link href="/features">
-            <Button type="dashed">Update Features</Button>
+            <Button type="dashed" disabled>
+              Update Features
+            </Button>
           </Link>
         }
       >
-        {/* {featuresData?.allFeatures.map((feature: any, index: number) => {
-          if (loggedInData?.user.features.includes(feature._id)) {
-            return (
-              <Descriptions.Item label={feature.name} key={feature._id} span={2}>
-                {Intl.NumberFormat("en-US", {
-                  style: "currency",
-                  currency: "USD",
-                }).format(feature.price)}
-              </Descriptions.Item>
-            );
-          }
-        })} */}
+        <Descriptions.Item label="Plan">{billingData?.payload?.plan?.name}</Descriptions.Item>
+        <Descriptions.Item label="Price">
+          {Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+          }).format(billingData?.payload?.plan?.price)}
+        </Descriptions.Item>
       </Descriptions>
 
-      <Descriptions title="Payment Information" className={styles.desc}>
+      <Descriptions title="Plan Information" className={styles.desc}>
         <Descriptions.Item className={styles.total} label="Next Payment Amount">
-          <></>
-          {/* {Intl.NumberFormat("en-US", {
-            style: "currency",
-            currency: "USD",
-          }).format(paymentData?.data?.nextPaymentAmount - loggedInData?.user?.credits)}{" "}
-          on {DateTimeFormat.format(new Date(paymentData?.data?.nextPaymentDate))} */}
+          {Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+          }).format(billingData?.payload?.isYearly ? billingData?.payload?.plan?.price * 12 : billingData?.payload?.plan?.price)}
         </Descriptions.Item>
-        <Descriptions.Item label="Credits being used" span={2}>
-          {Intl.NumberFormat("en-US", {
-            style: "currency",
-            currency: "USD",
-          }).format(loggedInData?.user?.credits || "0")}
-        </Descriptions.Item>
-        <Descriptions.Item label="Discount being used">
-          {loggedInData?.user.discount ? loggedInData?.user.discount : "N/A"}
-        </Descriptions.Item>
+        <Descriptions.Item label="Next Billing Date">{moment(billingData?.payload?.nextBillingDate).format("MM/DD/YYYY").toLocaleString()}</Descriptions.Item>
+        <Descriptions.Item label="Cycle">{billingData?.payload?.isYearly ? 'Yearly' : 'Monthly'}</Descriptions.Item>
       </Descriptions>
     </div>
   );

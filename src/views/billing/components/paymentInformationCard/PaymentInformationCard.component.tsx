@@ -1,11 +1,13 @@
-import Error from "@/components/error/Error.component";
-import { useUser } from "@/state/auth";
-import { Button, Descriptions, Empty, Skeleton } from "antd";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import EditPaymentInfoModal from "../editPaymentInfoModal/EditPaymentInfoModal.component";
-import styles from "./PaymentInformationCard.module.scss";
-import useFetchData from "@/state/useFetchData";
+import Error from '@/components/error/Error.component';
+import { useUser } from '@/state/auth';
+import { Button, Descriptions, Empty, Skeleton } from 'antd';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import EditPaymentInfoModal from '../editPaymentInfoModal/EditPaymentInfoModal.component';
+import styles from './PaymentInformationCard.module.scss';
+import useApiHook from '@/hooks/useApi';
+import { formatAddress } from '@/utils/formatAddress';
+import { useQueryClient } from '@tanstack/react-query';
 
 /**
  * @description - This component displays the user's current billing information, & the user can edit their payment credentials CC & ACH.
@@ -18,87 +20,63 @@ import useFetchData from "@/state/useFetchData";
 
 const PaymentInformationCard = () => {
   const router = useRouter();
-
-  const { data: userDetails } = useUser();
+  const queryClient = useQueryClient();
+  const selectedProfile = queryClient.getQueryData(['profile', 'athlete']) as any;
   const {
     data: billingData,
     error,
     isLoading,
     isError,
-  } = useFetchData({
-    url: `/billing/${userDetails?.user?._id}`,
-    key: "billingData",
-    enabled: !!userDetails?.user?._id,
-  });
-  const [editPaymentModalOpen, setEditPaymentModalOpen] = useState(false);
+  } = useApiHook({
+    url: `/payment/${selectedProfile?.payload?._id}`,
+    key: ['billing-data', `${selectedProfile?.payload?._id}`],
+    enabled: !!selectedProfile?.payload?._id,
+    method: 'GET',
+  }) as any;
 
   if (isLoading) return <Skeleton active />;
-  if (isError) return <Error error={error} />;
-
+  // if (isError) return <Error error={error} />;
+  const address = billingData?.payload?.billingDetails?.billingAddress;
+  const creditCardDetails = billingData?.payload?.billingDetails?.creditCardDetails;
+  const achDetails = billingData?.payload?.billingDetails?.achDetails;
   return (
-    <>
-      <EditPaymentInfoModal open={editPaymentModalOpen} setOpen={setEditPaymentModalOpen} />
-
+    <div>
       <div className={styles.buttonContainer}>
-        <Button type="dashed" onClick={() => setEditPaymentModalOpen(true)}>
-          {billingData?._doc?.success === false ? "Add Payment Information" : "Edit Payment Information"}
+        <Button type="dashed" onClick={() => router.push('/billing/edit')} disabled>
+          {billingData?.success === false ? 'Add Payment Information' : 'Edit Payment Information'}
         </Button>
       </div>
-      {billingData?._doc?.success === false ? (
-        <Empty
-          image={Empty.PRESENTED_IMAGE_SIMPLE}
-          description="You currently do not have any payment information on file."
-        />
-      ) : (
-        <div>
-          <div className={styles.container}>
-            <Descriptions title="Billing Information" size="small">
-              <Descriptions.Item label="Name">
-                {billingData?._doc?.billingInfo[0]?.first_name}
-                {billingData?._doc?.billingInfo[0]?.last_name}
-              </Descriptions.Item>
-              <Descriptions.Item label="Email">{billingData?._doc?.billingEmail}</Descriptions.Item>
-              <Descriptions.Item label="Phone #">{billingData?._doc?.billingInfo[0]?.phoneNumber}</Descriptions.Item>
-              <Descriptions.Item label="Address">
-                {billingData?._doc?.billingInfo[0]?.address + "," || "N/A"}{" "}
-                {billingData?._doc?.billingInfo[0]?.city + "," || "N/A"}{" "}
-                {billingData?._doc?.billingInfo[0]?.state + ", " || "N/A"}
-                {billingData?._doc?.billingInfo[0]?.zip || "N/A"}
-              </Descriptions.Item>
-            </Descriptions>
-          </div>
+      <div className={styles.container}>
+        <Descriptions title="Billing Information" size="small">
+          <Descriptions.Item label="Name">{address?.name}</Descriptions.Item>
+          <Descriptions.Item label="Email">{billingData?.payload?.email}</Descriptions.Item>
+          <Descriptions.Item label="Phone #">{billingData?.payload?.phoneNumber}</Descriptions.Item>
+          {/* <Descriptions.Item label="Address">{formatAddress(address)}</Descriptions.Item> */}
+        </Descriptions>
+      </div>
 
-          {!billingData?._doc?.isCC && (
-            <div className={styles.container}>
-              <Descriptions title="Payment Method" size="small">
-                <Descriptions.Item label="ACH Account Number">{billingData?._doc?.checkaccount}</Descriptions.Item>
-                <Descriptions.Item label="ACH ABA/Routing Number">{billingData?._doc?.checkaba}</Descriptions.Item>
-              </Descriptions>
-            </div>
-          )}
-          {billingData?._doc?.isCC && (
-            <div className={styles.container}>
-              <Descriptions title="Payment Method" size="small">
-                <Descriptions.Item label="Credit Card Number">{billingData?._doc?.ccnumber}</Descriptions.Item>
-                <Descriptions.Item label="Credit Card Expiration Date">
-                  {
-                    // we need to format the expiration date to MM/YYYY
-                    billingData?._doc?.ccexp?.substring(0, 2) + "/" + billingData?._doc?.ccexp?.substring(2, 6)
-                  }
-                </Descriptions.Item>
-              </Descriptions>
-            </div>
-          )}
-          {!billingData?._doc && (
-            <div className={styles.container}>
-              <Descriptions title="Payment Method" size="small">
-                <Descriptions.Item>No payment method on file.</Descriptions.Item>
-              </Descriptions>
-            </div>
-          )}
+      {achDetails && (
+        <div className={styles.container}>
+          <Descriptions title="Payment Method" size="small">
+            <Descriptions.Item label="ACH Account Number">{billingData?.payload?.checkaccount}</Descriptions.Item>
+            <Descriptions.Item label="ACH ABA/Routing Number">{billingData?.payload?.checkaba}</Descriptions.Item>
+          </Descriptions>
         </div>
       )}
-    </>
+      {creditCardDetails && (
+        <div className={styles.container}>
+          <Descriptions title="Payment Method" size="small">
+            <Descriptions.Item label="Credit Card Number">**** **** **** {creditCardDetails?.last4}</Descriptions.Item>
+            <Descriptions.Item label="Credit Card Expiration Date">
+              {
+                // we need to format the expiration date to MM/YYYY
+                creditCardDetails?.ccexp
+              }
+            </Descriptions.Item>
+          </Descriptions>
+        </div>
+      )}
+    </div>
   );
 };
 

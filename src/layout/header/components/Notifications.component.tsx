@@ -18,7 +18,7 @@ const Notifications = () => {
   return (
     <div className={styles.container}>
       <Tooltip title="Notifications">
-        <Badge count={data?.notifications.filter((n: any) => !n.opened).length}>
+        <Badge count={data?.notifications?.filter((n: any) => !n.opened).length}>
           <Button type="text" onClick={() => setIsOpen(!isOpen)} className={styles.button}>
             <IoIosNotifications />
           </Button>
@@ -28,10 +28,10 @@ const Notifications = () => {
       <div className={`${styles.notifications} ${isOpen ? styles.open : ""}`}>
         <div className={styles.header}>
           <p>Notifications</p>
-          <Badge count={data?.notifications.filter((n: any) => !n.opened).length} size="small" />
+          <Badge count={data?.notifications?.filter((n: any) => !n.opened).length} size="small" />
         </div>
 
-        {data?.notifications.length > 0 ? (
+        {data?.notifications?.length > 0 ? (
           data?.notifications
             .slice(0, data?.notifications.length > 3 ? 3 : data?.notifications.length)
             .map((notification: NotificationType) => {

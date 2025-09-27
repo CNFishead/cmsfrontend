@@ -1,4 +1,5 @@
-@import '../../../../globals.scss';
+@use '@/styles/globals.scss' as *;
+
 .container {
   margin: 15px;
 }

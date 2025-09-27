@@ -1,4 +1,5 @@
-@import '../../globals.scss';
+@use '@/styles/globals.scss' as *;
+
 .wrapper {
   display: flex;
   align-items: center;

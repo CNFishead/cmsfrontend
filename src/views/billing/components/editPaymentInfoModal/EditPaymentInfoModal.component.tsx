@@ -37,7 +37,7 @@ const EditPaymentInfoModal = (props: Props) => {
   };
 
   if (isLoading) return <Skeleton active />;
-  if (isError) return <Error error={error} />;
+  // if (isError) return <Error error={error} />;
 
   const getViews = () => {
     switch (currentView) {

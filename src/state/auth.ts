@@ -7,8 +7,10 @@ import { message } from "antd";
 
 // make a react query hook to get the user data from the server
 const fetchUserData = async (token?: string) => {
-  const { data } = await axios.post("/auth/me", {
-    token: token,
+  const { data } = await axios.get("/auth/me", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
   });
   return data;
 };

@@ -1,0 +1,73 @@
+.paymentSummary {
+  background: white;
+  color: black;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  width: 100%;
+  border: rgb(213, 213, 213) solid 1px;
+
+  max-width: 640px;
+  margin: 1.5rem auto;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  animation: fadeIn 0.4s ease;
+
+  .header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+
+    h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: black;
+      margin: 0;
+    }
+
+    svg {
+      color: #4ade80; // nice green accent
+    }
+  }
+
+  .details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .row {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
+    padding-bottom: 0.5rem;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  .label {
+    font-weight: 500;
+    color: rgb(112, 112, 112);
+    font-size: 0.85rem;
+  }
+
+  .value {
+    font-weight: 600;
+    color: black;
+    font-size: 0.95rem;
+    word-break: break-word;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

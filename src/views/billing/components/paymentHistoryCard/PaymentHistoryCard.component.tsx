@@ -1,10 +1,10 @@
-import Error from "@/components/error/Error.component";
-import Loader from "@/components/loader/Loader.component";
-import { useUser } from "@/state/auth";
-import { Descriptions, Modal, Skeleton } from "antd";
-import moment from "moment";
+import Error from '@/components/error/Error.component';
+import Loader from '@/components/loader/Loader.component';
+import { useUser } from '@/state/auth';
+import { Descriptions, Modal, Skeleton } from 'antd';
+import moment from 'moment';
 
-import styles from "./PaymentHistoryCard.module.scss";
+import styles from './PaymentHistoryCard.module.scss';
 
 /**
  * @description - This component displays the user's current features. It is a card component that is used in the billing page.
@@ -18,16 +18,16 @@ import styles from "./PaymentHistoryCard.module.scss";
 const PaymentHistoryCard = () => {
   // const { data: paymentData, error, isLoading, isError } = useNextPaymentDate();
   const { data: loggedInData } = useUser();
-  // const { data: receipts } = useReceiptData(loggedInData?.user?._id, "");
+  // const { data: receipts } = useReceiptData(loggedInData?._id, "");
   // const { mutate: downloadReceipt, isLoading: downloadIsLoading } = useDownloadReceipt();
 
   // if (isLoading) return <Skeleton active />;
   // if (isError) return <Error error={error} />;
 
-  const DateTimeFormat = new Intl.DateTimeFormat("en", {
-    year: "numeric",
-    month: "long",
-    day: "2-digit",
+  const DateTimeFormat = new Intl.DateTimeFormat('en', {
+    year: 'numeric',
+    month: 'long',
+    day: '2-digit',
   });
 
   return (
@@ -38,7 +38,7 @@ const PaymentHistoryCard = () => {
         closable={false}
         centered
       >
-        <Loader title="Downloading receipt..." />
+        <Loader />
       </Modal>
 
       {/* {receipts?.receipts?.map((receipt: any, index: number) => {

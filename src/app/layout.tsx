@@ -4,8 +4,7 @@ import "@/styles/globals.css";
 import "@/styles/nprogress.css";
 import ReactQueryProvider from "@/providers/ReactQueryProvider";
 import DynamicTitleUpdater from "@/layout/dynamicTitleUpdater/DynamicTitleUpdater.layout";
-import AppWrapper from "@/layout/appWrapper/AppWrapper";
-import Errors from "@/layout/errors/Errors.layout";
+import AppWrapper from "@/layout/appWrapper/AppWrapper"; 
 import { Suspense } from "react";
 
 const geistSans = localFont({
@@ -38,7 +37,6 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <Suspense fallback={null}>
-          <Errors />
           <DynamicTitleUpdater baseTitle="Shepherds CMS" />
           <ReactQueryProvider>
             <AppWrapper>
