@@ -1,13 +1,23 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "@/utils/axios";
 import { useRouter } from "next/navigation";
-import decryptData from "@/utils/decryptData";
-import { useSearchStore as store } from "@/state/search/search";
-import { useInterfaceStore } from "./interface";
-// uuid for generating unique ids
-import { v4 as uuidv4 } from "uuid";
+import { CryptoService } from "@/utils/CryptoService";
+import { useSearchStore as store } from "@/state/search";
+import { useInterfaceStore } from "@/state/interface";
+
+function cleanParams(params: Record<string, any>): Record<string, any> {
+  const cleaned: Record<string, any> = {};
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined && value !== null && value !== "") {
+      cleaned[key] = value;
+    }
+  });
+  return cleaned;
+}
 
 const fetchData = async (url: string, method: "GET" | "POST" | "PUT" | "DELETE", data?: any, options?: any) => {
+  const secret = process.env.ENCRYPTION_KEY!;
+  const cryptoService = new CryptoService(secret);
   let response;
   switch (method) {
     case "GET":
@@ -24,12 +34,14 @@ const fetchData = async (url: string, method: "GET" | "POST" | "PUT" | "DELETE",
 
       response = await axios.get(url, {
         params: {
-          keyword: defaultKeyword,
-          pageNumber: defaultPageNumber,
-          pageLimit: defaultPageLimit,
-          filterOptions: defaultFilter,
-          sortOptions: defaultSort,
-          includeOptions: defaultInclude,
+          ...cleanParams({
+            keyword: defaultKeyword,
+            pageNumber: defaultPageNumber,
+            pageLimit: defaultPageLimit,
+            filterOptions: defaultFilter,
+            sortOptions: defaultSort,
+            includeOptions: defaultInclude,
+          }),
         },
       });
 
@@ -47,7 +59,7 @@ const fetchData = async (url: string, method: "GET" | "POST" | "PUT" | "DELETE",
       throw new Error(`Unsupported method: ${method}`);
   }
   if (method === "GET" && typeof response.data.payload === "string") {
-    response.data.payload = JSON.parse(decryptData(response.data.payload));
+    response.data.payload = JSON.parse(cryptoService.decrypt(response.data.payload));
   }
   return response.data;
 };
@@ -67,11 +79,13 @@ const useApiHook = (options: {
   refetchOnWindowFocus?: boolean;
   staleTime?: number;
   cacheTime?: number;
+  refetchInterval?: number;
+  showErrorAlert?: boolean;
   onSuccessCallback?: (data: any) => void;
   onErrorCallback?: (error: any) => void;
 }) => {
   const queryClient = useQueryClient();
-  const { addError } = useInterfaceStore((state) => state);
+  const { addAlert } = useInterfaceStore((state) => state);
   const router = useRouter();
 
   const {
@@ -89,6 +103,8 @@ const useApiHook = (options: {
     refetchOnWindowFocus = false,
     staleTime = 1000 * 60 * 5, // 5 minutes
     cacheTime = 1000 * 60 * 10, // 10 minutes
+    refetchInterval,
+    showErrorAlert = true,
     onSuccessCallback,
     onErrorCallback,
   } = options;
@@ -106,11 +122,13 @@ const useApiHook = (options: {
       }),
     enabled: enabled && method === "GET",
     refetchOnWindowFocus,
+    refetchInterval,
     retry: 1,
     staleTime: staleTime,
     gcTime: cacheTime,
     meta: {
       errorMessage: "An error occurred while fetching data",
+      showErrorAlert: showErrorAlert,
     },
   });
 
@@ -119,11 +137,11 @@ const useApiHook = (options: {
       fetchData(url ? url : (data.url as any), method, data.formData),
     onSuccess: (data: any) => {
       if (successMessage) {
-        addError({ id: uuidv4(), message: successMessage, type: "success" });
+        addAlert({ message: successMessage, type: "success", duration: 3000 });
       }
 
       queriesToInvalidate?.forEach((query: string) => {
-        queryClient.invalidateQueries([query] as any);
+        queryClient.invalidateQueries([query.split(",")] as any);
       });
 
       if (redirectUrl) {
@@ -135,8 +153,12 @@ const useApiHook = (options: {
       }
     },
     onError: (error: any) => {
-      console.log(error);
-      addError({ id: uuidv4(), message: error.message, type: "error" });
+      const messageTxt = error.response && error.response.data.message ? error.response.data.message : error.message;
+
+      if (showErrorAlert) {
+        addAlert({ message: messageTxt, type: "error", duration: 10000 });
+      }
+
       if (onErrorCallback) {
         onErrorCallback(error);
       }
