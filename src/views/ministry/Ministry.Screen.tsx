@@ -20,7 +20,7 @@ const Ministry = () => {
   const { data: selectedProfile, isLoading: profileIsLoading } = useFetchData({
     url: `/ministry/${loggedInData.user?.ministry?._id}`,
     key: "selectedProfile",
-    enabled: !!loggedInData?.user?.ministry?._id,
+    enabled: !!loggedInData?.ministry,
   });
 
   const {

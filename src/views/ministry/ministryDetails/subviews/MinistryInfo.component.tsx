@@ -32,9 +32,9 @@ const MinistryInfo = () => {
   }) as any;
 
   const { data: selectedProfile } = useApiHook({
-    url: `/ministry/${loggedInUser.user?.ministry?._id}`,
+    url: `/ministry/${loggedInUser?.ministry}`,
     key: "selectedProfile",
-    enabled: !!loggedInUser?.user?.ministry?._id,
+    enabled: !!loggedInUser?.ministry,
     method: "GET",
   });
 
@@ -57,7 +57,7 @@ const MinistryInfo = () => {
     key: "membersList",
     enabled: !!selectedProfile?.ministry?._id,
     method: "GET",
-    filter: `user;${loggedInUser?.user._id}`,
+    filter: `user;${loggedInUser?._id}`,
   }) as any;
 
   React.useEffect(() => {
@@ -118,10 +118,10 @@ const MinistryInfo = () => {
                   action={`${process.env.API_URL}/upload/cloudinary`}
                   default={form.getFieldsValue().ministryImageUrl}
                   bodyData={{
-                    username: loggedInUser.user?.username,
+                    username: loggedInUser?.accessKey,
                     folder: slugify(`${selectedProfile?.ministry?.name}`),
                   }}
-                  aspectRatio={14/10}
+                  aspectRatio={14 / 10}
                 />
               </div>
             </div>

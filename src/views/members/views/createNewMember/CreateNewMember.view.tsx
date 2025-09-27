@@ -26,9 +26,9 @@ const CreateNewMember = () => {
   const [image, setImage] = React.useState<any>(null); // the image that is uploaded
   const { data: loggedInData } = useUser();
   const { data: selectedProfile } = useApiHook({
-    url: `/ministry/${loggedInData.user?.ministry?._id}`,
+    url: `/ministry/${loggedInData?.ministry}`,
     key: "selectedProfile",
-    enabled: !!loggedInData?.user?.ministry?._id,
+    enabled: !!loggedInData?.ministry,
     method: "GET",
   }) as any;
   const { data: memberInformation } = useApiHook({
@@ -41,7 +41,7 @@ const CreateNewMember = () => {
     url: `/family`,
     key: ["familyList", familyKeyword],
     keyword: familyKeyword,
-    filter: `user;${loggedInData?.user?._id}`,
+    filter: `user;${loggedInData?._id}`,
     method: "GET",
   }) as any;
 
@@ -50,7 +50,7 @@ const CreateNewMember = () => {
     key: "ministryList",
     enabled: !!selectedProfile?.ministry?._id,
     keyword: ministryKeyword,
-    filter: `user;${loggedInData?.user?._id}`,
+    filter: `user;${loggedInData?._id}`,
     method: "GET",
   }) as any;
 

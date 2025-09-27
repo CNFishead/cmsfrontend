@@ -17,9 +17,9 @@ const Header = (props: Props) => {
   const toggleSideBar = useLayoutStore((state) => state.toggleSideBar);
   const { data: loggedInData } = useUser();
   const { data: selectedProfile } = useFetchData({
-    url: `/ministry/${loggedInData.user?.ministry?._id}`,
+    url: `/ministry/${loggedInData?.ministry}`,
     key: "selectedProfile",
-    enabled: !!loggedInData?.user?.ministry?._id,
+    enabled: !!loggedInData?.ministry,
   });
   return (
     <div className={styles.header}>
@@ -66,11 +66,11 @@ const Header = (props: Props) => {
         <div className={styles.headerRight}>
           <div className={styles.userContainer}>
             <div className={styles.user}>
-              <Avatar src={loggedInData?.user?.profileImageUrl} className={styles.avatar} />
+              <Avatar src={loggedInData?.profileImageUrl} className={styles.avatar} />
               <div className={styles.userInfo}>
                 <h1>{selectedProfile?.ministry?.name} </h1>
                 <p>
-                  {loggedInData?.user?.firstName} {loggedInData?.user?.lastName}
+                  {loggedInData?.firstName} {loggedInData?.lastName}
                 </p>
               </div>
             </div>

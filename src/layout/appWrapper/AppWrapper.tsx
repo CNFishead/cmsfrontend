@@ -1,7 +1,6 @@
 "use client";
 import { useUser } from "@/state/auth";
 import { useSocketStore } from "@/state/socket";
-import useFetchData from "@/state/useFetchData";
 import { useQueryClient } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
 import React, { useEffect } from "react";
@@ -21,11 +20,11 @@ const AppWrapper = (props: Props) => {
   //Set up state
   const searchParams = useSearchParams();
   const token = searchParams.get("token") as string;
-  const { data: loggedInData, isLoading: userIsLoading } = useUser(token);
+  const { data: loggedInData, isLoading: userIsLoading } = useUser(token); 
   const { data: selectedProfile, isLoading: profileIsLoading } = useApiHook({
-    url: `/ministry/${loggedInData?.user?.ministry?._id}`,
-    key: "selectedProfile",
-    enabled: !!loggedInData?.user?.ministry?._id,
+    url: `/ministry/${loggedInData?.ministry}`,
+    key: ["selectedProfile", "ministry", loggedInData?.ministry as string],
+    enabled: !!loggedInData?.ministry,
     // set to 1 minute cache time and 1 minute stale time
     staleTime: 1000 * 60,
     method: "GET",
@@ -54,7 +53,7 @@ const AppWrapper = (props: Props) => {
 
     if (socket && isConnecting) {
       // Listen for user updates
-      socket.emit("setup", loggedInData?.user);
+      socket.emit("setup", loggedInData);
       socket.on("updateUser", () => {
         queryClient.invalidateQueries(["user"] as any);
       });

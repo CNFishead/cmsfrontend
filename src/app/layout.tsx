@@ -39,8 +39,7 @@ export default function RootLayout({
         <Suspense fallback={null}>
           <DynamicTitleUpdater baseTitle="Shepherds CMS" />
           <ReactQueryProvider>
-            <AppWrapper>
-              {/* <NextTopLoader /> */}
+            <AppWrapper> 
               {children}
             </AppWrapper>
           </ReactQueryProvider>

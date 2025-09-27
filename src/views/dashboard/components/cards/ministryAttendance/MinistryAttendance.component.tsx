@@ -14,11 +14,11 @@ const MinistryAttendance = () => {
   const [endDate, setEndDate] = React.useState(new Date(new Date().setDate(new Date().getDate() - 30)).toISOString());
   const { data: loggedInData } = useUser();
   const { data: selectedProfile } = useApiHook({
-    url: `/ministry/${loggedInData?.user?.ministry?._id}`,
-    key: "selectedProfile",
-    enabled: !!loggedInData?.user?.ministry?._id,
-    method: "GET",
-  }) as any;
+      url: `/ministry/${loggedInData?.ministry}`,
+      key: "selectedProfile",
+      method: "GET",
+      enabled: !!loggedInData?.ministry,
+    }) as any;
   const [ministryId, setMinistryId] = React.useState(selectedProfile?.ministry?._id);
   const [selectedMinistry, setSelectedMinistry] = React.useState(selectedProfile?.ministry);
   const { data: attendanceData } = useApiHook({
@@ -32,11 +32,11 @@ const MinistryAttendance = () => {
   }) as any;
 
   const { data: ministries } = useApiHook({
-    url: `/ministry/${loggedInData?.user?._id}/subministries`,
-    key: ["ministries", `${loggedInData?.user?._id}`],
-    enabled: !!loggedInData?.user?._id,
+    url: `/ministry/${loggedInData?._id}/subministries`,
+    key: ["ministries", `${loggedInData?._id}`],
+    enabled: !!loggedInData?._id,
     method: "GET",
-    filter: `user;${loggedInData?.user?._id}`,
+    filter: `user;${loggedInData?._id}`,
   }) as any;
 
   React.useEffect(() => {

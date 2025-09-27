@@ -1,21 +1,28 @@
 import FeatureType from "./FeatureType";
 
 export default interface User {
-  token: string;
-  fullName: string;
+  _id: string;
   firstName: string;
   lastName: string;
+  customerId: string;
   profileImageUrl: string;
-  email: string;
-  ministry: {
-    name: string;
-    id: string;
-    ministryImageUrl: string;
-  };
-  role: string;
-  username: string;
-  id: string;
-  _id: string;
   phoneNumber: string;
-  features: FeatureType[];
+  email: string;
+  password: string;
+  role: string;
+  ministry: string | null;
+  fullName: string;
+  isActive: boolean;
+  resetPasswordToken: string | undefined | null;
+  resetPasswordExpire: Date | undefined | null;
+  accessKey: string;
+  createdAt: Date;
+  updatedAt: Date;
+  isEmailVerified: boolean;
+  acceptedPolicies: Record<string, number>;
+  permissions: string[];
+  lastSignedIn: Date | undefined | null;
+  emailVerificationToken: string | undefined | null;
+  emailVerificationExpires: Date | undefined | null;
+  profileRefs: Record<string, string | null>;
 }

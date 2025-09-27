@@ -17,6 +17,9 @@ function cleanParams(params: Record<string, any>): Record<string, any> {
 
 const fetchData = async (url: string, method: "GET" | "POST" | "PUT" | "DELETE", data?: any, options?: any) => {
   const secret = process.env.ENCRYPTION_KEY!;
+  if (!secret) {
+    throw new Error("Encryption key is not set");
+  }
   const cryptoService = new CryptoService(secret);
   let response;
   switch (method) {

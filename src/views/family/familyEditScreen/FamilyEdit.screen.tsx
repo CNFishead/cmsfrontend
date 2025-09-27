@@ -55,9 +55,9 @@ const FamilyEdit = () => {
   }) as any;
   const { mutate: updateFamily } = useUpdateData({ queriesToInvalidate: ["selectedFamily"] });
   const { data: selectedProfile, isLoading: profileIsLoading } = useFetchData({
-    url: `/ministry/${loggedInData.user?.ministry?._id}`,
+    url: `/ministry/${loggedInData?.ministry}`,
     key: "selectedProfile",
-    enabled: !!loggedInData?.user?.ministry?._id,
+    enabled: !!loggedInData?.ministry,
   });
   const { data: membersListData, isLoading: loading } = useFetchData({
     url: `/member/${selectedProfile?.ministry?._id}`,

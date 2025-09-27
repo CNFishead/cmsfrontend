@@ -18,9 +18,9 @@ const Members = () => {
 
   const { data: loggedInData } = useUser();
   const { data: selectedProfile } = useFetchData({
-    url: `/ministry/${loggedInData.user?.ministry?._id}`,
+    url: `/ministry/${loggedInData?.ministry}`,
     key: "selectedProfile",
-    enabled: !!loggedInData?.user?.ministry?._id,
+    enabled: !!loggedInData?.ministry,
   });
 
   const { data: membersListData, isLoading: loading } = useApiHook({
@@ -28,7 +28,7 @@ const Members = () => {
     key: "members",
     enabled: !!selectedProfile?.ministry?._id,
     method: "GET",
-    filter: `user;${loggedInData.user?._id}`,
+    filter: `user;${loggedInData?._id}`,
   }) as any;
 
   const { mutate: deleteMember } = useRemoveData({

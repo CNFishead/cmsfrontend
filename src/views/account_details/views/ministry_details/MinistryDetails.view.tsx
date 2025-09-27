@@ -16,15 +16,10 @@ const MinistryDetails = () => {
   const [form] = Form.useForm();
   const { data: loggedInUser } = useUser();
 
-  const {
-    data: selectedProfile,
-    isLoading: loading,
-    isError,
-    error,
-  } = useFetchData({
-    url: `/ministry/${loggedInUser.user?.ministry?._id}`,
+  const { data: selectedProfile, isLoading: loading, isError, error } = useFetchData({
+    url: `/ministry/${loggedInUser?.ministry}`,
     key: "selectedProfile",
-    enabled: !!loggedInUser?.user?.ministry?._id,
+    enabled: !!loggedInUser?.ministry,
   });
 
   const { mutate: updateMinistry } = useUpdateData({

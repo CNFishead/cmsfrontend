@@ -44,7 +44,7 @@ const NotificationsView = () => {
       <div className={styles.notifications}>
         {data?.notifications?.length > 0 ? (
           data?.notifications.map((notification: NotificationType) => {
-            return <NotificationItem notification={notification} key={notification.entityId} />;
+            // return <NotificationItem notification={notification} key={notification.entityId} />;
           })
         ) : (
           <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="You have no notifications" />
