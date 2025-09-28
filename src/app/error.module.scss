@@ -31,18 +31,19 @@
 }
 
 .errorCode {
-  font-size: 3rem;
+  font-size: 2.5rem;
   font-weight: var(--font-weight-bold);
   color: #ff6b6b;
   font-family: var(--font-family-secondary);
   text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  letter-spacing: 0.02em;
 
   @media (max-width: 768px) {
-    font-size: 2.5rem;
+    font-size: 2rem;
   }
 
   @media (max-width: 480px) {
-    font-size: 2rem;
+    font-size: 1.5rem;
   }
 }
 
@@ -79,7 +80,7 @@
 }
 
 .detailsContainer {
-  background: rgba(0, 0, 0, 0.534);
+  background: rgba(58, 58, 58, 0.534);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: var(--radius-md);
   padding: var(--spacing-md);
