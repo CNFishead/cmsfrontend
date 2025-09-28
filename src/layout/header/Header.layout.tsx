@@ -68,10 +68,8 @@ const Header = (props: Props) => {
             <div className={styles.user}>
               <Avatar src={loggedInData?.profileImageUrl} className={styles.avatar} />
               <div className={styles.userInfo}>
-                <h1>{selectedProfile?.ministry?.name} </h1>
-                <p>
-                  {loggedInData?.firstName} {loggedInData?.lastName}
-                </p>
+                <h1>{selectedProfile?.payload?.name} </h1>
+                <p>{loggedInData?.fullName}</p>
               </div>
             </div>
             <Notifications />

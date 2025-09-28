@@ -22,7 +22,7 @@ const MinistryAttendance = () => {
   const [ministryId, setMinistryId] = React.useState(selectedProfile?.ministry?._id);
   const [selectedMinistry, setSelectedMinistry] = React.useState(selectedProfile?.ministry);
   const { data: attendanceData } = useApiHook({
-    url: `/ministry/attendance/data`,
+    url: `/ministry/analytic/attendance/data`,
     key: ["attendanceData", `${ministryId}`],
     enabled: !!selectedProfile?.ministry?._id,
     // set to 1 hour cache time and 1 hour stale time
@@ -41,10 +41,9 @@ const MinistryAttendance = () => {
 
   React.useEffect(() => {
     if (!ministryId) {
-      setMinistryId(selectedProfile?.ministry?._id);
+      setMinistryId(selectedProfile?.payload?._id);
     }
   }, [selectedProfile]);
-  console.log("attendanceData", attendanceData);
   const transformedData =
     attendanceData?.payload?.map((entry: any) => ({
       date: entry.date,
@@ -59,7 +58,7 @@ const MinistryAttendance = () => {
     <div className={styles.container}>
       <div className={styles.topContainer}>
         <p>
-          <strong>{selectedProfile?.ministry?.name}&apos;s</strong> attendance records between{" "}
+          <strong>{selectedProfile?.payload?.name}&apos;s</strong> attendance records between{" "}
           {new Date(endDate).toLocaleDateString()} - {new Date(startDate).toLocaleDateString()}
         </p>
 
