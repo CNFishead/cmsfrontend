@@ -44,8 +44,8 @@ const FeaturePlanCard = ({ plan, billingCycle, onSelect, selected, showActions =
   const yearlyMonthlyEquivalent = yearlyPrice / 12;
   const savings = monthlyPrice * 12 - yearlyPrice;
 
-  const displayPrice = billingCycle ? yearlyMonthlyEquivalent : monthlyPrice;
-  const displayPeriod = billingCycle ? "month (billed yearly)" : billingCycle;
+  const displayPrice = billingCycle === 'yearly' ? yearlyMonthlyEquivalent : monthlyPrice;
+  const displayPeriod = billingCycle === 'yearly' ? "month (billed yearly)" : "month";
 
   return (
     <div className={`${styles.planCard} ${mostPopular ? styles.mostPopular : ""} ${selected ? styles.active : ""}`} onClick={onSelect}>
