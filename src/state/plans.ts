@@ -14,7 +14,7 @@ interface PlansState {
 
 export const usePlansStore = create<PlansState>((set) => ({
   selectedPlans: [],
-  billingCycle: 'monthly',
+  billingCycle: 'yearly',
 
   setBillingCycle: (data: 'monthly' | 'yearly') => {
     set({ billingCycle: data });

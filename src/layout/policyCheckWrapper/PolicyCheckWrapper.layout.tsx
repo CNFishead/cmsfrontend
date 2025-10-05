@@ -113,7 +113,7 @@ const PolicyCheckWrapper: React.FC<PolicyCheckWrapperProps> = ({ children }) => 
         maskClosable={false}
         footer={null}
         centered
-        bodyStyle={{ borderRadius: 12, background: '#fafcff', padding: 32 }}
+        styles={{ body: { borderRadius: 12, background: '#fafcff', padding: 32 } }}
         style={{ width: 'auto', maxWidth: 800 }}
         wrapClassName={styles.policyModal}
       >
@@ -150,7 +150,7 @@ const PolicyCheckWrapper: React.FC<PolicyCheckWrapperProps> = ({ children }) => 
                 </div>
                 <div style={{ minWidth: 80, flex: '1 1 100px', wordBreak: 'break-word' }}>
                   <a
-                    href={`https://thefreeagentportal.com/legal/${doc}`}
+                    href={`https://shepherdcms.org/legal/${doc}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{ color: '#1677ff', fontWeight: 500, wordBreak: 'break-word' }}

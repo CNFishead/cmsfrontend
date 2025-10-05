@@ -8,8 +8,6 @@ const PaymentSummary = (paymentFormValues: any) => {
   const isACH = paymentFormValues.type === 'ach';
   const isStripe = paymentFormValues.stripeToken; // Check if Stripe token exists
 
-  console.log(paymentFormValues);
-
   // If Stripe is being used, show Stripe-specific summary
   if (isStripe) {
     return (

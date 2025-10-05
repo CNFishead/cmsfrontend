@@ -11,6 +11,7 @@ import PageLayout from "../page/Page.layout";
 import { navigation } from "@/data/navigation";
 import BillingSetup from "../billingSetup/BillingSetup.layout";
 import PolicyCheckWrapper from "../policyCheckWrapper/PolicyCheckWrapper.layout";
+import { useSelectedProfile } from "@/hooks/useSelectedProfile";
 
 type Props = {
   children: React.ReactNode;
@@ -20,15 +21,8 @@ const AppWrapper = (props: Props) => {
   //Set up state
   const searchParams = useSearchParams();
   const token = searchParams.get("token") as string;
-  const { data: loggedInData, isLoading: userIsLoading } = useUser(token); 
-  const { data: selectedProfile, isLoading: profileIsLoading } = useApiHook({
-    url: `/ministry/${loggedInData?.ministry}`,
-    key: ["selectedProfile", "ministry", loggedInData?.ministry as string],
-    enabled: !!loggedInData?.ministry,
-    // set to 1 minute cache time and 1 minute stale time
-    staleTime: 1000 * 60,
-    method: "GET",
-  }) as any;
+  const { data: loggedInData, isLoading: userIsLoading } = useUser(token);
+  const { selectedProfile, isLoading: profileIsLoading } = useSelectedProfile();
   //Set up socket connection
   const { socket, isConnecting, setSocket, setIsConnecting } = useSocketStore((state) => state);
 
@@ -67,13 +61,13 @@ const AppWrapper = (props: Props) => {
   }, [socket]);
   return (
     <>
-      {selectedProfile?.payload?.needsBillingSetup ? (
+      {selectedProfile?.needsBillingSetup ? (
         <PageLayout
           pages={[navigation().billing.links.account_center]}
           loading={userIsLoading || !selectedProfile}
           largeSideBar
         >
-          <BillingSetup billingValidation={selectedProfile?.payload?.billingValidation} />
+          <BillingSetup billingValidation={selectedProfile?.billingValidation} />
         </PageLayout>
       ) : (
         <>

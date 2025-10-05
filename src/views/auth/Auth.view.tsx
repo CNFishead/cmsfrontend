@@ -36,14 +36,7 @@ const Auth = (props: Props) => {
             Please click the button below to authenticate and access the dashboard
           </span>
         </p>
-        <a
-          href={
-            process.env.ENV !== "development"
-              ? `https://auth.shepherdcms.org/?redirect=${getAbsoluteUrl() + pathname}`
-              : `http://localhost:3003?redirect=${getAbsoluteUrl() + pathname}`
-          }
-          className={styles.buttonLink}
-        >
+        <a href={`${process.env.AUTH_URL}?redirect=${getAbsoluteUrl() + pathname}`} className={styles.buttonLink}>
           <Button
             className={styles.button}
             type="primary"

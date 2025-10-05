@@ -9,7 +9,7 @@ import useApiHook from '@/hooks/useApi';
 import PaymentWrapper from './PaymentWrapper.view';
 import Final from './Final.view';
 
-interface BillingValidation {
+export interface BillingValidation {
   needsUpdate: boolean;
   reasons: string[];
   severity: 'critical' | 'warning' | 'info';

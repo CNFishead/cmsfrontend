@@ -5,6 +5,10 @@ const nextConfig = {
     API_URL: process.env.API_URL,
     ENCRYPTION_KEY: process.env.ENCRYPTION_KEY,
     ENV: process.env.NODE_ENV,
+    AUTH_URL: process.env.AUTH_URL,
+    NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: process.env.STRIPE_PUBLISHABLE_KEY,
+    SERVICE_NAME: process.env.SERVICE_NAME,
+    VERSION: process.env.npm_package_version,
     // ENV: "development",
   },
   //Redirect / to /dash
