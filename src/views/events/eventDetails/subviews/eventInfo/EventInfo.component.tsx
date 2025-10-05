@@ -12,6 +12,7 @@ import MinistryType from "@/types/Ministry";
 import dayjs from "dayjs";
 import Loader from "@/components/loader/Loader.component";
 import { useQueryClient } from "@tanstack/react-query";
+import { useSelectedProfile } from "@/hooks/useSelectedProfile";
 
 const EventInfo = () => {
   const [form] = Form.useForm();
@@ -21,20 +22,21 @@ const EventInfo = () => {
   const [timer, setTimer] = React.useState<any>(null);
   const { data: userData } = useUser();
   const queryClient = useQueryClient();
+  const { selectedProfile } = useSelectedProfile();
 
   const { data } = useApiHook({
     url: `/event`,
     key: ["eventInfo", `${id}`],
     method: "GET",
-    enabled: !!id && !!userData?.user?._id,
-    filter: `user;${userData?.user?._id}|_id;${id}`,
+    enabled: !!id && !!userData?._id,
+    filter: `user;${userData?._id}|_id;${id}`,
   }) as any;
   const { data: ministryData } = useApiHook({
-    url: `/ministry/${userData?.user?.ministry?._id}/subministries`,
+    url: `/ministry/${selectedProfile?._id}/subministries`,
     key: ["ministries", keyword],
-    enabled: !!userData?.user?._id,
+    enabled: !!selectedProfile?._id,
     keyword: keyword,
-    filter: `user;${userData?.user?._id}`,
+    filter: `user;${userData?._id}`,
     method: "GET",
   }) as any;
 

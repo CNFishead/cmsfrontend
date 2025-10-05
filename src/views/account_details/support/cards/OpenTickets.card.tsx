@@ -10,8 +10,8 @@ const OpenTickets = () => {
   const { data, isLoading, isError, error, isFetching } = useApiHook({
     url: "/support/ticket",
     key: "openTickets",
-    filter: `requester;${loggedInData?.user?._id}|status;{"$ne":"solved"}`,
-    enabled: !!loggedInData?.user?._id,
+    filter: `requester;${loggedInData?._id}|status;{"$ne":"solved"}`,
+    enabled: !!loggedInData?._id,
     method: "GET",
   }) as any;
   return (

@@ -14,7 +14,7 @@ const Dashboard = () => {
   return (
     <div className={styles.wrapper}>
       <DashboardHeader />
-      {/* {!hasFeature(loggedInData?.user, FEATURES.VOD, FEATURES.LIVESTREAMING) && (
+      {/* {!hasFeature(loggedInData, FEATURES.VOD, FEATURES.LIVESTREAMING) && (
         <div className={styles.noFeaturesContainer}>
           <h1>Welcome to your dashboard. You currently do not have any features enabled.</h1>
           <p>

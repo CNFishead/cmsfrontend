@@ -70,7 +70,7 @@ const SupportDetails = () => {
     // emit socket event to notify the support team of a new message
     socket.emit("sendNewMessage", {
       roomId: `support-${id}`,
-      user: loggedInData?.user,
+      user: loggedInData,
       message: form.getFieldValue("message"),
     });
     // navigate to the bottom of the chat window
@@ -83,7 +83,7 @@ const SupportDetails = () => {
       // join the room of the support ticket
       socket.emit("join", {
         roomId: `support-${id}`,
-        user: loggedInData?.user,
+        user: loggedInData,
       });
       socket.on("newMessage", () => {
         queryClient.invalidateQueries({ queryKey: ["messages", `${id}`] });
@@ -150,13 +150,13 @@ const SupportDetails = () => {
               key={message._id}
               className={`${styles.chat} ${
                 // if the message is from the user, align it to the right
-                message?.user?.toString() === loggedInData?.user?._id.toString() ? styles.rightChat : null
+                message?.user?.toString() === loggedInData?._id.toString() ? styles.rightChat : null
               }`}
             >
               <div
                 className={`${styles.chatBubble} ${
                   // if the message is from the user, align it to the right
-                  message?.user?.toString() === loggedInData?.user?._id.toString()
+                  message?.user?.toString() === loggedInData?._id.toString()
                     ? styles.chatBubbleRight
                     : styles.leftBubble
                 }`}
@@ -170,7 +170,7 @@ const SupportDetails = () => {
               <div
                 className={`${styles.chatTime} ${
                   // if the message is from the user, align it to the right
-                  message?.user?.toString() === loggedInData?.user?._id.toString()
+                  message?.user?.toString() === loggedInData?._id.toString()
                     ? styles.chatTimeRight
                     : styles.chatTimeLeft
                 }`}

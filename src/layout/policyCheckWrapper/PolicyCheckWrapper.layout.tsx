@@ -1,21 +1,21 @@
-import React, { useState, useMemo } from 'react';
-import styles from './PolicyCheckWrapper.module.scss';
-import { Modal, Checkbox, Button, Typography } from 'antd';
-import { useUser } from '@/state/auth';
-import useApiHook from '@/hooks/useApi';
+import React, { useState, useMemo } from "react";
+import styles from "./PolicyCheckWrapper.module.scss";
+import { Modal, Checkbox, Button, Typography } from "antd";
+import { useUser } from "@/state/auth";
+import useApiHook from "@/hooks/useApi";
 
 interface PolicyCheckWrapperProps {
   children: React.ReactNode;
 }
 
-const documentsToCheck = ['terms', 'privacy', 'refund'];
+const documentsToCheck = ["terms", "privacy", "refund"];
 
 const PolicyCheckWrapper: React.FC<PolicyCheckWrapperProps> = ({ children }) => {
   const { data: loggedInData, isLoading: userIsLoading, refetch: refetchUser } = useUser();
   const { data: policies } = useApiHook({
-    url: '/auth/legal',
-    method: 'GET',
-    key: ['legal', 'policies'],
+    url: "/auth/legal",
+    method: "GET",
+    key: ["legal", "policies"],
     enabled: !!loggedInData,
   });
 
@@ -55,20 +55,20 @@ const PolicyCheckWrapper: React.FC<PolicyCheckWrapperProps> = ({ children }) => 
 
   // Format date helper
   const formatDate = (dateStr?: string) => {
-    if (!dateStr) return '';
+    if (!dateStr) return "";
     const date = new Date(dateStr);
     return date.toLocaleDateString(undefined, {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
+      year: "numeric",
+      month: "long",
+      day: "numeric",
     });
   };
 
   // Submit handler
   const { mutate: updatePolicies } = useApiHook({
-    method: 'PUT',
-    key: ['acceptPolicies'],
-    queriesToInvalidate: ['user'],
+    method: "PUT",
+    key: ["acceptPolicies"],
+    queriesToInvalidate: ["user"],
   }) as any;
 
   const handleAccept = () => {
@@ -80,7 +80,7 @@ const PolicyCheckWrapper: React.FC<PolicyCheckWrapperProps> = ({ children }) => 
       newAcceptedPolicies[doc] = requiredPolicies[doc].version;
     });
     updatePolicies(
-      { url: `/user/${loggedInData._id}`, formData: { acceptedPolicies: newAcceptedPolicies } },
+      { url: `/user/${loggedInData?._id}`, formData: { acceptedPolicies: newAcceptedPolicies } },
       {
         onSuccess: () => {
           setSubmitting(false);
@@ -113,8 +113,8 @@ const PolicyCheckWrapper: React.FC<PolicyCheckWrapperProps> = ({ children }) => 
         maskClosable={false}
         footer={null}
         centered
-        styles={{ body: { borderRadius: 12, background: '#fafcff', padding: 32 } }}
-        style={{ width: 'auto', maxWidth: 800 }}
+        styles={{ body: { borderRadius: 12, background: "#fafcff", padding: 32 } }}
+        style={{ width: "auto", maxWidth: 800 }}
         wrapClassName={styles.policyModal}
       >
         <Typography.Paragraph style={{ marginBottom: 24 }}>
@@ -127,33 +127,37 @@ const PolicyCheckWrapper: React.FC<PolicyCheckWrapperProps> = ({ children }) => 
             <div
               key={doc}
               style={{
-                display: 'flex',
-                alignItems: 'flex-start',
-                flexWrap: 'wrap',
-                padding: '8px 0',
-                borderBottom: idx < documentsNeeded.length - 1 ? '1px solid #eee' : 'none',
+                display: "flex",
+                alignItems: "flex-start",
+                flexWrap: "wrap",
+                padding: "8px 0",
+                borderBottom: idx < documentsNeeded.length - 1 ? "1px solid #eee" : "none",
                 gap: 16,
-                wordBreak: 'break-word',
+                wordBreak: "break-word",
               }}
             >
-              <Checkbox checked={!!checkedDocs[doc]} onChange={(e) => handleCheckboxChange(doc, e.target.checked)} style={{ marginRight: 16, marginTop: 2 }} />
-              <div style={{ flex: 1, display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 24, minWidth: 0 }}>
-                <div style={{ minWidth: 120, flex: '1 1 180px', wordBreak: 'break-word' }}>
+              <Checkbox
+                checked={!!checkedDocs[doc]}
+                onChange={(e) => handleCheckboxChange(doc, e.target.checked)}
+                style={{ marginRight: 16, marginTop: 2 }}
+              />
+              <div style={{ flex: 1, display: "flex", flexWrap: "wrap", alignItems: "center", gap: 24, minWidth: 0 }}>
+                <div style={{ minWidth: 120, flex: "1 1 180px", wordBreak: "break-word" }}>
                   <Typography.Text strong style={{ fontSize: 15 }}>
                     {policyObj?.title || doc}
                   </Typography.Text>
                 </div>
-                <div style={{ minWidth: 100, flex: '1 1 160px', wordBreak: 'break-word' }}>
+                <div style={{ minWidth: 100, flex: "1 1 160px", wordBreak: "break-word" }}>
                   <Typography.Text type="secondary" style={{ fontSize: 14 }}>
                     Effective: {formatDate(policyObj?.effective_date)}
                   </Typography.Text>
                 </div>
-                <div style={{ minWidth: 80, flex: '1 1 100px', wordBreak: 'break-word' }}>
+                <div style={{ minWidth: 80, flex: "1 1 100px", wordBreak: "break-word" }}>
                   <a
                     href={`https://shepherdcms.org/legal/${doc}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    style={{ color: '#1677ff', fontWeight: 500, wordBreak: 'break-word' }}
+                    style={{ color: "#1677ff", fontWeight: 500, wordBreak: "break-word" }}
                   >
                     Read Policy
                   </a>
@@ -162,7 +166,14 @@ const PolicyCheckWrapper: React.FC<PolicyCheckWrapperProps> = ({ children }) => 
             </div>
           );
         })}
-        <Button type="primary" block disabled={!allChecked || submitting} loading={submitting} onClick={handleAccept} style={{ marginTop: 8, fontWeight: 600, fontSize: 16 }}>
+        <Button
+          type="primary"
+          block
+          disabled={!allChecked || submitting}
+          loading={submitting}
+          onClick={handleAccept}
+          style={{ marginTop: 8, fontWeight: 600, fontSize: 16 }}
+        >
           Accept and Continue
         </Button>
       </Modal>

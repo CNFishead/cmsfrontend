@@ -20,8 +20,8 @@ const SupportTable = () => {
   } = useApiHook({
     url: "/support/ticket",
     key: "tickets",
-    filter: `requester;${loggedInData?.user?._id}`,
-    enabled: !!loggedInData?.user?._id,
+    filter: `requester;${loggedInData?._id}`,
+    enabled: !!loggedInData?._id,
     method: "GET",
   }) as any;
 

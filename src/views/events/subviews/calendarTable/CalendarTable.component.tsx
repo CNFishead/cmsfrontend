@@ -12,8 +12,8 @@ const CalendarTable = () => {
   const { data, isLoading: loading } = useApiHook({
     url: "/event",
     key: ["events"],
-    enabled: !!loggedInUser?.user?._id,
-    filter: `user;${loggedInUser?.user?._id}`,
+    enabled: !!loggedInUser?._id,
+    filter: `user;${loggedInUser?._id}`,
     method: "GET",
   }) as any;
 

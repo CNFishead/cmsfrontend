@@ -51,8 +51,8 @@ const FeatureModal = (props: Props) => {
       onOk={() => {
         // updateUserFeatures(
         //   props.hasFeature
-        //     ? loggedInData.user.features.filter((f: any) => !props.selectedFeatures.map((f: any) => f._id).includes(f))
-        //     : [...loggedInData.user.features, ...props.selectedFeatures.map((f) => f._id)]
+        //     ? loggedInData?.features.filter((f: any) => !props.selectedFeatures.map((f: any) => f._id).includes(f))
+        //     : [...loggedInData?.features, ...props.selectedFeatures.map((f) => f._id)]
         // );
       }}
     >
@@ -80,17 +80,17 @@ const FeatureModal = (props: Props) => {
               {!props.hasFeature
                 ? getPrice(
                     [
-                      ...featuresData?.allFeatures.filter((f: any) => loggedInData.user.features.includes(f._id)),
+                      ...featuresData?.allFeatures.filter((f: any) => loggedInData?.features.includes(f._id)),
                       ...props.selectedFeatures,
                     ],
-                    loggedInData.user
+                    loggedInData?
                   )
                 : (
                     getPrice(
-                      featuresData?.allFeatures.filter((f: any) => loggedInData.user.features.includes(f._id)),
-                      loggedInData.user
+                      featuresData?.allFeatures.filter((f: any) => loggedInData?.features.includes(f._id)),
+                      loggedInData?
                     ) -
-                    getPrice(props.selectedFeatures, loggedInData.user, {
+                    getPrice(props.selectedFeatures, loggedInData?, {
                       noCredits: true,
                     })
                   ).toFixed(2)}

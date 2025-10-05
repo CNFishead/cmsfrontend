@@ -27,16 +27,19 @@ const FeaturesView = () => {
   const addDiscounts = () => {
     const discountFeatures: any[] = [];
     console.log("selectedFeatures", selectedFeatures);
-    const currentFeatures = [...selectedFeatures.map((f) => f._id), ...loggedInData.user.features];
+    const currentFeatures = [...selectedFeatures.map((f) => f._id), 
+      // ...loggedInData?.features
+    ];
 
     //Add on core feature discount
     if (
       currentFeatures.includes("6328aadfd0c3abb536eae7ad") &&
-      currentFeatures.includes("632b65745ddb31bf9714ef69") &&
-      !(
-        loggedInData.user.features.includes("63457a948c492c0963977ab6") &&
-        loggedInData.user.features.includes("632b65745ddb31bf9714ef69")
-      )
+      currentFeatures.includes("632b65745ddb31bf9714ef69") 
+      // &&
+      // !(
+        // loggedInData?.features.includes("63457a948c492c0963977ab6") &&
+        // loggedInData?.features.includes("632b65745ddb31bf9714ef69")
+      // )
     ) {
       // discountFeatures.push(featuresData?.allFeatures.find((f: any) => f._id === "63457a948c492c0963977ab6"));
     }
@@ -62,7 +65,7 @@ const FeaturesView = () => {
       <Container title="Your Features">
         <div className={styles.features}>
           {/* {featuresData?.allFeatures
-            .filter((f: any) => loggedInData.user.features.includes(f._id))
+            .filter((f: any) => loggedInData?.features.includes(f._id))
             .map((feature: FeatureType, index: any) => {
               return (
                 <Feature
@@ -80,18 +83,18 @@ const FeaturesView = () => {
           <h1 className={styles.totalPrice}>
             $
             {/* {getPrice(
-              featuresData?.allFeatures.filter((f: any) => loggedInData.user.features.includes(f._id)),
-              loggedInData.user
+              featuresData?.allFeatures.filter((f: any) => loggedInData?.features.includes(f._id)),
+              loggedInData?
             )} */}
             /Month
           </h1>
-          {loggedInData.user.credits > 0 && (
-            <h1 className={styles.totalPrice}>(Includes -${loggedInData.user.credits.toFixed(2)} in credits)</h1>
-          )}
+          {/* {loggedInData?.credits > 0 && (
+            <h1 className={styles.totalPrice}>(Includes -${loggedInData?.credits.toFixed(2)} in credits)</h1>
+          )} */}
         </div>
       </Container>
       <Container title="Available Features to Add">
-        {/* {featuresData?.availableFeatures.filter((f: any) => !loggedInData.user.features.includes(f._id)).length ===
+        {/* {featuresData?.availableFeatures.filter((f: any) => !loggedInData?.features.includes(f._id)).length ===
           0 && (
           <Empty
             description={<span>You have all the features available to you.</span>}
@@ -105,7 +108,7 @@ const FeaturesView = () => {
         */}
         <div className={styles.features}>
           {/* {featuresData?.availableFeatures
-            .filter((f: any) => !loggedInData.user.features.includes(f._id))
+            .filter((f: any) => !loggedInData?.features.includes(f._id))
             .map((feature: FeatureType) => {
               return (
                 <Feature
@@ -125,9 +128,9 @@ const FeaturesView = () => {
           <h1 className={styles.total}>Total:</h1>
           <h1 className={styles.totalPrice}>
             +$
-            {getPrice(selectedFeatures, loggedInData.user, {
+            {/* {getPrice(selectedFeatures, loggedInData?, {
               noCredits: true,
-            })}
+            })} */}
             /Month
           </h1>
 

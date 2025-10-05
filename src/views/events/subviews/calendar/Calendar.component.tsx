@@ -5,7 +5,7 @@ import styles from "./Calendar.module.scss";
 import { Calendar as BigCalendar, momentLocalizer, View } from "react-big-calendar";
 import moment from "moment";
 import useFetchData from "@/state/useFetchData";
-import { useUser } from "@/state/auth"; 
+import { useUser } from "@/state/auth";
 import { useRouter } from "next/navigation";
 
 const Calendar = () => {
@@ -15,13 +15,13 @@ const Calendar = () => {
     end: moment().endOf("month"),
   });
   const [currentDate, setCurrentDate] = React.useState(new Date());
-  const [view, setView] = React.useState<View>("month"); // Set initial view 
+  const [view, setView] = React.useState<View>("month"); // Set initial view
   const { data: loggedInUser } = useUser();
   const { data } = useFetchData({
     url: "/event",
     key: ["events", `${dateRanges.start}-${dateRanges.end}`],
-    enabled: !!loggedInUser?.user?._id,
-    filter: `user;${loggedInUser?.user?._id}`,
+    enabled: !!loggedInUser?._id,
+    filter: `user;${loggedInUser?._id}`,
     // + |startDate;{"$gte":"${moment(dateRanges.start).toISOString()}","$lte":"${moment(
     //   dateRanges.end
     // ).toISOString()}"},

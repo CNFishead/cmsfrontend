@@ -13,8 +13,8 @@ const AbsenteeMembers = () => {
     url: `/member`,
     key: "absenteeMembers",
     method: "GET",
-    filter: `user;${loggedInData?.user?._id}|dateLastVisited;{"$lte":"${moment().subtract(30, "days").toISOString()}"}`, // 30 days ago from today's date
-    enabled: !!loggedInData?.user?._id,
+    filter: `user;${loggedInData?._id}|dateLastVisited;{"$lte":"${moment().subtract(30, "days").toISOString()}"}`, // 30 days ago from today's date
+    enabled: !!loggedInData?._id,
   }) as any;
 
   if (isError) return <Error error={error.message} />;

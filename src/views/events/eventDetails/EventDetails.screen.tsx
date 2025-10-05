@@ -16,8 +16,8 @@ const EventDetails = () => {
     url: `/event`,
     key: "eventInfo",
     method: "GET",
-    enabled: !!id && !!userData?.user?._id,
-    filter: `user;${userData?.user?._id}|_id;${id}`,
+    enabled: !!id && !!userData?._id,
+    filter: `user;${userData?._id}|_id;${id}`,
   }) as any;
   const tabs: TabsProps["items"] = [
     {

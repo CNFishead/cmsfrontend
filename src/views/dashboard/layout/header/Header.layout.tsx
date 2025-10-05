@@ -1,5 +1,5 @@
-import { useUser } from "@/state/auth";
-import styles from "./Header.module.scss";
+import { useUser } from '@/state/auth';
+import styles from './Header.module.scss';
 
 const Header = () => {
   const { data: loggedInData } = useUser();
@@ -7,9 +7,9 @@ const Header = () => {
     <div className={styles.container}>
       <div className={styles.welcomeContainer}>
         <h1 className={styles.text}>
-          Welcome <span>{loggedInData?.user?.profile?.organizationName}</span>
+          Welcome <span>{loggedInData?.fullName}</span>
         </h1>
-        <p>What would you like to do today?</p>
+        <p>{new Date().toDateString()}</p>
       </div>
     </div>
   );

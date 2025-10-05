@@ -32,8 +32,8 @@ const Families = () => {
     url: "/family",
     key: "families",
     method: "GET",
-    filter: `user;${loggedInData?.user._id}`,
-    enabled: !!loggedInData?.user._id,
+    filter: `user;${loggedInData?._id}`,
+    enabled: !!loggedInData?._id,
   }) as any;
 
   const handleDelete = (id: string) => {

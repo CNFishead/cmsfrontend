@@ -5,21 +5,28 @@ import { Button, Card, Divider, Form, Input, InputNumber, Skeleton } from "antd"
 import { FaSave } from "react-icons/fa";
 import PhotoUpload from "@/components/photoUpload/PhotoUpload.component";
 import Error from "@/components/error/Error.component";
-import { useUser, useUserDetails } from "@/state/auth";
+import { useUser /*useUserDetails*/ } from "@/state/auth";
 import useUpdateData from "@/state/useUpdateData";
 
 const UserDetails = () => {
   const [form] = Form.useForm();
   const { data: loggedInData, error, isLoading: loading } = useUser();
-  const { data: payload } = useUserDetails(loggedInData?.user._id);
+  // const { data: payload } = useUserDetails(loggedInData?._id);
 
   const { mutate: updateUser } = useUpdateData({
     queriesToInvalidate: ["user"],
   });
 
-  React.useEffect(() => {
-    form.setFieldsValue({ ...payload?.user });
-  }, [payload?.user]);
+  React.useEffect(
+    () => {
+      form.setFieldsValue({
+        // ...payload?.user
+      });
+    },
+    [
+      // payload?.user
+    ]
+  );
 
   const onFinish = (values: any) => {
     updateUser({
@@ -40,7 +47,7 @@ const UserDetails = () => {
               listType="picture-card"
               isAvatar={true}
               action={`${process.env.API_URL}/upload`}
-              default={payload?.user?.profileImageUrl}
+              // default={payload?.user?.profileImageUrl}
               form={form}
             />
           </div>
@@ -48,12 +55,13 @@ const UserDetails = () => {
         <Skeleton active />
       </Card>
     );
-  if (error || !payload?.user)
+  if (
+    error
+    // || !payload?.user
+  )
     return (
       <Card title="Account Details" className={styles.container}>
-        <Error
-          error={!payload?.user ? "No user object found, please try navigating away from the page and back" : error}
-        />
+        <Error error={"No user object found, please try navigating away from the page and back"} />
       </Card>
     );
   return (
@@ -72,7 +80,7 @@ const UserDetails = () => {
               isAvatar={true}
               form={form}
               action={`${process.env.API_URL}/upload`}
-              default={payload?.user?.profileImageUrl}
+              // default={payload?.user?.profileImageUrl}
               placeholder="Upload a profile photo"
             />
           </div>

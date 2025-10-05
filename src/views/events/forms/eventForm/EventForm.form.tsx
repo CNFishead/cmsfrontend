@@ -14,6 +14,7 @@ import useUpdateData from "@/state/useUpdateData";
 import useRemoveData from "@/state/useRemoveData";
 import { FaTrash } from "react-icons/fa";
 import dayjs from "dayjs";
+import { useSelectedProfile } from "@/hooks/useSelectedProfile";
 const { RangePicker } = DatePicker;
 
 interface EventFormProps {
@@ -25,11 +26,11 @@ const EventForm = ({ setModalVisible }: EventFormProps) => {
   const [form] = Form.useForm();
   const [timer, setTimer] = React.useState<any>(null);
   const [keyword, setKeyword] = React.useState("");
-  const { data: loggedInUser } = useUser();
+  const { selectedProfile } = useSelectedProfile();
   const { data: ministries } = useFetchData({
-    url: `/ministry/${loggedInUser?.user?.ministry?._id}/subministries`,
+    url: `/ministry/${selectedProfile?._id}/subministries`,
     key: ["ministries", keyword],
-    enabled: !!loggedInUser?.user?._id,
+    enabled: !!selectedProfile?._id,
     keyword: keyword,
   });
 

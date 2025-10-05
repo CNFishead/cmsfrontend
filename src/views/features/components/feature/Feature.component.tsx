@@ -26,7 +26,7 @@
 //       props.selectedFeatures.forEach((f: any) => {
 //         if (props.feature.reliesOn == f._id) add = true;
 //       });
-//       loggedInData.user.features.forEach((f: any) => {
+//       loggedInData?.features.forEach((f: any) => {
 //         if (props.feature.reliesOn == f) add = true;
 //       });
 //     } else return true;
@@ -38,15 +38,14 @@
 
 //     // featuresData.allFeatures.forEach((f: any) => {
 //     //   if (f.reliesOn == props.feature._id) {
-//     //     if (loggedInData.user.features.includes(f._id)) {
+//     //     if (loggedInData?.features.includes(f._id)) {
 //     //       featuresToRemove.push(f);
 //     //     }
 //     //   }
 //   }
-  
 
 //     //remove core feature discount
-//     // if (loggedInData.user.features.includes("63457a948c492c0963977ab6")) {
+//     // if (loggedInData?.features.includes("63457a948c492c0963977ab6")) {
 //     //   if (
 //     //     featuresToRemove.find((f) => f._id == "6328aadfd0c3abb536eae7ad") ||
 //     //     featuresToRemove.find((f) => f._id == "632b65745ddb31bf9714ef69")

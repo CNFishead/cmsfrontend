@@ -19,8 +19,8 @@ const ApiKeys = () => {
   const { data, isLoading, isError, error, isFetching } = useFetchData({
     url: '/apikey',
     key: 'keys',
-    filter: `user;${loggedInData?.user?._id}`,
-    enabled: !!loggedInData?.user?._id,
+    filter: `user;${loggedInData?._id}`,
+    enabled: !!loggedInData?._id,
   });
 
   const { mutate: remove } = useRemoveData({
