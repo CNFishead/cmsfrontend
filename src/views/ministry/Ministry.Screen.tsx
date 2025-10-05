@@ -13,26 +13,23 @@ import { useRouter } from "next/navigation";
 import { useUser } from "@/state/auth";
 import useApiHook from "@/state/useApi";
 import { IoQrCode } from "react-icons/io5";
+import { useSelectedProfile } from "@/hooks/useSelectedProfile";
 
 const Ministry = () => {
   const router = useRouter();
   const { data: loggedInData } = useUser();
-  const { data: selectedProfile, isLoading: profileIsLoading } = useFetchData({
-    url: `/ministry/${loggedInData.user?.ministry?._id}`,
-    key: "selectedProfile",
-    enabled: !!loggedInData?.ministry,
-  });
+  const { selectedProfile } = useSelectedProfile();
 
   const {
     data: ministryData,
     isFetching,
     isLoading: loading,
   } = useApiHook({
-    url: `/ministry/${selectedProfile?.ministry?._id}/subministries`,
+    url: `/ministry/${selectedProfile?._id}/subministries`,
     key: "ministryList",
-    enabled: !!selectedProfile?.ministry?._id,
+    enabled: !!selectedProfile?._id,
     method: "GET",
-    filter: `user;${loggedInData?.user?._id}`,
+    filter: `user;${loggedInData?._id}`,
   }) as any;
 
   const { mutate: deleteMinistry } = useApiHook({
@@ -141,12 +138,12 @@ const Ministry = () => {
                             style: { pointerEvents: "auto" },
                             onOk: () => {
                               deleteMinistry({
-                                url: `/ministry/${selectedProfile?.ministry?._id}/subministries/${record._id}`,
+                                url: `/ministry/${selectedProfile?._id}/subministries/${record._id}`,
                               });
                             },
                           })
                         }
-                        disabled={record._id === selectedProfile?.ministry?._id}
+                        disabled={record._id === selectedProfile?._id}
                       >
                         <FaTrash />
                       </Button>
