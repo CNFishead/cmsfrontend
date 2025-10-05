@@ -33,13 +33,13 @@ jobs:
           NEXT_PUBLIC_TINYMCE_API_KEY: ${{ secrets.NEXT_PUBLIC_TINYMCE_API_KEY }}
 
       - name: Zip artifact for deployment
-        run: zip next.zip ./* .next -qr
+        run: zip -r release.zip .next public package.json package-lock.json
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: node-app
-          path: next.zip
+          path: release.zip
 
   deploy:
     runs-on: ubuntu-latest
@@ -55,7 +55,7 @@ jobs:
           name: node-app
 
       - name: Unzip artifact for deployment
-        run: unzip next.zip
+        run: unzip release.zip
 
       - name: "Deploy to Azure Web App"
         id: deploy-to-webapp
