@@ -8,7 +8,7 @@ interface PolicyCheckWrapperProps {
   children: React.ReactNode;
 }
 
-const documentsToCheck = ['athlete-agreement', 'terms', 'privacy', 'refund'];
+const documentsToCheck = ['terms', 'privacy', 'refund'];
 
 const PolicyCheckWrapper: React.FC<PolicyCheckWrapperProps> = ({ children }) => {
   const { data: loggedInData, isLoading: userIsLoading, refetch: refetchUser } = useUser();
