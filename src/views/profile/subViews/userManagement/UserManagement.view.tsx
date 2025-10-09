@@ -1,15 +1,15 @@
-'use client';
-import React, { useState } from 'react';
-import { Button, Table, Typography } from 'antd';
-import { UserAddOutlined, UserOutlined } from '@ant-design/icons';
-import useApiHook from '@/hooks/useApi';
-import { useInterfaceStore } from '@/state/interface';
-import styles from './UserManagement.module.scss'; 
-import getColumns from './columns';
-import InviteUserModal from './InviteUserModal';
-import { useQueryClient } from '@tanstack/react-query';
-import MinistryType, { TeamMember } from '@/types/Ministry';
-import { useSelectedProfile } from '@/hooks/useSelectedProfile';
+"use client";
+import React, { useState } from "react";
+import { Button, Table, Typography } from "antd";
+import { UserAddOutlined, UserOutlined } from "@ant-design/icons";
+import useApiHook from "@/hooks/useApi";
+import { useInterfaceStore } from "@/state/interface";
+import styles from "./UserManagement.module.scss";
+import getColumns from "./columns";
+import InviteUserModal from "./InviteUserModal";
+import { TeamMember } from "@/types/Ministry";
+import { useSelectedProfile } from "@/hooks/useSelectedProfile";
+import User from "@/types/User";
 
 const { Title, Text } = Typography;
 
@@ -18,7 +18,6 @@ interface UserManagementProps {
 }
 
 const UserManagement: React.FC<UserManagementProps> = ({ onUserRemoved }) => {
-  const queryClient = useQueryClient();
   const { selectedProfile } = useSelectedProfile();
 
   const [showInviteModal, setShowInviteModal] = useState(false);
@@ -31,8 +30,8 @@ const UserManagement: React.FC<UserManagementProps> = ({ onUserRemoved }) => {
 
   // API hook for removing user from team
   const { mutate: removeUserFromTeam } = useApiHook({
-    method: 'DELETE',
-    key: 'remove-team-user',
+    method: "DELETE",
+    key: "remove-team-user",
   }) as any;
 
   // Handler for removing a user from the team
@@ -45,30 +44,30 @@ const UserManagement: React.FC<UserManagementProps> = ({ onUserRemoved }) => {
         {
           onSuccess: () => {
             addAlert({
-              type: 'success',
+              type: "success",
               message: `${userName} has been removed from the team`,
               duration: 5000,
             });
             onUserRemoved(); // Refresh team data
           },
           onError: (error: any) => {
-            const errorMessage = error?.response?.data?.message || 'Failed to remove user from team';
+            const errorMessage = error?.response?.data?.message || "Failed to remove user from team";
             addAlert({
-              type: 'error',
+              type: "error",
               message: errorMessage,
               duration: 5000,
             });
-            console.error('Remove user error:', error);
+            console.error("Remove user error:", error);
           },
         }
       );
     } catch (error) {
       addAlert({
-        type: 'error',
-        message: 'An error occurred while removing the user',
+        type: "error",
+        message: "An error occurred while removing the user",
         duration: 5000,
       });
-      console.error('Remove user error:', error);
+      console.error("Remove user error:", error);
     }
   };
 
@@ -85,8 +84,8 @@ const UserManagement: React.FC<UserManagementProps> = ({ onUserRemoved }) => {
             Team Members
           </Title>
           {linkedUsers.length > 0 && (
-            <Text type="secondary" style={{ fontSize: '14px' }}>
-              {linkedUsers.length} team member{linkedUsers.length !== 1 ? 's' : ''}
+            <Text type="secondary" style={{ fontSize: "14px" }}>
+              {linkedUsers.length} team member{linkedUsers.length !== 1 ? "s" : ""}
             </Text>
           )}
         </div>
@@ -103,16 +102,21 @@ const UserManagement: React.FC<UserManagementProps> = ({ onUserRemoved }) => {
               No team members yet
             </Title>
             <Text className={styles.emptyDescription}>Start building your team by inviting users to join.</Text>
-            <Button type="primary" icon={<UserAddOutlined />} onClick={() => setShowInviteModal(true)} style={{ marginTop: 16 }}>
+            <Button
+              type="primary"
+              icon={<UserAddOutlined />}
+              onClick={() => setShowInviteModal(true)}
+              style={{ marginTop: 16 }}
+            >
               Invite First Member
             </Button>
           </div>
         ) : (
           <Table
-            columns={columns}
+            columns={columns as any}
             dataSource={linkedUsers as any}
             loading={false}
-            rowKey={(record: TeamMember) => record?.user?._id}
+            rowKey={"_id"}
             pagination={{
               pageSize: 10,
               showSizeChanger: false,
