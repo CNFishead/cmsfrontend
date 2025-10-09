@@ -46,20 +46,20 @@ const InviteUserModal: React.FC<InviteUserModalProps> = ({ open, onClose, teamId
         teamName,
         inviteeName: values.inviteeName,
         inviteeEmail: values.inviteeEmail,
-        inviteeRole: values.inviteeRole || "Team Member",
+        inviteeRole: values.inviteeRole || "Member",
         inviteMessage: values.inviteMessage,
       };
 
       sendTeamInvite(
         {
-          url: `/profiles/team/${teamId}/invite-user`,
+          url: `/ministry/${teamId}/invite-user`,
           formData: invitationData,
         },
         {
           onSuccess: () => {
             addAlert({
               type: "success",
-              message: "Team invitation sent successfully!",
+              message: "Ministry invitation sent successfully!",
               duration: 5000,
             });
             form.resetFields();
@@ -67,13 +67,13 @@ const InviteUserModal: React.FC<InviteUserModalProps> = ({ open, onClose, teamId
             onInviteSuccess();
           },
           onError: (error: any) => {
-            const errorMessage = error?.response?.data?.message || "Failed to send team invitation";
+            const errorMessage = error?.response?.data?.message || "Failed to send ministry invitation";
             addAlert({
               type: "error",
               message: errorMessage,
               duration: 5000,
             });
-            console.error("Team invitation error:", error);
+            console.error("Ministry invitation error:", error);
           },
         }
       );
@@ -83,7 +83,7 @@ const InviteUserModal: React.FC<InviteUserModalProps> = ({ open, onClose, teamId
         message: "An error occurred while sending the invitation",
         duration: 5000,
       });
-      console.error("Team invitation error:", error);
+      console.error("Ministry invitation error:", error);
     } finally {
       setIsSubmitting(false);
     }
@@ -99,7 +99,7 @@ const InviteUserModal: React.FC<InviteUserModalProps> = ({ open, onClose, teamId
       title={
         <Space>
           <UserAddOutlined />
-          Invite User to Team
+          Invite User to Ministry
         </Space>
       }
       open={open}
@@ -135,16 +135,22 @@ const InviteUserModal: React.FC<InviteUserModalProps> = ({ open, onClose, teamId
         <Form.Item
           label="Role"
           name="inviteeRole"
-          tooltip="Role of the person within the team organization"
-          initialValue="Team Member"
+          tooltip="Role of the person within the ministry organization"
+          initialValue="Member"
         >
           <Select placeholder="Select a role">
-            <Option value="Team Member">Team Member</Option>
-            <Option value="Team Administrator">Team Administrator</Option>
-            <Option value="Head Coach">Head Coach</Option>
-            <Option value="Assistant Coach">Assistant Coach</Option>
-            <Option value="Team Manager">Team Manager</Option>
-            <Option value="Athletic Director">Athletic Director</Option>
+            <Option value="Member">Member</Option>
+            <Option value="Ministry Leader">Ministry Leader</Option>
+            <Option value="Assistant Leader">Assistant Leader</Option>
+            <Option value="Administrator">Administrator</Option>
+            <Option value="Volunteer">Volunteer</Option>
+            <Option value="Coordinator">Coordinator</Option>
+            <Option value="Teacher">Teacher</Option>
+            <Option value="Counselor">Counselor</Option>
+            <Option value="Worship Leader">Worship Leader</Option>
+            <Option value="Youth Leader">Youth Leader</Option>
+            <Option value="Elder">Elder</Option>
+            <Option value="Deacon">Deacon</Option>
           </Select>
         </Form.Item>
 
@@ -155,7 +161,7 @@ const InviteUserModal: React.FC<InviteUserModalProps> = ({ open, onClose, teamId
         >
           <TextArea
             rows={3}
-            placeholder={`Welcome to ${teamName}! We're excited to have you join our team...`}
+            placeholder={`Welcome to ${teamName}! We're excited to have you join our ministry...`}
             maxLength={500}
             showCount
           />

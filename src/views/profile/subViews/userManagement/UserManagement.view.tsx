@@ -7,9 +7,9 @@ import { useInterfaceStore } from "@/state/interface";
 import styles from "./UserManagement.module.scss";
 import getColumns from "./columns";
 import InviteUserModal from "./InviteUserModal";
-import { TeamMember } from "@/types/Ministry";
+import { useQueryClient } from "@tanstack/react-query";
 import { useSelectedProfile } from "@/hooks/useSelectedProfile";
-import User from "@/types/User";
+import { TeamMember } from "@/types/Ministry";
 
 const { Title, Text } = Typography;
 
@@ -18,6 +18,7 @@ interface UserManagementProps {
 }
 
 const UserManagement: React.FC<UserManagementProps> = ({ onUserRemoved }) => {
+  const queryClient = useQueryClient();
   const { selectedProfile } = useSelectedProfile();
 
   const [showInviteModal, setShowInviteModal] = useState(false);
@@ -26,7 +27,7 @@ const UserManagement: React.FC<UserManagementProps> = ({ onUserRemoved }) => {
   // Extract team details from props
   const teamId = selectedProfile?._id;
   const teamName = selectedProfile?.name;
-  const linkedUsers = selectedProfile?.admins || [];
+  const linkedUsers = selectedProfile?.linkedUsers || [];
 
   // API hook for removing user from team
   const { mutate: removeUserFromTeam } = useApiHook({
@@ -113,10 +114,10 @@ const UserManagement: React.FC<UserManagementProps> = ({ onUserRemoved }) => {
           </div>
         ) : (
           <Table
-            columns={columns as any}
-            dataSource={linkedUsers as any}
+            columns={columns}
+            dataSource={linkedUsers}
             loading={false}
-            rowKey={"_id"}
+            rowKey={(record: TeamMember) => record.user._id}
             pagination={{
               pageSize: 10,
               showSizeChanger: false,
@@ -130,8 +131,8 @@ const UserManagement: React.FC<UserManagementProps> = ({ onUserRemoved }) => {
       <InviteUserModal
         open={showInviteModal}
         onClose={() => setShowInviteModal(false)}
-        teamId={teamId as any}
-        teamName={teamName as any}
+        teamId={teamId as string}
+        teamName={teamName as string}
         onInviteSuccess={() => {
           setShowInviteModal(false);
           onUserRemoved(); // This refreshes the user list

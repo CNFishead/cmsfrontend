@@ -20,11 +20,12 @@ export default interface MinistryType {
   ministryImageUrl: string;
   members: string[];
   events: string[];
-  announcements: string[]; 
+  announcements: string[];
   ownerMinistry: string;
   isMainMinistry: boolean;
   admins: string[];
   leaders: string[];
+  linkedUsers: TeamMember[]; // References to users with access
   createdAt: Date;
   updatedAt: Date;
   isSubMinistry: boolean;
