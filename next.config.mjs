@@ -8,7 +8,7 @@ const nextConfig = {
     AUTH_URL: process.env.AUTH_URL,
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: process.env.STRIPE_PUBLISHABLE_KEY,
     SERVICE_NAME: process.env.SERVICE_NAME,
-    VERSION: process.env.npm_package_version,
+    VERSION: process.env.APP_VERSION,
     // ENV: "development",
   },
   //Redirect / to /dash
