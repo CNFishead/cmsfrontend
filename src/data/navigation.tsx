@@ -75,6 +75,11 @@ export const navigation = (options?: any) => {
           link: "/account_details",
           icon: <CgProfile />,
         },
+        profile: {
+          title: "Ministry Profile",
+          link: "/account_details/profile",
+          icon: <BsFillPeopleFill />,
+        },
         keys: {
           title: "API Keys",
           link: "/account_details/keys",

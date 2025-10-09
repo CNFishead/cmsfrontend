@@ -1,20 +1,31 @@
-import MemberType from "./MemberType";
+import User from "./User";
 
+export interface TeamMember {
+  user: User;
+  role: string;
+}
 export default interface MinistryType {
   _id: string;
+  user: string;
   name: string;
   description: string;
+  donationLink: string;
   address: string;
   city: string;
   state: string;
   zipCode: string;
   country: string;
   ministryType: string;
-  leader: MemberType;
+  leader: string;
+  ministryImageUrl: string;
   members: string[];
   events: string[];
-  announcements: string[];
-  features: string[];
-  payor: string;
+  announcements: string[]; 
   ownerMinistry: string;
+  isMainMinistry: boolean;
+  admins: string[];
+  leaders: string[];
+  createdAt: Date;
+  updatedAt: Date;
+  isSubMinistry: boolean;
 }

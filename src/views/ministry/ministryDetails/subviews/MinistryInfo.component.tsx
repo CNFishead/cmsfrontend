@@ -77,19 +77,20 @@ const MinistryInfo = () => {
     if (ministry && isEditMode) {
       const formData = {
         ...ministry,
-        leader: ministry.leader
-          ? {
-              _id: ministry.leader._id,
-              fullName: ministry.leader.fullName,
-              firstName: ministry.leader.firstName,
-              lastName: ministry.leader.lastName,
-              profileImageUrl: ministry.leader.profileImageUrl || "",
-              email: ministry.leader.email || "",
-              phoneNumber: ministry.leader.phoneNumber || "",
-              role: ministry.leader.role || "",
-              dateLastVisited: ministry.leader.dateLastVisited || null,
-            }
-          : undefined,
+        leader:
+          ministry.leader && typeof ministry.leader === "object"
+            ? {
+                _id: (ministry.leader as any)._id,
+                fullName: (ministry.leader as any).fullName,
+                firstName: (ministry.leader as any).firstName,
+                lastName: (ministry.leader as any).lastName,
+                profileImageUrl: (ministry.leader as any).profileImageUrl || "",
+                email: (ministry.leader as any).email || "",
+                phoneNumber: (ministry.leader as any).phoneNumber || "",
+                role: (ministry.leader as any).role || "",
+                dateLastVisited: (ministry.leader as any).dateLastVisited || null,
+              }
+            : undefined,
       };
       form.setFieldsValue(formData);
       setDataLoaded(true); // Force re-render of components
@@ -245,7 +246,7 @@ const MinistryInfo = () => {
               <label className={styles.leaderLabel}>Ministry Leader</label>
               {getCurrentLeader() ? (
                 <div className={styles.selectedLeader}>
-                  <UserItem user={getCurrentLeader() as any} key={`leader-${getCurrentLeader()?._id}-${dataLoaded}`}/>
+                  <UserItem user={getCurrentLeader() as any} key={`leader-${getCurrentLeader()?._id}-${dataLoaded}`} />
                   <Button type="link" onClick={() => setIsLeaderModalOpen(true)} className={styles.changeLeaderBtn}>
                     Change Leader
                   </Button>
