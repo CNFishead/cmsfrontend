@@ -1,3 +1,4 @@
+
 import User from "@/types/User";
 import { ColumnsType } from "antd/es/table";
 import { Button, Space, Tag, Avatar, Typography, Popconfirm } from "antd";
@@ -15,38 +16,36 @@ const columns = ({ onRemoveUser }: ColumnProps): ColumnsType<TeamMember> => {
   return [
     {
       title: "User",
+      dataIndex: "user",
       key: "user",
       ellipsis: true,
-      render: (record: any) => {
-        return (
-          <Space>
-            <Avatar src={record?.profileImageUrl} icon={<UserOutlined />} />
-            <div>
-              <div style={{ fontWeight: 500 }}>
-                {record?.fullName || `${record?.firstName} ${record?.lastName}` || "Unknown User"}
-              </div>
-              <Text type="secondary" style={{ fontSize: "12px" }}>
-                {record?.email}
-              </Text>
+      render: (user: User, record: TeamMember) => (
+        <Space>
+          <Avatar src={user?.profileImageUrl} icon={<UserOutlined />} />
+          <div>
+            <div style={{ fontWeight: 500 }}>
+              {user?.fullName || `${user?.firstName} ${user?.lastName}` || "Unknown User"}
             </div>
-          </Space>
-        );
-      },
+            <Text type="secondary" style={{ fontSize: "12px" }}>
+              {user?.email}
+            </Text>
+          </div>
+        </Space>
+      ),
     },
     {
       title: "Role",
       dataIndex: "role",
       key: "role",
-      render: (role: string[]) => {
-        return role.map((r: string) => (<Tag key={r}>{r}</Tag>));
-      },
+      render: (role: string) => <Tag color="blue">{role || "Team Member"}</Tag>,
     },
     {
       title: "Status",
+      dataIndex: "user",
       key: "status",
-      render: (record: any) => (
-        <Tag color={record?.isActive ? "green" : "orange"}>
-          {record?.isActive ? "Active" : record?.isEmailVerified ? "Inactive" : "Pending"}
+      render: (user: User) => (
+        <Tag color={user?.isActive ? "green" : "orange"}>
+          {user?.isActive ? "Active" : user?.isEmailVerified ? "Inactive" : "Pending"}
         </Tag>
       ),
     },
