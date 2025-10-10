@@ -1,3 +1,4 @@
+import MemberType from "./MemberType";
 import User from "./User";
 
 export interface TeamMember {
@@ -16,9 +17,9 @@ export default interface MinistryType {
   zipCode: string;
   country: string;
   ministryType: string;
-  leader: string;
+  leader: MemberType;
   ministryImageUrl: string;
-  members: string[];
+  members: MemberType[];
   events: string[];
   announcements: string[];
   ownerMinistry: string;
