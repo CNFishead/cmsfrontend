@@ -1,101 +1,265 @@
 @use "@/styles/globals.scss" as *;
 
 .wrapper {
-  //   padding: clamp(40px, 5vw, 500px);
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
-  width: 100svw;
-  height: 100dvh;
-  background-color: white;
-  .container {
-    // background-color: white;
-    background-color: white;
-    box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
-    gap: 40px;
-    z-index: 1;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: linear-gradient(135deg, $primary-color 0%, $secondary-color 100%);
+
+  .background {
+    position: absolute;
+    width: 100%;
+    height: 100%;
     overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    border-radius: 10px;
-    @include mobile {
-      box-shadow: none;
-      width: 100%;
-      justify-content: flex-start;
-      align-items: flex-start;
-    }
 
-    .header {
-      width: 100%;
+    .shape {
+      position: absolute;
+      border-radius: 50%;
 
-      background-color: white;
-      box-shadow: rgba(0, 0, 0, 0.094) 0px 1px 2px 0px;
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
+      &:first-child {
+        background: linear-gradient(135deg, rgba(60, 98, 85, 0.8), rgba(97, 135, 110, 0.8));
+        width: 500px;
+        height: 500px;
+        top: -10%;
+        right: -10%;
+        animation: float 6s ease-in-out infinite;
 
-      .logoContainer {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        padding: 40px;
-
-        .studio {
-          margin: 0;
-          text-align: center;
-          width: 100%;
-          font-weight: 700;
-          color: var(--primary-dark);
-          font-size: 22px;
+        @include mobile {
+          width: 300px;
+          height: 300px;
         }
       }
-    }
-    .text {
-      font-size: 18px;
-      font-weight: 400;
-      border: 5px;
-      padding: 40px;
 
-      max-width: 500px;
-      text-align: left;
-      color: var(--primary-dark);
-      line-height: 30px;
+      &:last-child {
+        background: linear-gradient(135deg, rgba(97, 135, 110, 0.6), rgba(166, 187, 141, 0.6));
+        width: 400px;
+        height: 400px;
+        bottom: -10%;
+        left: -10%;
+        animation: float 8s ease-in-out infinite;
+        animation-delay: 1s;
 
-      @include mobile {
-        // padding: 0px 40px;
-      }
-      span {
-        color: var(--primary-dark);
-        font-weight: 900;
-        font-size: 25px;
-      }
-    }
-
-    .buttonLink {
-      width: 100%;
-      padding: 40px;
-      @include mobile {
-        padding: 40px;
-      }
-
-      .button {
-        width: 100%;
-        font-weight: 600;
+        @include mobile {
+          width: 250px;
+          height: 250px;
+        }
       }
     }
   }
 
-  .waveContainer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
+  .container {
+    position: relative;
+    z-index: 2;
     width: 100%;
+    max-width: 480px;
+    padding: 20px;
 
-    margin-bottom: -20px;
-    z-index: 0;
+    @include mobile {
+      padding: 16px;
+      max-width: 100%;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 24px;
+      padding: 48px 40px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+      @include mobile {
+        padding: 32px 24px;
+        border-radius: 20px;
+      }
+
+      &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 24px 70px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.1);
+      }
+
+      .iconWrapper {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 24px;
+
+        .iconCircle {
+          width: 80px;
+          height: 80px;
+          border-radius: 50%;
+          background: linear-gradient(135deg, $primary-color 0%, $secondary-color 100%);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 8px 24px rgba(60, 98, 85, 0.4);
+          animation: pulse 2s ease-in-out infinite;
+
+          @include mobile {
+            width: 64px;
+            height: 64px;
+          }
+
+          .icon {
+            font-size: 36px;
+            color: white;
+
+            @include mobile {
+              font-size: 28px;
+            }
+          }
+        }
+      }
+
+      .logoContainer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 32px;
+
+        @include mobile {
+          margin-bottom: 24px;
+        }
+      }
+
+      .content {
+        .title {
+          font-size: 28px;
+          font-weight: 700;
+          color: #1a1a1a;
+          text-align: center;
+          margin-bottom: 12px;
+          line-height: 1.3;
+
+          @include mobile {
+            font-size: 24px;
+          }
+        }
+
+        .description {
+          font-size: 15px;
+          color: #666;
+          text-align: center;
+          line-height: 1.6;
+          margin-bottom: 32px;
+
+          @include mobile {
+            font-size: 14px;
+            margin-bottom: 24px;
+          }
+        }
+
+        .features {
+          display: flex;
+          justify-content: center;
+          gap: 24px;
+          margin-bottom: 32px;
+          flex-wrap: wrap;
+
+          @include mobile {
+            gap: 16px;
+            margin-bottom: 24px;
+          }
+
+          .feature {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(60, 98, 85, 0.08);
+            border-radius: 20px;
+            font-size: 13px;
+            color: $primary-color;
+            font-weight: 500;
+
+            @include mobile {
+              font-size: 12px;
+              padding: 6px 12px;
+            }
+
+            .featureIcon {
+              font-size: 16px;
+
+              @include mobile {
+                font-size: 14px;
+              }
+            }
+          }
+        }
+
+        .buttonLink {
+          display: block;
+          width: 100%;
+          text-decoration: none;
+
+          .button {
+            height: 50px;
+            font-size: 16px;
+            width: 100%;
+            font-weight: 600;
+            border-radius: 12px;
+            background: linear-gradient(135deg, $primary-color 0%, $secondary-color 100%);
+            border: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(60, 98, 85, 0.4);
+
+            @include mobile {
+              height: 46px;
+              font-size: 15px;
+            }
+
+            &:hover:not(:disabled) {
+              transform: translateY(-2px);
+              box-shadow: 0 6px 20px rgba(60, 98, 85, 0.5);
+              background: linear-gradient(135deg, $primary-color-lighter 0%, $secondary-color-lighter 100%);
+            }
+
+            &:active:not(:disabled) {
+              transform: translateY(0);
+            }
+
+            &:disabled {
+              opacity: 0.6;
+              cursor: not-allowed;
+            }
+          }
+        }
+
+        .footerText {
+          margin-top: 20px;
+          text-align: center;
+          font-size: 12px;
+          color: #999;
+          line-height: 1.5;
+
+          @include mobile {
+            font-size: 11px;
+            margin-top: 16px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-20px) rotate(5deg);
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
   }
 }
