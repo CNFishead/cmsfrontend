@@ -10,7 +10,7 @@ import UserItem from "@/components/userItem/UserItem.component";
 const AbsenteeMembers = () => {
   const { data: loggedInData } = useUser();
   const { data, isLoading, isError, error } = useApiHook({
-    url: `/member`,
+    url: `/ministry/analytic/absentee-members`,
     key: "absenteeMembers",
     method: "GET",
     filter: `user;${loggedInData?._id}|dateLastVisited;{"$lte":"${moment().subtract(30, "days").toISOString()}"}`, // 30 days ago from today's date
