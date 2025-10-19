@@ -120,5 +120,22 @@ export const navigation = (options?: any) => {
       },
       hidden: options?.user ? true : false,
     },
+    // error and 404 boundary, always hidden but something for the page layout to point to
+    error_boundary: {
+      title: "Error Boundary",
+      links: {
+        not_found: {
+          title: "Not Found",
+          link: "/404",
+          icon: <BsBroadcastPin />,
+        },
+        error: {
+          title: "Error",
+          link: "/error",
+          icon: <BsBroadcastPin />,
+        },
+      },
+      hidden: true,
+    },
   };
 };

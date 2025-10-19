@@ -7,6 +7,7 @@ import { useInterfaceStore } from "@/state/interface";
 import styles from "./UserManagement.module.scss";
 import getColumns from "./columns";
 import InviteUserModal from "./InviteUserModal";
+import ManageUserRoleModal from "./ManageUserRoleModal";
 import { useQueryClient } from "@tanstack/react-query";
 import { useSelectedProfile } from "@/hooks/useSelectedProfile";
 import { TeamMember } from "@/types/Ministry";
@@ -22,6 +23,8 @@ const UserManagement: React.FC<UserManagementProps> = ({ onUserRemoved }) => {
   const { selectedProfile } = useSelectedProfile();
 
   const [showInviteModal, setShowInviteModal] = useState(false);
+  const [showManageRoleModal, setShowManageRoleModal] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<TeamMember | null>(null);
   const { addAlert } = useInterfaceStore();
 
   // Extract team details from props
@@ -72,9 +75,16 @@ const UserManagement: React.FC<UserManagementProps> = ({ onUserRemoved }) => {
     }
   };
 
+  // Handler for viewing/managing a user
+  const handleViewUser = (user: TeamMember) => {
+    setSelectedUser(user);
+    setShowManageRoleModal(true);
+  };
+
   // Get table columns with callbacks
   const columns = getColumns({
     onRemoveUser: handleRemoveUser,
+    onViewUser: handleViewUser,
   });
 
   return (
@@ -135,6 +145,19 @@ const UserManagement: React.FC<UserManagementProps> = ({ onUserRemoved }) => {
         teamName={teamName as string}
         onInviteSuccess={() => {
           setShowInviteModal(false);
+          onUserRemoved(); // This refreshes the user list
+        }}
+      />
+
+      <ManageUserRoleModal
+        open={showManageRoleModal}
+        onClose={() => {
+          setShowManageRoleModal(false);
+          setSelectedUser(null);
+        }}
+        user={selectedUser}
+        teamId={teamId as string}
+        onUpdateSuccess={() => {
           onUserRemoved(); // This refreshes the user list
         }}
       />

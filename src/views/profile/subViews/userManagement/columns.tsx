@@ -1,18 +1,18 @@
-
 import User from "@/types/User";
 import { ColumnsType } from "antd/es/table";
 import { Button, Space, Tag, Avatar, Typography, Popconfirm } from "antd";
 import { UserOutlined, DeleteOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
-import Link from "next/link";
 import { TeamMember } from "@/types/Ministry";
 
 const { Text } = Typography;
 
 interface ColumnProps {
+  loggedInUserId?: string;
   onRemoveUser: (userId: string, userName: string) => void;
+  onViewUser: (user: TeamMember) => void;
 }
 
-const columns = ({ onRemoveUser }: ColumnProps): ColumnsType<TeamMember> => {
+const columns = ({ loggedInUserId, onRemoveUser, onViewUser }: ColumnProps): ColumnsType<TeamMember> => {
   return [
     {
       title: "User",
@@ -63,11 +63,9 @@ const columns = ({ onRemoveUser }: ColumnProps): ColumnsType<TeamMember> => {
       fixed: "right",
       render: (_: any, record: TeamMember) => (
         <Space>
-          <Link href={`/users/${record?.user?._id}`} passHref>
-            <Button type="link" icon={<UserOutlined />} size="small">
-              View
-            </Button>
-          </Link>
+          <Button type="link" icon={<UserOutlined />} size="small" onClick={() => onViewUser(record)}>
+            View
+          </Button>
           <Popconfirm
             title="Remove User"
             description={`Are you sure you want to remove ${
@@ -78,7 +76,13 @@ const columns = ({ onRemoveUser }: ColumnProps): ColumnsType<TeamMember> => {
             cancelText="Cancel"
             icon={<ExclamationCircleOutlined style={{ color: "red" }} />}
           >
-            <Button type="text" danger icon={<DeleteOutlined />} size="small">
+            <Button
+              type="text"
+              danger
+              icon={<DeleteOutlined />}
+              size="small"
+              disabled={record?.user?._id === loggedInUserId}
+            >
               Remove
             </Button>
           </Popconfirm>
