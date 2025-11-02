@@ -1,48 +1,127 @@
-import NotificationType from "@/types/NotificationType";
-import styles from "./NotificationItem.module.scss";
-import moment from "moment";
-import Link from "next/link";
-import React from "react";
-import getNotificationLink from "@/utils/getNotificationLink";
-import { Avatar } from "antd";
-import useUpdateData from "@/state/useUpdateData";
-import useApiHook from "@/state/useApi";
+import NotificationType from '@/types/NotificationType';
+import styles from './NotificationItem.module.scss';
+import Link from 'next/link';
+import React from 'react';
+import { Avatar, Badge } from 'antd';
+import { BellOutlined, ClockCircleOutlined } from '@ant-design/icons';
+import useApiHook from '@/hooks/useApi';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+import { useUser } from '@/state/auth';
+import useNotifications from '@/hooks/useNotifications';
+import getNotificationLink from './getNotificationLink';
 
 interface Props {
   notification: NotificationType;
   small?: boolean;
 }
 const NotificationItem = ({ notification, small = false }: Props) => {
-  const { mutate: updateNotification } = useApiHook({
-    queriesToInvalidate: ["notifications"],
-    method: "PUT",
-    key: "notification",
-    url: notification._id !== "" ? `/notification/${notification._id}` : `/notification/all`,
-  }) as any;
-  return (
-    <>
-      <Link
-        className={`${styles.container} ${!notification?.opened ? styles.unread : ""}`}
-        href={getNotificationLink(notification)}
-        key={notification.entityId}
-        onClick={() => {
-          updateNotification({
-            formData: { opened: true },
-          });
-        }}
-      >
-        <div className={styles.content}>
-          <div className={styles.titleContainer}>
-            <Avatar size="small" src={notification?.userFrom?.profileImageUrl} />
+  dayjs.extend(relativeTime);
+  const { data: loggedInUser } = useUser();
 
-            <h1 className={`${styles.title}  ${small ? styles.small : ""}`}>{notification.message}</h1>
+  const { markRead } = useNotifications();
+  // Check if notification is from system (no userFrom or userFrom is null)
+  const isSystemNotification = !notification?.userFrom;
+  const isUnread = !notification?.opened;
+
+  // Check if we should use a link:
+  // 1. System notifications need an entityId
+  // 2. The notification link must resolve to something other than '/' or undefined
+  const notificationLink = getNotificationLink(notification);
+  const shouldUseLink =
+    (!isSystemNotification || (isSystemNotification && notification?.entityId)) &&
+    notificationLink &&
+    notificationLink !== '/';
+  const notificationContent = (
+    <>
+      {/* Unread indicator */}
+      {isUnread && <div className={styles.unreadIndicator} />}
+
+      {/* Avatar section */}
+      <div className={styles.avatarSection}>
+        <Badge dot={isUnread} offset={[-8, 8]} color="var(--color-metallic-blue)">
+          {isSystemNotification ? (
+            <Avatar
+              size={small ? 'small' : 'default'}
+              src="https://res.cloudinary.com/wulfdev/image/upload/v1760816772/ShepherdsCMSLogo_p3ipxo.png"
+              className={styles.systemAvatar}
+            />
+          ) : (
+            <Avatar
+              size={small ? 'small' : 'default'}
+              src={notification?.userFrom?.profileImageUrl}
+              className={styles.userAvatar}
+            />
+          )}
+        </Badge>
+      </div>
+
+      {/* Content section */}
+      <div className={styles.contentSection}>
+        <div className={styles.header}>
+          <div className={styles.titleRow}>
+            <span className={styles.sender}>
+              {isSystemNotification
+                ? 'ShepherdCMS System'
+                : `${notification?.userFrom?.firstName} ${notification?.userFrom?.lastName}`}
+            </span>
+            <div className={styles.timeStamp}>
+              <ClockCircleOutlined className={styles.timeIcon} />
+              <span>{dayjs(notification?.createdAt).fromNow()}</span>
+            </div>
           </div>
 
-          <p className={`${styles.description} ${small ? styles.small : ""}`}>{notification.description}</p>
+          <h3 className={styles.title}>
+            {isSystemNotification ? notification.message : notification.message}
+          </h3>
         </div>
-        <div className={styles.date}>{moment(notification?.createdAt).format("MM/DD/YYYY").toString()}</div>
-      </Link>
+
+        {!isSystemNotification && notification.description && (
+          <p className={styles.description}>{notification.description}</p>
+        )}
+
+        {/* If its already been read; dont show the hint */}
+        {isUnread && (
+          <div className={styles.actionHint}>
+            <span>{shouldUseLink ? 'Click to view details' : 'Click to mark as read'}</span>
+          </div>
+        )}
+      </div>
     </>
+  );
+
+  return (
+    <div className={styles.notificationWrapper}>
+      {shouldUseLink ? (
+        <Link
+          className={`${styles.container} ${isUnread ? styles.unread : ''} ${
+            isSystemNotification ? styles.systemNotification : ''
+          } ${small ? styles.small : ''}`}
+          href={notificationLink}
+          onClick={() => {
+            if (isUnread) {
+              markRead(notification._id);
+            }
+          }}
+        >
+          {notificationContent}
+        </Link>
+      ) : (
+        <div
+          className={`${styles.container} ${isUnread ? styles.unread : ''} ${
+            isSystemNotification ? styles.systemNotification : ''
+          } ${small ? styles.small : ''} ${styles.nonClickable}`}
+          onClick={() => {
+            if (isUnread) {
+              markRead(notification._id);
+            }
+          }}
+          style={{ cursor: 'pointer' }}
+        >
+          {notificationContent}
+        </div>
+      )}
+    </div>
   );
 };
 

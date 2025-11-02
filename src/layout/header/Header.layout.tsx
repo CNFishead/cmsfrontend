@@ -1,91 +1,65 @@
-import { useLayoutStore } from "@/state/ui/layout";
-import styles from "./Header.module.scss";
-import { RxHamburgerMenu } from "react-icons/rx";
-import { Avatar, Breadcrumb, Tooltip } from "antd";
-import Link from "next/link";
-import { useUser, logout } from "@/state/auth";
-import { BiLogOutCircle } from "react-icons/bi";
-import { ReactNode } from "react";
-import Notifications from "./components/Notifications.component";
-import useFetchData from "@/state/useFetchData";
+import styles from './Header.module.scss';
+import { RxHamburgerMenu } from 'react-icons/rx';
+import { Avatar, Breadcrumb, Tooltip } from 'antd';
+import Link from 'next/link';
+import { useUser, logout } from '@/state/auth';
+import { BiLogOutCircle } from 'react-icons/bi';
+import { ReactNode } from 'react';
+import Notifications from './components/Notifications.component';
 
 type Props = {
   pages?: Array<{ title: string; link?: string; icon?: ReactNode }>;
+  onMobileMenuClick?: () => void;
 };
 
 const Header = (props: Props) => {
-  const toggleSideBar = useLayoutStore((state) => state.toggleSideBar);
   const { data: loggedInData } = useUser();
-  const { data: selectedProfile } = useFetchData({
-    url: `/ministry/${loggedInData?.ministry}`,
-    key: "selectedProfile",
-    enabled: !!loggedInData?.ministry,
-  });
+
   return (
-    <div className={styles.header}>
+    <header className={styles.header}>
       <div className={styles.headerLeft}>
-        <div
+        <button
           className={styles.hamburger}
-          onClick={() => {
-            toggleSideBar();
-          }}
+          onClick={props.onMobileMenuClick}
+          aria-label="Toggle menu"
         >
           <RxHamburgerMenu />
-        </div>
+        </button>
 
         <Breadcrumb
           className={styles.breadcrumb}
-          itemRender={(route, params, routes, paths) => {
-            const last = routes.indexOf(route) === routes.length - 1;
+          itemRender={(route, params, routes) => {
+            const isLast = routes.indexOf(route) === routes.length - 1;
 
-            return last ? (
-              <span>{route.title}</span>
+            return isLast ? (
+              <span className={styles.breadcrumbActive}>{route.title}</span>
             ) : (
-              <Link
-                href={route.path as string}
-                className={`${routes[routes.length - 1].title === route.title && styles.active}`}
-              >
+              <Link href={route.path as string} className={styles.breadcrumbLink}>
                 {route.title}
               </Link>
             );
           }}
-          items={
-            props.pages?.map((page) => {
-              return {
-                title: page?.title,
-                path: page?.link || "",
-
-                // element: <Link href={page?.link || ""}>{page?.title}</Link>,
-              };
-            }) as any[]
-          }
+          items={props.pages?.map((page) => ({
+            title: page.title,
+            path: page.link || '',
+          }))}
         />
       </div>
 
       <div className={styles.headerRight}>
-        <div className={styles.headerRight}>
-          <div className={styles.userContainer}>
-            <div className={styles.user}>
-              <Avatar src={loggedInData?.profileImageUrl} className={styles.avatar} />
-              <div className={styles.userInfo}>
-                <h1>{selectedProfile?.payload?.name} </h1>
-                <p>{loggedInData?.fullName}</p>
-              </div>
-            </div>
-            <Notifications />
-            <Tooltip title="Logout">
-              <span
-                onClick={() => {
-                  logout();
-                }}
-              >
-                <BiLogOutCircle className={styles.logoutIcon} />
-              </span>
-            </Tooltip>
-          </div>
+        <Notifications />
+
+        <div className={styles.userContainer}>
+          <span className={styles.userName}>{loggedInData?.fullName}</span>
         </div>
+
+        <Tooltip title="Logout">
+          <button className={styles.logoutButton} onClick={logout} aria-label="Logout">
+            <BiLogOutCircle />
+          </button>
+        </Tooltip>
       </div>
-    </div>
+    </header>
   );
 };
 
