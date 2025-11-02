@@ -25,11 +25,11 @@ const Ministry = () => {
     isFetching,
     isLoading: loading,
   } = useApiHook({
-    url: `/ministry/${selectedProfile?._id}/subministries`,
+    url: `/ministry`,
     key: "ministryList",
     enabled: !!selectedProfile?._id,
     method: "GET",
-    filter: `user;${loggedInData?._id}`,
+    include: `_id;${selectedProfile?._id}|ownerMinistry;${selectedProfile?._id}`,
   }) as any;
 
   const { mutate: deleteMinistry } = useApiHook({

@@ -1,0 +1,285 @@
+@use '@/styles/globals.scss' as *;
+
+.receipt {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  background-color: #fff;
+  margin-bottom: 1rem;
+  overflow: hidden; // Ensure content doesn't overflow on mobile
+
+  // Mobile responsive adjustments
+  @include mobile {
+    margin-bottom: 0.75rem;
+    box-shadow: 0 0.0625rem 0.125rem rgba(0, 0, 0, 0.1);
+  }
+
+  .details {
+    display: grid;
+    grid-template-columns: 0.8fr 2fr 50px;
+    width: 100%;
+    height: 100%;
+    gap: 10px;
+
+    .date {
+      padding: 15px;
+      background-color: var(--primary-light);
+      border-right: 1px solid var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      width: 100%;
+      gap: 5px;
+      transition: all 0.2s ease-in-out;
+
+      h2 {
+        font-size: 13px;
+        font-weight: 500;
+        margin: 0;
+        color: var(--text-secondary);
+      }
+
+      h1 {
+        color: var(--primary-dark);
+        font-size: 17px;
+        font-weight: 600;
+        margin: 0;
+      }
+
+      // Status-based styling
+      &.success {
+        background-color: #f6ffed;
+        border-right-color: #52c41a;
+
+        h2 {
+          color: #389e0d;
+        }
+
+        h1 {
+          color: #52c41a;
+        }
+      }
+
+      &.pending {
+        background-color: #fff7e6;
+        border-right-color: #fa8c16;
+
+        h2 {
+          color: #d46b08;
+        }
+
+        h1 {
+          color: #fa8c16;
+        }
+      }
+
+      &.failed {
+        background-color: #fff2f0;
+        border-right-color: #ff4d4f;
+
+        h2 {
+          color: #cf1322;
+        }
+
+        h1 {
+          color: #ff4d4f;
+        }
+      }
+
+      &.refunded,
+      &.voided {
+        background-color: #f6f6f6;
+        border-right-color: #8c8c8c;
+
+        h2 {
+          color: #595959;
+        }
+
+        h1 {
+          color: #8c8c8c;
+        }
+      }
+    }
+    .paymentInfoContainer {
+      margin: 0;
+      padding: 15px;
+    }
+
+    .download {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--primary);
+
+        &:hover {
+          color: var(--primary-dark);
+        }
+
+        &:disabled {
+          color: var(--text-disabled);
+          cursor: not-allowed;
+        }
+      }
+    }
+
+    // Mobile responsive design
+    @include mobile {
+      grid-template-columns: 1fr;
+      gap: 0;
+
+      .date {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid var(--primary);
+        padding: 12px 15px;
+        border-radius: 0.5rem 0.5rem 0 0;
+
+        // Adjust status-based borders for mobile
+        &.success {
+          border-bottom-color: #52c41a;
+        }
+
+        &.pending {
+          border-bottom-color: #fa8c16;
+        }
+
+        &.failed {
+          border-bottom-color: #ff4d4f;
+        }
+
+        &.refunded,
+        &.voided {
+          border-bottom-color: #8c8c8c;
+        }
+
+        h2 {
+          font-size: 12px;
+        }
+
+        h1 {
+          font-size: 16px;
+        }
+      }
+
+      .paymentInfoContainer {
+        padding: 12px 15px;
+
+        // Adjust Ant Design Descriptions for mobile
+        :global(.ant-descriptions-item-label) {
+          font-size: 11px;
+          font-weight: 500;
+        }
+
+        :global(.ant-descriptions-item-content) {
+          font-size: 12px;
+        }
+
+        // Stack items more compactly on mobile
+        :global(.ant-descriptions-row) {
+          margin-bottom: 4px;
+        }
+      }
+
+      .download {
+        padding: 8px 15px;
+        border-top: 1px solid #f0f0f0;
+        background-color: #fafafa;
+        border-radius: 0 0 0.5rem 0.5rem;
+
+        button {
+          padding: 8px;
+
+          svg {
+            font-size: 16px;
+          }
+        }
+      }
+    }
+
+    // Tablet specific adjustments
+    @include tablet {
+      grid-template-columns: 0.7fr 2fr 60px;
+
+      .date {
+        padding: 12px;
+
+        h2 {
+          font-size: 12px;
+        }
+
+        h1 {
+          font-size: 15px;
+        }
+      }
+
+      .paymentInfoContainer {
+        padding: 12px;
+
+        :global(.ant-descriptions-item-label) {
+          font-size: 11px;
+        }
+
+        :global(.ant-descriptions-item-content) {
+          font-size: 12px;
+        }
+      }
+    }
+  }
+}
+
+.status {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: capitalize;
+  display: inline-block;
+  min-width: fit-content;
+
+  &.success,
+  &.succeeded,
+  &.completed {
+    background-color: #f6ffed;
+    color: #52c41a;
+    border: 1px solid #b7eb8f;
+  }
+
+  &.pending {
+    background-color: #fff7e6;
+    color: #fa8c16;
+    border: 1px solid #ffd591;
+  }
+
+  &.failed {
+    background-color: #fff2f0;
+    color: #ff4d4f;
+    border: 1px solid #ffccc7;
+  }
+
+  &.refunded,
+  &.voided {
+    background-color: #f6f6f6;
+    color: #595959;
+    border: 1px solid #d9d9d9;
+  }
+
+  // Mobile adjustments
+  @include mobile {
+    font-size: 11px;
+    padding: 3px 6px;
+  }
+}
+
+// Add container-level mobile improvements
+.container {
+  @include mobile {
+    padding: 0 8px;
+  }
+}

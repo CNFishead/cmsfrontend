@@ -1,13 +1,11 @@
-import Error from '@/components/error/Error.component';
-import { useUser } from '@/state/auth';
+'use client';
+import React, { useState, useEffect } from 'react';
 import { Button, Descriptions, Empty, Skeleton } from 'antd';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-import EditPaymentInfoModal from '../editPaymentInfoModal/EditPaymentInfoModal.component';
 import styles from './PaymentInformationCard.module.scss';
 import useApiHook from '@/hooks/useApi';
-import { formatAddress } from '@/utils/formatAddress';
 import { useQueryClient } from '@tanstack/react-query';
+import { ProcessorActions } from './utils/ProcessorActions.utils';
 
 /**
  * @description - This component displays the user's current billing information, & the user can edit their payment credentials CC & ACH.
@@ -21,6 +19,10 @@ import { useQueryClient } from '@tanstack/react-query';
 const PaymentInformationCard = () => {
   const router = useRouter();
   const queryClient = useQueryClient();
+  const [processActions, setProcessActions] = useState<any>(null);
+  const [customerPaymentInfo, setCustomerPaymentInfo] = useState<any>(null);
+  const [isProcessorLoading, setIsProcessorLoading] = useState(false);
+
   const selectedProfile = queryClient.getQueryData(['profile', 'athlete']) as any;
   const {
     data: billingData,
@@ -34,11 +36,40 @@ const PaymentInformationCard = () => {
     method: 'GET',
   }) as any;
 
-  if (isLoading) return <Skeleton active />;
+  // Handle processor actions initialization
+  useEffect(() => {
+    const initializeProcessor = async () => {
+      const processor = billingData?.payload?.processor;
+      if (!processor || !billingData?.payload?.paymentProcessorData?.[processor]) return;
+
+      setIsProcessorLoading(true);
+      try {
+        const processorActions = new ProcessorActions(billingData.payload.paymentProcessorData[processor]);
+        const actions = await processorActions.getProcessorActions(processor);
+        const paymentInfo = actions.getCustomerPaymentMethod();
+
+        setProcessActions(actions);
+        setCustomerPaymentInfo(paymentInfo);
+      } catch (error) {
+        console.error('Error initializing processor:', error);
+      } finally {
+        setIsProcessorLoading(false);
+      }
+    };
+
+    if (billingData?.payload) {
+      initializeProcessor();
+    }
+  }, [billingData]);
+
+  if (isLoading || isProcessorLoading) return <Skeleton active />;
   // if (isError) return <Error error={error} />;
-  const address = billingData?.payload?.billingDetails?.billingAddress;
-  const creditCardDetails = billingData?.payload?.billingDetails?.creditCardDetails;
-  const achDetails = billingData?.payload?.billingDetails?.achDetails;
+
+  const processor = billingData?.payload?.processor;
+  if (!processor) return <Empty description="No payment processor found" />;
+
+  if (!processActions) return <Skeleton active />;
+
   return (
     <div>
       <div className={styles.buttonContainer}>
@@ -48,14 +79,14 @@ const PaymentInformationCard = () => {
       </div>
       <div className={styles.container}>
         <Descriptions title="Billing Information" size="small">
-          <Descriptions.Item label="Name">{address?.name}</Descriptions.Item>
-          <Descriptions.Item label="Email">{billingData?.payload?.email}</Descriptions.Item>
-          <Descriptions.Item label="Phone #">{billingData?.payload?.phoneNumber}</Descriptions.Item>
-          {/* <Descriptions.Item label="Address">{formatAddress(address)}</Descriptions.Item> */}
+          <Descriptions.Item label="Name">{processActions.getCustomerName()}</Descriptions.Item>
+          <Descriptions.Item label="Email">{processActions.getCustomerEmail()}</Descriptions.Item>
+          <Descriptions.Item label="Phone #">{processActions.getCustomerPhone()}</Descriptions.Item>
+          <Descriptions.Item label="Address">{processActions.getBillingAddress()}</Descriptions.Item>
         </Descriptions>
       </div>
 
-      {achDetails && (
+      {customerPaymentInfo.type === 'ACH' && (
         <div className={styles.container}>
           <Descriptions title="Payment Method" size="small">
             <Descriptions.Item label="ACH Account Number">{billingData?.payload?.checkaccount}</Descriptions.Item>
@@ -63,14 +94,14 @@ const PaymentInformationCard = () => {
           </Descriptions>
         </div>
       )}
-      {creditCardDetails && (
+      {customerPaymentInfo.type === 'card' && (
         <div className={styles.container}>
           <Descriptions title="Payment Method" size="small">
-            <Descriptions.Item label="Credit Card Number">**** **** **** {creditCardDetails?.last4}</Descriptions.Item>
+            <Descriptions.Item label="Credit Card Number">**** **** **** {customerPaymentInfo?.last4}</Descriptions.Item>
             <Descriptions.Item label="Credit Card Expiration Date">
               {
                 // we need to format the expiration date to MM/YYYY
-                creditCardDetails?.ccexp
+                customerPaymentInfo?.exp_month && customerPaymentInfo?.exp_year ? `${customerPaymentInfo?.exp_month}/${customerPaymentInfo?.exp_year}` : 'N/A'
               }
             </Descriptions.Item>
           </Descriptions>

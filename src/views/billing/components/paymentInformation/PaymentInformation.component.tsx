@@ -25,8 +25,8 @@ const PaymentInformationForm = () => {
               Bank Account (ACH)
             </div>
             <p style={{ marginTop: '1%', color: 'gray', textAlign: 'center' }}>
-              Customer account information is not stored by ShepherdCMS. We take the security of our customers&apos; information very seriously, which is why we use a
-              third-party vaulting system provided by <strong>STRIPE</strong>. All credit card and ACH information is securely stored with them, ensuring compliance with PCI DSS standards.
+              Customer account information is not stored by PyreProcessing. We take the security of your customers&apos; information very seriously, which is why we use a
+              third-party vaulting system provided by NMI. All credit card and ACH information is securely stored with them, ensuring compliance with PCI DSS standards.
             </p>
             <AchForm />
           </div>
@@ -44,8 +44,8 @@ const PaymentInformationForm = () => {
               Credit/Debit Card
             </div>
             <p className={styles.description}>
-              Customer account information is not stored by ShepherdCMS. We take the security of your customers&apos; information very seriously, which is why we use a
-              third-party vaulting system provided by <strong>STRIPE</strong>. All credit card and ACH information is securely stored with them, ensuring compliance with PCI DSS standards.
+              Customer account information is not stored by PyreProcessing. We take the security of your customers&apos; information very seriously, which is why we use a
+              third-party vaulting system provided by NMI. All credit card and ACH information is securely stored with them, ensuring compliance with PCI DSS standards.
             </p>
             <CardForm />
           </div>
