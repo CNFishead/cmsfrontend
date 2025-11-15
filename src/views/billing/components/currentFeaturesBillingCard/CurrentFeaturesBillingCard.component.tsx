@@ -1,13 +1,15 @@
-import Error from '@/components/error/Error.component';
+import Error from "@/components/error/Error.component";
 // state
-import { useUser } from '@/state/auth';
-import { Button, Col, Descriptions, Row, Skeleton } from 'antd';
-import Link from 'next/link';
-import { useState } from 'react';
+import { useUser } from "@/state/auth";
+import { Button, Col, Descriptions, Row, Skeleton } from "antd";
+import Link from "next/link";
+import { useState } from "react";
 
-import styles from './CurrentFeaturesBillingCard.module.scss';
-import useApiHook from '@/hooks/useApi';
-import moment from 'moment';
+import styles from "./CurrentFeaturesBillingCard.module.scss";
+import useApiHook from "@/hooks/useApi";
+import moment from "moment";
+import { useSelectedProfile } from "@/hooks/useSelectedProfile";
+import useBilling from "../../hooks/useBilling";
 
 /**
  * @description - This component displays the user's current features. It is a card component that is used in the billing page.
@@ -19,29 +21,10 @@ import moment from 'moment';
  */
 
 const CurrentFeaturesBillingCard = () => {
-  const { data: selectedProfile } = useApiHook({
-    method: 'GET',
-    key: ['profile', 'athlete'],
-  }) as any;
-  const {
-    data: billingData,
-    error,
-    isLoading,
-    isError,
-  } = useApiHook({
-    key: ['billing-data', `${selectedProfile?.payload?._id}`],
-    enabled: !!selectedProfile?.payload?._id,
-    method: 'GET',
-  }) as any;
-  const { data: loggedInData } = useUser();
-
+  const { selectedProfile } = useSelectedProfile();
+  const { data: billingData, isLoading } = useBilling();
   if (isLoading) return <Skeleton active />;
   // if (isError) return <Error error={error} />;
-  const DateTimeFormat = new Intl.DateTimeFormat('en', {
-    year: 'numeric',
-    month: 'long',
-    day: '2-digit',
-  });
 
   return (
     <div className={styles.container}>
@@ -57,24 +40,30 @@ const CurrentFeaturesBillingCard = () => {
           </Link>
         }
       >
-        <Descriptions.Item label="Plan">{billingData?.payload?.plan?.name}</Descriptions.Item>
+        <Descriptions.Item label="Plan">{billingData?.plan?.name}</Descriptions.Item>
         <Descriptions.Item label="Price">
-          {Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: 'USD',
-          }).format(billingData?.payload?.plan?.price)}
+          {Intl.NumberFormat("en-US", {
+            style: "currency",
+            currency: "USD",
+          }).format(billingData?.plan?.price as any as number)}
         </Descriptions.Item>
       </Descriptions>
 
       <Descriptions title="Plan Information" className={styles.desc}>
         <Descriptions.Item className={styles.total} label="Next Payment Amount">
-          {Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: 'USD',
-          }).format(billingData?.payload?.isYearly ? billingData?.payload?.plan?.price * 12 : billingData?.payload?.plan?.price)}
+          {Intl.NumberFormat("en-US", {
+            style: "currency",
+            currency: "USD",
+          }).format(
+            billingData?.isYearly
+              ? (billingData?.plan?.price as any as number) * 12
+              : (billingData?.plan?.price as any as number)
+          )}
         </Descriptions.Item>
-        <Descriptions.Item label="Next Billing Date">{moment(billingData?.payload?.nextBillingDate).format("MM/DD/YYYY").toLocaleString()}</Descriptions.Item>
-        <Descriptions.Item label="Cycle">{billingData?.payload?.isYearly ? 'Yearly' : 'Monthly'}</Descriptions.Item>
+        <Descriptions.Item label="Next Billing Date">
+          {moment(billingData?.nextBillingDate).format("MM/DD/YYYY").toLocaleString()}
+        </Descriptions.Item>
+        <Descriptions.Item label="Cycle">{billingData?.isYearly ? "Yearly" : "Monthly"}</Descriptions.Item>
       </Descriptions>
     </div>
   );

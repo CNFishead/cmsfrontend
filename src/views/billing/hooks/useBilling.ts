@@ -1,8 +1,9 @@
-import { useQuery, UseQueryResult } from '@tanstack/react-query';
-import { useUser } from '@/state/auth';
-import axios from '@/utils/axios';
-import User from '@/types/User'; 
-import { IPlan } from '@/types/IPlan';
+import { useQuery, UseQueryResult } from "@tanstack/react-query";
+import { useUser } from "@/state/auth";
+import axios from "@/utils/axios";
+import User from "@/types/User";
+import { IPlan } from "@/types/IPlan";
+import { useSelectedProfile } from "@/hooks/useSelectedProfile";
 
 // Define the billing information interface
 export interface IBilling {
@@ -37,8 +38,8 @@ export interface IBilling {
 const fetchBillingData = async (userId: string): Promise<IBilling> => {
   const { data } = await axios.get(`/auth/billing`, {
     params: {
-      filterOptions: `payor;${userId}`,
-    }
+      filterOptions: `profileId;${userId}`,
+    },
   });
   return data.payload[0];
 };
@@ -58,7 +59,7 @@ export const useBilling = (options?: {
   refetchInterval?: number;
   retry?: number | boolean;
 }) => {
-  const { data: loggedInUser } = useUser();
+  const { selectedProfile } = useSelectedProfile();
 
   const {
     enabled = true,
@@ -70,9 +71,9 @@ export const useBilling = (options?: {
   } = options || {};
 
   return useQuery({
-    queryKey: ['billing', loggedInUser?._id],
-    queryFn: () => fetchBillingData(loggedInUser!._id),
-    enabled: enabled && !!loggedInUser?._id,
+    queryKey: ["billing", selectedProfile?._id],
+    queryFn: () => fetchBillingData(selectedProfile!._id),
+    enabled: enabled && !!selectedProfile?._id,
     refetchOnWindowFocus,
     staleTime,
     gcTime,
@@ -93,8 +94,8 @@ export const useBillingInfo = (options?: Parameters<typeof useBilling>[0]) => {
     ...billingQuery,
     billingInfo: billingData,
     // Helper computed properties based on actual BillingInfo interface
-    hasActiveSubscription: billingData?.status === 'active',
-    isActiveStatus: billingData?.status === 'active',
+    hasActiveSubscription: billingData?.status === "active",
+    isActiveStatus: billingData?.status === "active",
     hasVaultedPayment: billingData?.vaulted ?? false,
     needsUpdate: billingData?.needsUpdate ?? false,
     setupFeePaid: billingData?.setupFeePaid ?? false,
