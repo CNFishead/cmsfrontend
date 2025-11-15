@@ -3,9 +3,5 @@ import MinistryDetails from "@/views/ministry/ministryDetails/MinistryDetails.vi
 import { navigation } from "@/data/navigation";
 
 export default function Home() {
-  return (
-    <PageLayout pages={[navigation().ministries.links.ministries]}>
-      <MinistryDetails />
-    </PageLayout>
-  );
+  return <MinistryDetails />;
 }
