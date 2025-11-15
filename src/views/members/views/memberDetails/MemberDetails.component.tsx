@@ -1,4 +1,5 @@
-import React, { useMemo } from "react";
+'use client';
+import React, { useMemo, useEffect } from "react";
 import styles from "./MemberDetails.module.scss";
 import { PiHandsPrayingFill } from "react-icons/pi";
 import { Tabs } from "antd";
@@ -7,10 +8,11 @@ import { ControlNavItem } from "@/types/navigation";
 import FamilyContainer from "./subviews/controlNav/FamilyContainer.component";
 import { FaUserCog, FaUsers } from "react-icons/fa";
 import MemberSettings from "./subviews/controlNav/MemberSettings.component";
-import { useSetControlNav } from "@/providers/ControlNavProvider";
+import { useControlNav } from "@/providers/ControlNavProvider";
 
 const MemberDetails = () => {
-  // Set up control navigation with user data - memoized to prevent infinite loops
+  const { setControlNav } = useControlNav();
+
   const controlNav = useMemo<ControlNavItem[] | null>(() => {
     return [
       {
@@ -33,7 +35,13 @@ const MemberDetails = () => {
     ];
   }, []);
 
-  useSetControlNav(controlNav);
+  useEffect(() => {
+    setControlNav(controlNav);
+
+    return () => {
+      setControlNav(null);
+    };
+  }, [controlNav, setControlNav]);
 
   return (
     <div className={styles.container}>

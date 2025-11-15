@@ -1,31 +1,33 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import axios from '@/utils/axios';
-import { useRouter } from 'next/navigation';
-import { CryptoService } from '@/utils/CryptoService';
-import { useSearchStore as store } from '@/state/search';
-import { useInterfaceStore } from '@/state/interface';
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import axios from "@/utils/axios";
+import { useRouter } from "next/navigation";
+import { CryptoService } from "@/utils/CryptoService";
+import { useSearchStore as store } from "@/state/search";
+import { useInterfaceStore } from "@/state/interface";
 
 function cleanParams(params: Record<string, any>): Record<string, any> {
   const cleaned: Record<string, any> = {};
   Object.entries(params).forEach(([key, value]) => {
-    if (value !== undefined && value !== null && value !== '') {
+    if (value !== undefined && value !== null && value !== "") {
       cleaned[key] = value;
     }
   });
   return cleaned;
 }
 
-const fetchData = async (url: string, method: 'GET' | 'POST' | 'PUT' | 'DELETE', data?: any, options?: any) => {
+const fetchData = async (url: string, method: "GET" | "POST" | "PUT" | "DELETE", data?: any, options?: any) => {
   const secret = process.env.ENCRYPTION_KEY!;
   const cryptoService = new CryptoService(secret);
   let response;
   switch (method) {
-    case 'GET':
+    case "GET":
       const {
         defaultKeyword = options?.defaultKeyword || store.getState().search,
         defaultPageNumber = options?.defaultPageNumber || store.getState().pageNumber,
         defaultPageLimit = options?.defaultPageLimit || store.getState().pageLimit,
-        defaultFilter = `${options?.defaultFilter ?? ''}${store.getState().filter ? `|${store.getState().filter}` : ''}`,
+        defaultFilter = `${options?.defaultFilter ?? ""}${
+          store.getState().filter ? `|${store.getState().filter}` : ""
+        }`,
         defaultSort = options?.defaultSort || store.getState().sort,
         defaultInclude = options?.defaultInclude || store.getState().include,
       } = options || {};
@@ -44,32 +46,34 @@ const fetchData = async (url: string, method: 'GET' | 'POST' | 'PUT' | 'DELETE',
       });
 
       break;
-    case 'POST':
+    case "POST":
       response = await axios.post(url, data);
       break;
-    case 'PUT':
+    case "PUT":
       response = await axios.put(url, data);
       break;
-    case 'DELETE':
+    case "DELETE":
       response = await axios.delete(url, { data });
       break;
     default:
       throw new Error(`Unsupported method: ${method}`);
   }
-  if (method === 'GET' && typeof response.data.payload === 'string') {
+  if (method === "GET" && typeof response.data.payload === "string") {
     response.data.payload = JSON.parse(cryptoService.decrypt(response.data.payload));
   }
   return response.data;
 };
 // Reusable Hook
 const useApiHook = (options: {
-  method: 'GET' | 'POST' | 'PUT' | 'DELETE';
+  method: "GET" | "POST" | "PUT" | "DELETE";
   url?: string;
   key: string | string[];
   filter?: any;
   keyword?: string;
   sort?: any;
+  limit?: number;
   include?: any;
+  pageNumber?: number;
   queriesToInvalidate?: string[];
   successMessage?: string;
   redirectUrl?: string;
@@ -77,8 +81,6 @@ const useApiHook = (options: {
   refetchOnWindowFocus?: boolean;
   staleTime?: number;
   cacheTime?: number;
-  refetchInterval?: number;
-  showErrorAlert?: boolean;
   onSuccessCallback?: (data: any) => void;
   onErrorCallback?: (error: any) => void;
 }) => {
@@ -92,7 +94,9 @@ const useApiHook = (options: {
     key,
     filter,
     sort,
+    pageNumber,
     include,
+    limit,
     queriesToInvalidate,
     successMessage,
     redirectUrl,
@@ -101,44 +105,43 @@ const useApiHook = (options: {
     refetchOnWindowFocus = false,
     staleTime = 1000 * 60 * 5, // 5 minutes
     cacheTime = 1000 * 60 * 10, // 10 minutes
-    refetchInterval,
-    showErrorAlert = true,
     onSuccessCallback,
     onErrorCallback,
   } = options;
 
-  const queryKey = typeof key === 'string' ? [key] : key;
+  const queryKey = typeof key === "string" ? [key] : key;
 
   const query = useQuery({
     queryKey,
     queryFn: () =>
-      fetchData(url!, 'GET', undefined, {
+      fetchData(url!, "GET", undefined, {
         defaultKeyword: keyword,
         defaultFilter: filter,
+        defaultPageNumber: pageNumber,
         defaultSort: sort,
         defaultInclude: include,
+        defaultPageLimit: limit,
       }),
-    enabled: enabled && method === 'GET',
+    enabled: enabled && method === "GET" && !!url,
     refetchOnWindowFocus,
-    refetchInterval,
     retry: 1,
     staleTime: staleTime,
     gcTime: cacheTime,
     meta: {
-      errorMessage: 'An error occurred while fetching data',
-      showErrorAlert: showErrorAlert,
+      errorMessage: `An error occurred while fetching data for ${Array.isArray(key) ? key.join(", ") : key}`,
     },
   });
 
   const mutation = useMutation({
-    mutationFn: (data: { url?: string; formData?: any }) => fetchData(url ? url : (data.url as any), method, data.formData),
+    mutationFn: (data: { url?: string; formData?: any }) =>
+      fetchData(url ? url : (data.url as any), method, data.formData),
     onSuccess: (data: any) => {
       if (successMessage) {
-        addAlert({ message: successMessage, type: 'success', duration: 3000 });
+        addAlert({ message: successMessage, type: "success", duration: 3000 });
       }
 
       queriesToInvalidate?.forEach((query: string) => {
-        queryClient.invalidateQueries([query.split(',')] as any);
+        queryClient.invalidateQueries([query.split(",")] as any);
       });
 
       if (redirectUrl) {
@@ -150,12 +153,10 @@ const useApiHook = (options: {
       }
     },
     onError: (error: any) => {
+      console.error(`Error in useApiHook for ${Array.isArray(key) ? key.join(", ") : key}:`, error);
       const messageTxt = error.response && error.response.data.message ? error.response.data.message : error.message;
 
-      if (showErrorAlert) {
-        addAlert({ message: messageTxt, type: 'error', duration: 10000 });
-      }
-
+      addAlert({ message: messageTxt, type: "error", duration: 10000 });
       if (onErrorCallback) {
         onErrorCallback(error);
       }
@@ -163,7 +164,7 @@ const useApiHook = (options: {
   });
 
   // Return based on method
-  return method === 'GET' ? query : mutation;
+  return method === "GET" ? query : mutation;
 };
 
 export default useApiHook;

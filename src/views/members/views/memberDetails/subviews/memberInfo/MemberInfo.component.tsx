@@ -12,6 +12,7 @@ import PhotoUpload from "@/components/photoUpload/PhotoUpload.component";
 import { states } from "@/data/states";
 import { countries } from "@/data/countries";
 import { useQueryClient } from "@tanstack/react-query";
+import { useSelectedProfile } from "@/hooks/useSelectedProfile";
 
 const MemberInfo = () => {
   const [form] = Form.useForm();
@@ -20,14 +21,9 @@ const MemberInfo = () => {
   const queryClient = useQueryClient();
   const [image, setImage] = React.useState<any>(null); // the image that is uploaded
   const { data: loggedInData } = useUser();
-  const { data: selectedProfile } = useApiHook({
-    url: `/ministry/${loggedInData?.ministry}`,
-    key: "selectedProfile",
-    enabled: !!loggedInData?.ministry,
-    method: "GET",
-  }) as any;
+  const { selectedProfile } = useSelectedProfile();
   const { data: memberInformation } = useApiHook({
-    url: `/member/details/${id}`,
+    url: `/ministry/member/${id}`,
     key: ["memberInformation", id as string],
     enabled: !!id,
     method: "GET",
@@ -50,7 +46,7 @@ const MemberInfo = () => {
     if (id) {
       // if the id exists, then we are updating the member
       updateMember(
-        { url: `/member/${id}/update`, formData: { member: { ...values, _id: id } } },
+        { url: `/ministry/member/${id}`, formData: { member: { ...values, _id: id } } },
         {
           onSuccess: () => {
             router.push("/members");
@@ -58,23 +54,23 @@ const MemberInfo = () => {
         }
       );
     } else {
-      // ministry, if their isnt a selectedMinistry, then use the mainMinistry
+      // ministry, if their isn't a selectedMinistry, then use the mainMinistry
       // const ministryId = ministry ? ministry._id : mainMinistry._id;
-      createMember({ url: `/member`, formData: { ...values } });
+      createMember({ url: `/ministry/member`, formData: { ...values } });
     }
   };
 
   React.useEffect(() => {
     if (memberInformation) {
       form.setFieldsValue({
-        ...memberInformation?.data,
-        birthday: moment(memberInformation?.data?.birthday),
-        family: { _id: memberInformation?.data?.family?._id, name: memberInformation?.data?.family?.name },
-        ministry: memberInformation?.data?.ministries?.map((ministry: MinistryType) => {
+        ...memberInformation?.payload,
+        birthday: moment(memberInformation?.payload?.birthday),
+        family: { _id: memberInformation?.payload?.family?._id, name: memberInformation?.payload?.family?.name },
+        ministry: memberInformation?.payload?.ministries?.map((ministry: MinistryType) => {
           return { value: ministry._id, label: ministry.name, _id: ministry._id };
         }),
       });
-      setImage(memberInformation?.data?.profileImageUrl);
+      setImage(memberInformation?.payload?.profileImageUrl);
     }
   }, [memberInformation]);
 
@@ -248,29 +244,6 @@ const MemberInfo = () => {
                   optionFilterProp="children"
                   allowClear={true}
                 ></Select>
-              </Form.Item>
-            </div>
-          </div>{" "}
-          <div className={formStyles.editContainer}>
-            {/* membership information */}
-            <Divider orientation="center">Membership Information</Divider>
-            <div className={formStyles.group}>
-              <div className={formStyles.group}>
-                <Form.Item name="role" label="Role in The Church">
-                  <Select placeholder="Role" className={styles.input}>
-                    <Select.Option value="member">Member</Select.Option>
-                    <Select.Option value="leader">Leader</Select.Option>
-                    <Select.Option value="staff">Staff</Select.Option>
-                    <Select.Option value="deacon">Deacon</Select.Option>
-                    <Select.Option value="admin">Admin</Select.Option>
-                  </Select>
-                </Form.Item>
-              </div>
-              <Form.Item name="isActive" className={styles.radioContainer} label="Active Member">
-                <Radio.Group className={styles.radioGroup}>
-                  <Radio value={true}>Active</Radio>
-                  <Radio value={false}>Inactive</Radio>
-                </Radio.Group>
               </Form.Item>
             </div>
           </div>

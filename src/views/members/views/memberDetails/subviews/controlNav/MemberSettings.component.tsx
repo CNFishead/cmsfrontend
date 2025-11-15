@@ -10,20 +10,20 @@ const MemberSettings = () => {
   const [form] = Form.useForm();
   const { id } = useParams();
   const { data: memberInformation } = useApiHook({
-    url: `/member/details/${id}`,
-    key: "memberInformation",
+    url: `/ministry/member/${id}`,
+    key: ["memberInformation", id as any],
     enabled: !!id,
     method: "GET",
   }) as any;
   const { mutate: updateMember } = useApiHook({
     successMessage: "Member updated successfully",
-    queriesToInvalidate: ["memberInformation"],
+    queriesToInvalidate: [`memberInformation,${id}`],
     key: "updateMember",
     method: "PUT",
   }) as any;
   const { mutate: removeMember } = useApiHook({
     successMessage: "Member removed successfully",
-    queriesToInvalidate: ["memberInformation"],
+    queriesToInvalidate: [`memberInformation,${id}`],
     key: "removeMember",
     method: "DELETE",
   }) as any;
@@ -34,7 +34,7 @@ const MemberSettings = () => {
       content:
         "This action cannot be undone. This member will be removed from the church and all their data will be deleted. including attendance records, and they'll be removed from any ministry that they've participated in.",
       onOk: () => {
-        removeMember({ url: `/member/${id}/remove` });
+        removeMember({ url: `/ministry/member/${id}` });
       },
     });
   };
@@ -42,8 +42,8 @@ const MemberSettings = () => {
     <div className={styles.container}>
       <Form
         form={form}
-        onFinish={(values) => updateMember({ url: `/member/${id}/update`, formData: { member: { ...values } } })}
-        initialValues={memberInformation?.data}
+        onFinish={(values) => updateMember({ url: `/ministry/member/${id}`, formData: { member: { ...values } } })}
+        initialValues={memberInformation?.payload}
         className={`${formStyles.form} ${styles.formContainer}`}
         style={{ position: "relative" }}
         layout="vertical"
