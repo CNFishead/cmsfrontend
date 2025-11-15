@@ -4,8 +4,10 @@ import "@/styles/globals.css";
 import "@/styles/nprogress.css";
 import ReactQueryProvider from "@/providers/ReactQueryProvider";
 import DynamicTitleUpdater from "@/layout/dynamicTitleUpdater/DynamicTitleUpdater.layout";
-import AppWrapper from "@/layout/appWrapper/AppWrapper"; 
+import AppWrapper from "@/layout/appWrapper/AppWrapper";
 import { Suspense } from "react";
+import { ControlNavProvider } from "@/providers/ControlNavProvider";
+import PageWrapper from "@/layout/pageWrapper/PageWrapper.layout";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -39,9 +41,9 @@ export default function RootLayout({
         <Suspense fallback={null}>
           <DynamicTitleUpdater baseTitle="Shepherds CMS" />
           <ReactQueryProvider>
-            <AppWrapper> 
-              {children}
-            </AppWrapper>
+            <ControlNavProvider>
+              <PageWrapper>{children}</PageWrapper>
+            </ControlNavProvider>
           </ReactQueryProvider>
         </Suspense>
       </body>
