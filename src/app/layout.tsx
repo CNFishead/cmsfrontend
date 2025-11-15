@@ -41,9 +41,11 @@ export default function RootLayout({
         <Suspense fallback={null}>
           <DynamicTitleUpdater baseTitle="Shepherds CMS" />
           <ReactQueryProvider>
-            <ControlNavProvider>
-              <PageWrapper>{children}</PageWrapper>
-            </ControlNavProvider>
+            <AppWrapper>
+              <ControlNavProvider>
+                <PageWrapper>{children}</PageWrapper>
+              </ControlNavProvider>
+            </AppWrapper>
           </ReactQueryProvider>
         </Suspense>
       </body>

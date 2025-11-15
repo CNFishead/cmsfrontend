@@ -1,0 +1,614 @@
+/* Global Ant Design Overrides for Christian Ministry CMS Theme */
+/* 
+ * This file consolidates all Ant Design style customizations using the app's color palette.
+ * Color scheme based on earthy, natural tones appropriate for Christian ministry:
+ * - Primary: #3c6255 (Deep Forest Green)
+ * - Secondary: #61876e (Sage Green) 
+ * - Tertiary: #a6bb8d (Light Sage)
+ * - Quaternary: #eae7b1 (Cream)
+ * - Accent: #c42727 (Deep Red)
+ */
+
+:root {
+  --primary-color: #3c6255;
+  --primary-light: #5c806f;
+  --primary-dark: #35574b;
+  --secondary-color: #61876e;
+  --secondary-light: #79a889;
+  --secondary-dark: #5c7a66;
+  --tertiary-color: #a6bb8d;
+  --tertiary-light: #bdd4a1;
+  --quaternary-color: #eae7b1;
+  --accent-color: #c42727;
+  --accent-light: #c44f4f;
+  --accent-dark: #921e1e;
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.85);
+  --text-muted: rgba(255, 255, 255, 0.65);
+  --border-color: rgba(97, 135, 110, 0.3);
+  --bg-primary: rgba(60, 98, 85, 0.95);
+  --bg-secondary: rgba(43, 59, 49, 0.836);
+  --bg-hover: rgba(166, 187, 141, 0.2);
+}
+
+/* ===========================================
+   Statistics and Descriptions
+=========================================== */
+.ant-statistic-title {
+  color: var(--primary-color) !important;
+}
+.ant-descriptions-item-label{
+  color: var(--primary-color) !important;
+  font-weight: 500;
+}
+.ant-descriptions-item-content{
+  color: var(--text-secondary) !important;
+}
+
+/* ===========================================
+   FORM COMPONENTS
+=========================================== */
+
+/* Form Labels */
+.ant-form-item-label > label {
+  color: var(--text-muted) !important;
+  font-weight: 500;
+}
+
+/* Input Fields */
+.ant-input,
+.ant-input-number,
+.ant-picker,
+.ant-select-selector {
+  background: var(--bg-secondary) !important;
+  border: 1px solid var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+.ant-input:hover,
+.ant-input-number:hover,
+.ant-picker:hover,
+.ant-select-selector:hover {
+  border-color: var(--secondary-color) !important;
+}
+
+.ant-input:focus, 
+.ant-input-number:focus,
+.ant-picker:focus,
+.ant-select:focus .ant-select-selector,
+.ant-input-number-focused,
+.ant-picker-focused,
+.ant-select-focused .ant-select-selector {
+  border-color: var(--tertiary-color) !important;
+  box-shadow: 0 0 0 2px rgba(166, 187, 141, 0.3) !important;
+}
+
+/* Search Input Specific Styling */
+.ant-input-search {
+  background: var(--bg-primary) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+.ant-input-search:hover {
+  border-color: var(--secondary-color) !important;
+}
+
+.ant-input-search .ant-input {
+  background: transparent !important;
+  border: none !important;
+  color: var(--text-primary) !important;
+}
+
+.ant-input-search .ant-input:focus {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.ant-input-search-button {
+  background: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
+  color: var(--text-primary) !important;
+}
+
+.ant-input-search-button:hover {
+  background: var(--primary-light) !important;
+  border-color: var(--primary-light) !important;
+}
+
+/* Input Placeholders */
+.ant-input::placeholder,
+.ant-input-number input::placeholder,
+.ant-picker-input input::placeholder,
+.ant-select-selection-placeholder,
+.ant-input-search .ant-input::placeholder {
+  color: var(--text-muted) !important;
+}
+
+/* Input Number Specific */
+.ant-input-number-input {
+  background: transparent !important;
+  color: #ffffff !important;
+}
+
+/* Input Affix Wrapper */
+.ant-input-affix-wrapper {
+  background: var(--bg-secondary) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+.ant-input-affix-wrapper:hover {
+  border-color: var(--secondary-color) !important;
+}
+
+.ant-input-affix-wrapper:focus,
+.ant-input-affix-wrapper-focused {
+  border-color: var(--tertiary-color) !important;
+  box-shadow: 0 0 0 2px rgba(166, 187, 141, 0.3) !important;
+}
+
+.ant-input-affix-wrapper .ant-input {
+  background: transparent !important;
+  border: none !important;
+  color: var(--text-primary) !important;
+}
+
+/* override the input extras styling */
+.ant-form-item-extra {  
+  color: var(--text-muted) !important;
+}
+
+
+/* ===========================================
+   SELECT COMPONENTS
+=========================================== */
+
+/* Select Dropdown */
+.ant-select-dropdown {
+  background: var(--bg-primary) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+/* Select Items */
+.ant-select-item {
+  color: var(--text-secondary) !important;
+}
+
+.ant-select-item:hover {
+  background: var(--bg-hover) !important;
+}
+
+.ant-select-item-option-selected {
+  background: rgba(60, 98, 85, 0.5) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Select Text and Arrow */
+.ant-select-selection-item {
+  color: var(--text-primary) !important;
+}
+
+.ant-select-arrow {
+  color: var(--text-muted) !important;
+}
+
+/* ===========================================
+   MODAL COMPONENTS
+=========================================== */
+
+/* Modal Container */
+.ant-modal-content {
+  background: var(--bg-primary) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 12px;
+  max-height: 90vh;
+  overflow: hidden;
+}
+
+/* Modal Header */
+.ant-modal-header {
+  background: rgba(60, 98, 85, 0.3) !important;
+  border-bottom: 1px solid var(--border-color) !important;
+  border-radius: 12px 12px 0 0;
+}
+
+/* Modal Title */
+.ant-modal-title {
+  color: var(--text-primary) !important;
+  font-weight: 600;
+}
+
+/* Modal Body */
+.ant-modal-body {
+  background: transparent !important;
+  padding: 24px;
+  max-height: calc(90vh - 120px);
+  overflow-y: auto;
+}
+
+/* Modal Close Button */
+.ant-modal-close {
+  color: var(--text-muted) !important;
+}
+
+.ant-modal-close:hover {
+  color: var(--text-primary) !important;
+}
+
+/* Modal Footer */
+.ant-modal-footer {
+  background: var(--bg-secondary) !important;
+  border-top: 1px solid var(--border-color) !important;
+}
+
+.ant-input-number-group-addon{
+  background: var(--bg-secondary) !important;
+  border: 1px solid var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+/* ===========================================
+   CARD COMPONENTS
+=========================================== */
+
+/* Card Header */
+.ant-card-head {
+  background: rgba(60, 98, 85, 0.2) !important;
+  border-bottom: 1px solid var(--border-color) !important;
+}
+
+/* Card Title */
+.ant-card-head-title {
+  color: var(--text-primary) !important;
+}
+
+/* Card Body */
+.ant-card-body {
+  background: transparent !important;
+  color: var(--text-secondary) !important;
+  padding: 20px;
+}
+
+.ant-card {
+  background: rgba(60, 98, 85, 0.8) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 12px !important;
+}
+
+/* ===========================================
+   TABS COMPONENTS
+=========================================== */
+
+/* Tab Items */
+.ant-tabs-tab {
+  background-color: var(--tertiary-color) !important;
+  color: var(--text-muted) !important;
+}
+
+.ant-tabs-tab-btn{
+  color: var(--text-muted) !important;
+}
+
+.ant-tabs-tab:hover {
+  color: var(--text-secondary) !important;
+}
+
+.ant-tabs-tab-active {
+  background-color: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Tab Ink Bar */
+.ant-tabs-ink-bar {
+  background: var(--primary-color) !important;
+}
+
+/* Tab Content */
+.ant-tabs-content-holder {
+  background: transparent !important;
+}
+
+/* ===========================================
+   SWITCH COMPONENTS
+=========================================== */
+
+/* Switch */
+.ant-switch {
+  /* background: var(--border-color) !important; */
+}
+
+.ant-switch-checked {
+  background: var(--tertiary-color) !important;
+}
+
+/* ===========================================
+   BUTTON COMPONENTS
+=========================================== */
+
+/* Upload Button */
+.ant-upload .ant-btn {
+  background: var(--bg-secondary) !important;
+  border: 1px solid var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+.ant-upload .ant-btn:hover {
+  background: var(--bg-hover) !important;
+  border-color: var(--secondary-color) !important;
+}
+
+/* ===========================================
+   TABLE COMPONENTS
+=========================================== */
+
+/* Table */
+.ant-table {
+  background: transparent !important;
+}
+
+.ant-table-thead > tr > th {
+  background: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+  font-weight: 600;
+  border-bottom: 1px solid var(--border-color) !important;
+}
+
+.ant-table-tbody > tr > td {
+  background: rgba(60, 98, 85, 0.3) !important;
+  color: var(--text-primary) !important;
+  border-bottom: 1px solid rgba(97, 135, 110, 0.2) !important;
+}
+
+.ant-table-tbody > tr:hover > td {
+  background: var(--bg-hover) !important;
+  color: var(--primary-dark) !important;
+}
+
+/* ===========================================
+   TAG COMPONENTS
+=========================================== */
+
+/* Tags */
+.ant-tag {
+  border-radius: 6px;
+  font-weight: 500;
+  padding: 2px 8px;
+}
+
+/* ===========================================
+   AVATAR COMPONENTS
+=========================================== */
+
+/* Avatars */
+.ant-avatar {
+  border: 2px solid var(--border-color);
+  transition: all 0.3s ease;
+}
+
+.ant-avatar:hover {
+  border-color: var(--secondary-color);
+  transform: scale(1.05);
+}
+
+/* ===========================================
+   CHECKBOX COMPONENTS
+=========================================== */
+
+/* Checkboxes */
+/* .ant-checkbox-wrapper {
+  width: 100%;
+} */
+
+.ant-checkbox {
+  margin-right: 8px;
+}
+
+/* ===========================================
+   SELECT SEARCH COMPONENTS
+=========================================== */
+
+/* Select Search Input */
+.ant-select-selection-search-input {
+  height: auto !important;
+}
+
+/* ===========================================
+   RATE COMPONENTS
+=========================================== */
+
+/* Rate Stars */
+.ant-rate {
+  color: var(--tertiary-color) !important;
+}
+
+.ant-rate-star-zero {
+  color: var(--text-muted) !important;
+}
+
+/* ===========================================
+   DIVIDER COMPONENTS
+=========================================== */
+
+/* Dividers */
+.ant-divider {
+  border-color: var(--border-color) !important;
+}
+
+.ant-divider-horizontal.ant-divider-with-text {
+  color: var(--text-secondary) !important;
+  border-color: var(--border-color) !important;
+}
+
+.ant-divider-horizontal.ant-divider-with-text::before,
+.ant-divider-horizontal.ant-divider-with-text::after {
+  border-top-color: var(--border-color) !important;
+}
+
+/* ===========================================
+   TRANSFER COMPONENTS
+=========================================== */
+
+/* Transfer Lists */
+.ant-transfer-list {
+  width: 100% !important;
+  background-color: var(--bg-secondary) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+/* Transfer List Header */
+.ant-transfer-list-header {
+  background-color: rgba(60, 98, 85, 0.2) !important;
+  color: var(--text-primary) !important;
+  border-bottom: 1px solid var(--border-color) !important;
+}
+
+.ant-transfer-list-header-title {
+  color: var(--text-primary) !important;
+}
+
+/* Transfer List Body */
+.ant-transfer-list-body {
+  background-color: transparent !important;
+}
+
+/* Transfer List Items */
+.ant-transfer-list-content-item {
+  background-color: transparent !important;
+  color: var(--text-primary) !important;
+  border-bottom: 1px solid rgba(97, 135, 110, 0.2) !important;
+}
+
+.ant-transfer-list-content-item:hover {
+  background-color: var(--bg-hover) !important;
+}
+
+.ant-transfer-list-content-item-checked {
+  background-color: rgba(60, 98, 85, 0.4) !important;
+}
+
+/* Transfer Operation Buttons */
+.ant-transfer-operation {
+  margin: 0 1rem !important;
+}
+
+.ant-transfer-operation .ant-btn {
+  background-color: var(--bg-secondary) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+.ant-transfer-operation .ant-btn:hover {
+  background-color: var(--bg-hover) !important;
+  border-color: var(--secondary-color) !important;
+  color: var(--text-primary) !important;
+}
+
+.ant-transfer-operation .ant-btn:disabled {
+  background-color: rgba(60, 98, 85, 0.1) !important;
+  border-color: rgba(97, 135, 110, 0.1) !important;
+  color: var(--text-muted) !important;
+}
+
+/* ===========================================
+   LAYOUT COMPONENTS
+=========================================== */
+
+/* Space Items - Currently no specific overrides needed */
+
+/* Form Inline Items */
+.ant-form-inline .ant-form-item {
+  margin-right: 16px;
+  margin-bottom: 16px;
+}
+
+/* ===========================================
+   SCOPED OVERRIDES FOR SPECIFIC COMPONENTS
+=========================================== */
+
+/* Plan Transfer Component Specific */
+.plan-transfer .ant-transfer-list {
+  width: 100% !important;
+  background-color: var(--bg-secondary) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+.plan-transfer .ant-transfer-list-header {
+  background-color: rgba(60, 98, 85, 0.2) !important;
+  color: var(--text-primary) !important;
+  border-bottom: 1px solid var(--border-color) !important;
+}
+
+.plan-transfer .ant-transfer-list-header-title {
+  color: var(--text-primary) !important;
+}
+
+.plan-transfer .ant-transfer-list-body {
+  background-color: transparent !important;
+}
+
+.plan-transfer .ant-transfer-list-content-item {
+  background-color: transparent !important;
+  color: var(--text-primary) !important;
+  border-bottom: 1px solid rgba(97, 135, 110, 0.2) !important;
+}
+
+.plan-transfer .ant-transfer-list-content-item:hover {
+  background-color: var(--bg-hover) !important;
+}
+
+.plan-transfer .ant-transfer-list-content-item-checked {
+  background-color: rgba(60, 98, 85, 0.4) !important;
+}
+
+.plan-transfer .ant-transfer-operation {
+  margin: 0 1rem !important;
+}
+
+.plan-transfer .ant-transfer-operation .ant-btn {
+  background-color: var(--bg-secondary) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+.plan-transfer .ant-transfer-operation .ant-btn:hover {
+  background-color: var(--bg-hover) !important;
+  border-color: var(--secondary-color) !important;
+  color: var(--text-primary) !important;
+}
+
+.plan-transfer .ant-transfer-operation .ant-btn:disabled {
+  background-color: rgba(60, 98, 85, 0.1) !important;
+  border-color: rgba(97, 135, 110, 0.1) !important;
+  color: var(--text-muted) !important;
+}
+
+/* ===========================================
+   DESCRIPTIONS COMPONENTS
+=========================================== */
+.ant-descriptions-item-label{
+  color: var(--text-secondary) !important;
+  font-weight: 500;
+}
+/* ===========================================
+   MOBILE RESPONSIVE OVERRIDES
+=========================================== */
+
+@media (max-width: 768px) {
+  .ant-modal {
+    margin: 16px;
+    max-width: calc(100vw - 32px);
+  }
+
+  .ant-modal-body {
+    padding: 16px;
+  }
+
+  .ant-card-body {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .ant-table-tbody {
+    font-size: 12px;
+  }
+}

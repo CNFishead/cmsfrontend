@@ -1,4 +1,22 @@
 :root{
+  /* === Color RGB Values === */
+  --primary-rgb: 60, 98, 85;
+  --primary-dark-rgb: 19, 58, 44;
+  --primary-light-rgb: 92, 138, 122;
+  --secondary-rgb: 97, 135, 110;
+  --secondary-dark-rgb: 60, 90, 74;
+  --secondary-light-rgb: 138, 176, 154;
+  --tetriary-rgb: 166, 187, 141;
+  --tetriary-dark-rgb: 113, 128, 95;
+  --tetriary-light-rgb: 211, 236, 179;
+  --quaternary-rgb: 234, 231, 177;
+  --quaternary-dark-rgb: 197, 193, 111;
+  --quaternary-light-rgb: 230, 228, 200;
+  --quaternary-lighter-rgb: 243, 242, 226;
+  --text-primary-rgb: 33, 37, 41;
+  --text-secondary-rgb: 3, 92, 180;
+
+  /* === Colors === */
   --primary: rgb(60, 98, 85);
   --primary-dark: rgb(19, 58, 44);
   --primary-light: rgb(92, 138, 122);
@@ -12,10 +30,24 @@
   --quaternary-dark: rgb(197, 193, 111);
   --quaternary-light: rgb(230, 228, 200);
   --quaternary-lighter: rgb(243, 242, 226);
+  --text-primary: rgb(33, 37, 41);
+  --text-secondary: rgb(3, 92, 180);
+
+  /* === Additional Colors === */
+  --accent-rgb: 59, 130, 246;
+  --accent: rgb(59, 246, 75);
+  --bg-primary-rgb: 255, 255, 255;
+  --bg-primary: rgb(255, 255, 255);
+  --bg-secondary-rgb: 248, 250, 255;
+  --bg-secondary: rgb(248, 250, 255);
+  
+  /* === Gradients === */
+  --bg-gradient: linear-gradient(135deg, rgba(var(--primary-rgb), 0.05) 0%, rgba(var(--primary-rgb), 0.02) 100%);
+  
   /* === Font Families === */
   --font-family-primary: var(--font-roboto), sans-serif;
-  --font-family-secondary: var(--font-roboto), sans-serif
-
+  --font-family-secondary: var(--font-roboto), sans-serif;
+  
   /* === Font Sizes === */
   --font-size-xs: 0.75rem;
   --font-size-sm: 0.875rem;
@@ -67,33 +99,7 @@ body {
   padding: 0;
   margin: 0;
 }
-#nprogress {
-  pointer-events: none;
-}
 
-#nprogress .bar {
-  background: rgb(255, 0, 0);
-
-  position: fixed;
-  z-index: 1031;
-  top: 0;
-  left: 0;
-
-  width: 100%;
-  height: 5px;
-}
-
-#nprogress .peg {
-  display: block;
-  position: absolute;
-  right: 0px;
-  width: 100px;
-  height: 100%;
-  box-shadow: 0 0 10px rgb(255, 0, 0), 0 0 5px rgb(255, 0, 0);
-  opacity: 1.0;
-
-  transform: rotate(3deg) translate(0px, -4px);
-}
 a {
   color: inherit;
   text-decoration: none;
@@ -181,3 +187,60 @@ a {
       transform: translateX(-50%) translateZ(0) scaleY(1)
   }
 }
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+  transition: all 0.3s ease-in-out;
+}
+::-webkit-scrollbar-button:single-button:vertical:decrement {
+  border-color: transparent transparent #9b6a2f transparent;
+}
+
+::-webkit-scrollbar-button:single-button:vertical:decrement:hover {
+  border-color: transparent transparent white transparent;
+}
+
+::-webkit-scrollbar-button:single-button:vertical:increment {
+  border-color: #9b6a2f transparent transparent transparent;
+}
+
+::-webkit-scrollbar-button:single-button:vertical:increment:hover {
+  border-color: white transparent transparent transparent;
+}
+::-webkit-scrollbar-thumb {
+  border: 0px solid rgba(0, 0, 0, 0.017);
+  background-color: rgba(110, 110, 110, 0.139);
+
+  border-radius: 12px 12px 12px 12px;
+  margin: 0px auto;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-light);
+}
+::-webkit-scrollbar-thumb:active {
+  background: var(--primary-light);
+}
+html,
+body {
+  /* background-color: var(--bs-secondary); */
+  background-color: rgb(248, 250, 255);
+  color: var(--bs-dark);
+  font-family: 'Source Sans Pros', sans-serif;
+  /*-ms-overflow-style: none; for Internet Explorer, Edge */
+  /*scrollbar-width: none;  for Firefox */
+  /* background-color: red; */
+}
+body::-webkit-scrollbar {
+  /* display: none;  for Chrome, Safari, and Opera */
+}
+
+/* @media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+  body {
+    color: white;
+    background: var(--dark);
+  }
+} */
