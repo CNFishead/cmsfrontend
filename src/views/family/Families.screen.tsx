@@ -12,11 +12,12 @@ import { useRouter } from "next/navigation";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import useApiHook from "@/state/useApi";
 import { useUser } from "@/state/auth";
+import { useSelectedProfile } from "@/hooks/useSelectedProfile";
 
 const Families = () => {
   const router = useRouter();
   const [modalOpen, setModalOpen] = React.useState(false);
-  const { data: loggedInData } = useUser();
+  const { selectedProfile } = useSelectedProfile();
   const { mutate: deleteFamily } = useApiHook({
     method: "DELETE",
     key: "deleteFamily",
@@ -32,8 +33,8 @@ const Families = () => {
     url: "/family",
     key: "families",
     method: "GET",
-    filter: `user;${loggedInData?._id}`,
-    enabled: !!loggedInData?._id,
+    filter: `ministry;${selectedProfile?._id}`,
+    enabled: !!selectedProfile?._id,
   }) as any;
 
   const handleDelete = (id: string) => {

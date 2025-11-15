@@ -12,23 +12,21 @@ import useFetchData from "@/state/useFetchData";
 import useRemoveData from "@/state/useRemoveData";
 import { useUser } from "@/state/auth";
 import useApiHook from "@/state/useApi";
+import { useSelectedProfile } from "@/hooks/useSelectedProfile";
+import { useSearchStore } from "@/state/search";
 
 const Members = () => {
   const router = useRouter();
 
-  const { data: loggedInData } = useUser();
-  const { data: selectedProfile } = useFetchData({
-    url: `/ministry/${loggedInData?.ministry}`,
-    key: "selectedProfile",
-    enabled: !!loggedInData?.ministry,
-  });
+  const { search, filter, pageNumber } = useSearchStore((state) => state);
+  const { selectedProfile } = useSelectedProfile();
 
   const { data: membersListData, isLoading: loading } = useApiHook({
-    url: `/member/${selectedProfile?.ministry?._id}`,
-    key: "members",
-    enabled: !!selectedProfile?.ministry?._id,
+    url: `/ministry/member`,
+    key: ["members", search, filter, pageNumber as any],
+    enabled: !!selectedProfile?._id,
     method: "GET",
-    filter: `user;${loggedInData?._id}`,
+    filter: `ministry;{"$in":"${selectedProfile?._id}"}`,
   }) as any;
 
   const { mutate: deleteMember } = useRemoveData({
@@ -75,7 +73,7 @@ const Members = () => {
         ]}
         placeholder="Search Members"
         queryKey="members"
-        total={membersListData?.pagination?.totalCount}
+        total={membersListData?.metadata?.totalCount}
         isFetching={loading}
       >
         <div className={styles.contentContainer}>

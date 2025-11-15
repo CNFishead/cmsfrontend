@@ -29,89 +29,87 @@ export default function Error({ error, reset }: ErrorProps) {
   };
 
   return (
-    <PageLayout pages={[navigation().home.links.home]} largeSideBar>
-      <div className={styles.container}>
+    <div className={styles.container}>
+      <motion.div
+        className={styles.content}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
         <motion.div
-          className={styles.content}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+          className={styles.iconSection}
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
         >
-          <motion.div
-            className={styles.iconSection}
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
-            <div className={styles.icon}>✟</div>
-            <div className={styles.errorCode}>SERVICE UNAVAILABLE</div>
-          </motion.div>{" "}
-          <motion.h1
-            className={styles.title}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-          >
-            Something went wrong!
-          </motion.h1>
-          <motion.p
-            className={styles.description}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-          >
-            We&apos;ve encountered an unexpected error while serving your ministry needs. Our team has been notified and
-            is working on a solution.
-          </motion.p>
-          <motion.div
-            className={styles.errorDetails}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.45 }}
-          >
-            <details className={styles.detailsContainer}>
-              <summary className={styles.detailsSummary}>View Error Details</summary>
-              <pre className={styles.errorMessage}>{error.message}</pre>
-              {error.digest && <p className={styles.errorDigest}>Error ID: {error.digest}</p>}
-            </details>
-          </motion.div>
-          <motion.div
-            className={styles.actions}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.5 }}
-          >
-            <motion.button
-              className={styles.button}
-              onClick={handleTryAgain}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Try Again
-            </motion.button>
-
-            <motion.button
-              className={`${styles.button} ${styles.buttonPrimary}`}
-              onClick={handleGoHome}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Return to Ministry Dashboard
-            </motion.button>
-          </motion.div>
-          <motion.div
-            className={styles.help}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.6 }}
-          >
-            <p className={styles.helpText}>
-              If this problem persists, please contact our support team and include the error details above to help us
-              resolve the issue quickly.
-            </p>
-          </motion.div>
+          <div className={styles.icon}>✟</div>
+          <div className={styles.errorCode}>SERVICE UNAVAILABLE</div>
+        </motion.div>{" "}
+        <motion.h1
+          className={styles.title}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+        >
+          Something went wrong!
+        </motion.h1>
+        <motion.p
+          className={styles.description}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+        >
+          We&apos;ve encountered an unexpected error while serving your ministry needs. Our team has been notified and
+          is working on a solution.
+        </motion.p>
+        <motion.div
+          className={styles.errorDetails}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.45 }}
+        >
+          <details className={styles.detailsContainer}>
+            <summary className={styles.detailsSummary}>View Error Details</summary>
+            <pre className={styles.errorMessage}>{error.message}</pre>
+            {error.digest && <p className={styles.errorDigest}>Error ID: {error.digest}</p>}
+          </details>
         </motion.div>
-      </div>
-    </PageLayout>
+        <motion.div
+          className={styles.actions}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.5 }}
+        >
+          <motion.button
+            className={styles.button}
+            onClick={handleTryAgain}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            Try Again
+          </motion.button>
+
+          <motion.button
+            className={`${styles.button} ${styles.buttonPrimary}`}
+            onClick={handleGoHome}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            Return to Ministry Dashboard
+          </motion.button>
+        </motion.div>
+        <motion.div
+          className={styles.help}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.6 }}
+        >
+          <p className={styles.helpText}>
+            If this problem persists, please contact our support team and include the error details above to help us
+            resolve the issue quickly.
+          </p>
+        </motion.div>
+      </motion.div>
+    </div>
   );
 }
