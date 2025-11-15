@@ -62,13 +62,7 @@ const AppWrapper = (props: Props) => {
   return (
     <>
       {selectedProfile?.needsBillingSetup ? (
-        <PageLayout
-          pages={[navigation().billing.links.account_center]}
-          loading={userIsLoading || !selectedProfile}
-          largeSideBar
-        >
-          <BillingSetup billingValidation={selectedProfile?.billingValidation} />
-        </PageLayout>
+        <BillingSetup billingValidation={selectedProfile?.billingValidation} />
       ) : (
         <>
           <PolicyCheckWrapper>{props.children}</PolicyCheckWrapper>
