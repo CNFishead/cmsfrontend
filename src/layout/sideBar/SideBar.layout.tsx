@@ -1,12 +1,13 @@
-import styles from './SideBar.module.scss';
-import { navigation } from '@/data/navigation';
-import Link from 'next/link';
-import Image from 'next/image';
-import { useUser } from '@/state/auth';
-import { useLayoutStore } from '@/state/layout';
-import { Drawer, Button, Tooltip } from 'antd';
-import { LeftOutlined, RightOutlined } from '@ant-design/icons';
-import { useEffect, useState } from 'react';
+import styles from "./SideBar.module.scss";
+import { navigation } from "@/data/navigation";
+import Link from "next/link";
+import Image from "next/image";
+import { useUser } from "@/state/auth";
+import { useLayoutStore } from "@/state/layout";
+import { Drawer, Button, Tooltip } from "antd";
+import { LeftOutlined, RightOutlined } from "@ant-design/icons";
+import { useEffect, useState } from "react";
+import { useSelectedProfile } from "@/hooks/useSelectedProfile";
 
 //make a type with children as a prop
 type Props = {
@@ -21,6 +22,7 @@ const SideBar = (props: Props) => {
   const sidebarCollapsed = useLayoutStore((state) => state.sidebarCollapsed);
   const toggleSidebarCollapsed = useLayoutStore((state) => state.toggleSidebarCollapsed);
   const [isMobile, setIsMobile] = useState(false);
+  const { selectedProfile } = useSelectedProfile();
 
   useEffect(() => {
     const checkMobile = () => {
@@ -28,41 +30,37 @@ const SideBar = (props: Props) => {
     };
 
     checkMobile();
-    window.addEventListener('resize', checkMobile);
+    window.addEventListener("resize", checkMobile);
 
-    return () => window.removeEventListener('resize', checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
   const sidebarContent = (
-    <div
-      className={`${styles.container} ${
-        !isMobile && (props.small || sidebarCollapsed) ? styles.small : ''
-      }`}
-    >
+    <div className={`${styles.container} ${!isMobile && (props.small || sidebarCollapsed) ? styles.small : ""}`}>
       {!isMobile && (
-          <Button
-            type="text"
-            icon={sidebarCollapsed ? <RightOutlined /> : <LeftOutlined />}
-            onClick={toggleSidebarCollapsed}
-            className={styles.collapseButton}
-          />
+        <Button
+          type="text"
+          icon={sidebarCollapsed ? <RightOutlined /> : <LeftOutlined />}
+          onClick={toggleSidebarCollapsed}
+          className={styles.collapseButton}
+        />
       )}
 
       <div className={styles.topSection}>
         <div className={styles.logoContainer}>
           <Image
-            src={'/images/ShepherdsCMSLogo.png'}
+            src={"/images/ShepherdsCMSLogo.png"}
             width={sidebarCollapsed ? 50 : 100}
             height={100}
             className={styles.logo}
             style={{
-              objectFit: 'contain',
+              objectFit: "contain",
             }}
             alt="logo"
           />
 
           <div>
-            <p className={`${styles.productName}`}>ShepherdCMS — Admin Portal</p>
+            <p className={`${styles.productName}`}>{selectedProfile?.name}s — Portal</p>
           </div>
         </div>
 
@@ -85,9 +83,9 @@ const SideBar = (props: Props) => {
                           <Link
                             key={indx + subItem.title}
                             href={subItem.link}
-                            className={`${styles.link} ${
-                              props.page.title === subItem.title && styles.active
-                            } ${subItem.pulse && styles.pulse}`}
+                            className={`${styles.link} ${props.page.title === subItem.title && styles.active} ${
+                              subItem.pulse && styles.pulse
+                            }`}
                             onClick={() => {
                               if (isMobile && props.onMobileClose) {
                                 props.onMobileClose();
@@ -106,7 +104,7 @@ const SideBar = (props: Props) => {
       </div>
       <div className={styles.bottomSection}>
         <p className={styles.fapText}>ShepherdCMS</p>
-        <p className={styles.versionText}>v{process.env.APP_VERSION}</p>
+        <p className={styles.versionText}>v{process.env.VERSION}</p>
       </div>
     </div>
   );
@@ -121,7 +119,7 @@ const SideBar = (props: Props) => {
         width={265}
         styles={{
           body: { padding: 0 },
-          header: { display: 'none' },
+          header: { display: "none" },
         }}
         className={styles.mobileDrawer}
       >

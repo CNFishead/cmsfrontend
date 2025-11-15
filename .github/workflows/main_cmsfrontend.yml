@@ -33,7 +33,7 @@ jobs:
           NEXT_PUBLIC_TINYMCE_API_KEY: ${{ secrets.NEXT_PUBLIC_TINYMCE_API_KEY }}
           AUTH_URL: 'https://auth.shepherdcms.org/'
           SERVICE_NAME: "Shepherds Portal"
-          APP_VERSION: '1.0.0'
+          APP_VERSION: '1.2.1'
 
       - name: Zip artifact for deployment
       # Zip all files in the repository root

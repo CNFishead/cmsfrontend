@@ -4,16 +4,16 @@ import { Button, Modal, Table } from "antd";
 import Link from "next/link";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import SearchWrapper from "@/layout/searchWrapper/SearchWrapper.layout";
-import { useUser } from "@/state/auth";
 import useApiHook from "@/state/useApi";
+import { useSelectedProfile } from "@/hooks/useSelectedProfile";
 
 const CalendarTable = () => {
-  const { data: loggedInUser } = useUser();
+  const { selectedProfile } = useSelectedProfile();
   const { data, isLoading: loading } = useApiHook({
     url: "/event",
     key: ["events"],
-    enabled: !!loggedInUser?._id,
-    filter: `user;${loggedInUser?._id}`,
+    enabled: !!selectedProfile?._id,
+    filter: `ministry;${selectedProfile?._id}`,
     method: "GET",
   }) as any;
 
